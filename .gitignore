@@ -1,0 +1,18 @@
+DosBox Manager/obj/*.*
+DosBox Manager/obj/Debug/*.*
+DosBox Manager/obj/Release/*.*
+DosBox Manager/bin/*.*
+DosBox Manager/bin/Debug/*.*
+DosBox Manager/bin/Release/*.*
+GUI/obj/*.*
+GUI/obj/Debug/*.*
+GUI/obj/Release/*.*
+GUI/bin/*.*
+GUI/bin/Debug/*.*
+GUI/bin/Release/*.*
+Helpers/obj/*.*
+Helpers/obj/Debug/*.*
+Helpers/obj/Release/*.*
+Helpers/bin/*.*
+Helpers/bin/Debug/*.*
+Helpers/bin/Release/*.*
