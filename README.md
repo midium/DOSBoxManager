@@ -8,6 +8,7 @@ Also used Custom Drawn Scrollbar from Code Project website (http://www.codeproje
 ____________________________
 
 DOSBox Manager : .NET front-end for DOSBox
+
 Copyright (C) 2015 MiDiUm Software
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
