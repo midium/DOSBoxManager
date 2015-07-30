@@ -240,5 +240,10 @@
     <Content Include="Resources\tick.png" />
     <Content Include="Resources\wrench.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="settings.dbm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
