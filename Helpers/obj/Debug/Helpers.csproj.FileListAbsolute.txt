@@ -1,0 +1,16 @@
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\Helpers.dll.config
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\Helpers.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\Helpers.pdb
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\EntityFramework.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\EntityFramework.SqlServer.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\GUI.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\System.Data.SQLite.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\System.Data.SQLite.EF6.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\System.Data.SQLite.Linq.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\GUI.pdb
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\EntityFramework.xml
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\EntityFramework.SqlServer.xml
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\bin\Debug\System.Data.SQLite.xml
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\obj\Debug\Helpers.csprojResolveAssemblyReference.cache
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\obj\Debug\Helpers.dll
+G:\Development\_Progetti Personali_\DosBox Manager\Helpers\obj\Debug\Helpers.pdb

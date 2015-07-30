@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: G:\Development\_Progetti Personali_\DosBox Manager\DosBox Manager\bin\Debug\DosBox Manager.exe-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{029EA132-5828-44F2-917C-787F394ECF8A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>DosBox Manager</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>DosBox_Manager</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+    <Reference Include="Helpers">
+      <HintPath>lib\Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="GUI">
+      <HintPath>lib\GUI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="UI\Dialogs\AboutDBM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\AboutDBM.Designer.cs">
+      <DependentUpon>AboutDBM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\CategoryDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\CategoryDialog.Designer.cs">
+      <DependentUpon>CategoryDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameDialog.Designer.cs">
+      <DependentUpon>GameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsDialog.Designer.cs">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\Base\BaseSettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\Base\BaseSettingsPanel.Designer.cs">
+      <DependentUpon>BaseSettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\BehavioursPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\BehavioursPanel.Designer.cs">
+      <DependentUpon>BehavioursPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\DOSBoxPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\DOSBoxPanel.Designer.cs">
+      <DependentUpon>DOSBoxPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\GamesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\SettingsPanels\GamesPanel.Designer.cs">
+      <DependentUpon>GamesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsDialog.Designer.cs">
+      <DependentUpon>TranslationsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\Base\TranslationsPanelsBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\Base\TranslationsPanelsBase.Designer.cs">
+      <DependentUpon>TranslationsPanelsBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\ComponentsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\ComponentsPanel.Designer.cs">
+      <DependentUpon>ComponentsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\MessagesPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\TranslationsPanels\MessagesPanel.Designer.cs">
+      <DependentUpon>MessagesPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Panels\Base\GamesPanelsBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Panels\Base\GamesPanelsBase.Designer.cs">
+      <DependentUpon>GamesPanelsBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Panels\CategoryGames.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Panels\CategoryGames.Designer.cs">
+      <DependentUpon>CategoryGames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Panels\PanelsEventArgs\SearchEventArgs.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="UI\Panels\SearchGames.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Panels\SearchGames.Designer.cs">
+      <DependentUpon>SearchGames.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="UI\Dialogs\AboutDBM.resx">
+      <DependentUpon>AboutDBM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\CategoryDialog.resx">
+      <DependentUpon>CategoryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\GameDialog.resx">
+      <DependentUpon>GameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SettingsDialog.resx">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SettingsPanels\Base\BaseSettingsPanel.resx">
+      <DependentUpon>BaseSettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SettingsPanels\BehavioursPanel.resx">
+      <DependentUpon>BehavioursPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SettingsPanels\DOSBoxPanel.resx">
+      <DependentUpon>DOSBoxPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\SettingsPanels\GamesPanel.resx">
+      <DependentUpon>GamesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\TranslationsDialog.resx">
+      <DependentUpon>TranslationsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\TranslationsPanels\ComponentsPanel.resx">
+      <DependentUpon>ComponentsPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\TranslationsPanels\MessagesPanel.resx">
+      <DependentUpon>MessagesPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Panels\CategoryGames.resx">
+      <DependentUpon>CategoryGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Panels\SearchGames.resx">
+      <DependentUpon>SearchGames.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\application.png" />
+    <Content Include="Resources\application_form.png" />
+    <Content Include="Resources\application_osx_terminal.png" />
+    <Content Include="Resources\bin_closed.png" />
+    <Content Include="Resources\box_closed.png" />
+    <Content Include="Resources\brick.png" />
+    <Content Include="Resources\brick_add.png" />
+    <Content Include="Resources\brick_delete.png" />
+    <Content Include="Resources\brick_edit.png" />
+    <Content Include="Resources\brick_go.png" />
+    <Content Include="Resources\broom.png" />
+    <Content Include="Resources\calendar.png" />
+    <Content Include="Resources\cancel.png" />
+    <Content Include="Resources\cd.png" />
+    <Content Include="Resources\comment_edit.png" />
+    <Content Include="Resources\controller.png" />
+    <Content Include="Resources\controller_add.png" />
+    <Content Include="Resources\controller_delete.png" />
+    <Content Include="Resources\controller_edit.png" />
+    <Content Include="Resources\control_play_blue.png" />
+    <Content Include="Resources\cross.png" />
+    <Content Include="Resources\database.png" />
+    <Content Include="Resources\database_add.png" />
+    <Content Include="Resources\database_connect.png" />
+    <Content Include="Resources\database_refresh.png" />
+    <Content Include="Resources\disconnect.png" />
+    <Content Include="Resources\disk.png" />
+    <Content Include="Resources\door_out.png" />
+    <Content Include="Resources\DosBoxManager.jpg" />
+    <Content Include="Resources\drive_magnify.png" />
+    <Content Include="Resources\folder_image.png" />
+    <Content Include="Resources\folder_search.png" />
+    <Content Include="Resources\game_monitor.png" />
+    <Content Include="Resources\image_delete.png" />
+    <Content Include="Resources\information.png" />
+    <Content Include="Resources\installer_box.png" />
+    <Content Include="Resources\joystick.png" />
+    <Content Include="Resources\joystick_add.png" />
+    <Content Include="Resources\joystick_delete.png" />
+    <Content Include="Resources\joystick_edit.png" />
+    <Content Include="Resources\magnifier.png" />
+    <Content Include="Resources\script_edit.png" />
+    <Content Include="Resources\script_gear.png" />
+    <Content Include="Resources\tick.png" />
+    <Content Include="Resources\wrench.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

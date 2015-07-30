@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{38962E38-6D91-4FFB-9F63-61C50982FCCF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GUI</RootNamespace>
+    <AssemblyName>GUI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Boxes\GameBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Boxes\GameBox.Designer.cs">
+      <DependentUpon>GameBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menus\MenuStripRenderer\MyMenuRenderer.cs" />
+    <Compile Include="MessageBoxes\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageBoxes\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Scrollbar\ScrollBarArrowButtonState.cs" />
+    <Compile Include="Scrollbar\ScrollBarControlDesigner.cs" />
+    <Compile Include="Scrollbar\ScrollBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Scrollbar\ScrollBarExRenderer.cs" />
+    <Compile Include="Scrollbar\ScrollBarOrientation.cs" />
+    <Compile Include="Scrollbar\ScrollBarState.cs" />
+    <Compile Include="Tabs\Base\TabsBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\Base\TabsBase.Designer.cs">
+      <DependentUpon>TabsBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\CategoriesTabs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\CategoriesTabs.Designer.cs">
+      <DependentUpon>CategoriesTabs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\SettingsTabs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\SettingsTabs.Designer.cs">
+      <DependentUpon>SettingsTabs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\TranslationTabs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\TranslationTabs.Designer.cs">
+      <DependentUpon>TranslationTabs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextBoxes\NumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TextBoxes\NumericTextBox.Designer.cs">
+      <DependentUpon>NumericTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbars\MyToolStripMenuRenderer.cs" />
+    <Compile Include="Toolbars\MyToolStripRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Boxes\GameBox.resx">
+      <DependentUpon>GameBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageBoxes\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Base\TabsBase.resx">
+      <DependentUpon>TabsBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\CategoriesTabs.resx">
+      <DependentUpon>CategoriesTabs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SettingsTabs.resx">
+      <DependentUpon>SettingsTabs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\TranslationTabs.resx">
+      <DependentUpon>TranslationTabs.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\corner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoAtari.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dosbox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\game_monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setting_tools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\text_allcaps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\comments.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\accept.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alert_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\error_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\question_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GripNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollBarArrowDown.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
