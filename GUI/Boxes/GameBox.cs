@@ -214,6 +214,22 @@ namespace GUI.Boxes
 
             Rectangle boxRect = new Rectangle(5, 5, this.Width - 8, this.Height - 30);
 
+            //Game name on bottom
+            GraphicsPath stringPath = new GraphicsPath();
+            String NameToDisplay = _GameName;
+
+            //Reducting game name to max of 18 chars
+            if (NameToDisplay.Length > 18)
+                NameToDisplay = NameToDisplay.Substring(0, 17) + "...";
+
+            SizeF measures = gr.MeasureString(NameToDisplay, _textFont);
+
+            stringPath.AddString(NameToDisplay, this.Font.FontFamily, 0, 11, new Point((int)((this.Width / 2) - (measures.Width / 2) + 13), this.Height - 20), null);
+            gr.FillPath(Brushes.White, stringPath);
+            gr.DrawPath(Pens.LightGray, stringPath);
+
+            stringPath.Dispose();
+
             //Preparing pen stroke
             Pen strokePen = null; 
             if (_isHover || _isSelected)
@@ -235,21 +251,6 @@ namespace GUI.Boxes
             else
                 DrawRoundedRectangle(gr, boxRect, 25, strokePen, Color.FromArgb(50, 50, 50), GUI.Properties.Resources.LogoAtari);
             
-            //Game name on bottom
-            GraphicsPath stringPath = new GraphicsPath();
-            String NameToDisplay = _GameName;
-
-            //Reducting game name to max of 18 chars
-            if (NameToDisplay.Length > 18)
-                NameToDisplay = NameToDisplay.Substring(0, 17) + "...";
-
-            SizeF measures = gr.MeasureString(NameToDisplay, _textFont);
-
-            stringPath.AddString(NameToDisplay, this.Font.FontFamily, 0, 11, new Point((int)((this.Width / 2) - (measures.Width / 2) + 13), this.Height - 20), null);
-            gr.FillPath(Brushes.White, stringPath);
-            gr.DrawPath(Pens.LightGray, stringPath);
-
-            stringPath.Dispose();
         }
 
         private void DrawRoundedRectangle(Graphics gfx, Rectangle Bounds, int CornerRadius, Pen DrawPen, Color FillColor, Image Cover)
