@@ -477,6 +477,8 @@ namespace DosBox_Manager
 
         private void LoadCategoryGames(int CategoryID)
         {
+            if (CategoryID == -1)
+                return;
             RemoveGamesPanelHandlers();
             List<Game> gamesForCategory = _DB.GetAllGamesForCategory(CategoryID);
             List<Category> allCategories = _DB.GetAllCategories();

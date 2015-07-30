@@ -117,6 +117,7 @@ namespace GUI.Boxes
             BoxDoubleClick(this, _GameID);
         }
 
+        #region "Rendering Routines"
         private void RenderBox(Graphics gr, String GameName)
         {
             gr.SmoothingMode = SmoothingMode.HighQuality;
@@ -213,22 +214,27 @@ namespace GUI.Boxes
 
             Rectangle boxRect = new Rectangle(5, 5, this.Width - 8, this.Height - 30);
 
-            //Drawing image into rectangle space
-            if (_GameImage != null)
-                gr.DrawImage(_GameImage, boxRect);
-            else
-                gr.DrawImage(GUI.Properties.Resources.LogoAtari, boxRect);
-
-            //Hover or Selected stroke
+            //Preparing pen stroke
+            Pen strokePen = null; 
             if (_isHover || _isSelected)
             {
                 if (_isHover)
-                    gr.DrawRectangle(new Pen(Color.Yellow, 4), boxRect);
+                    strokePen = new Pen(Color.Yellow, 4);
                 else
-                    gr.DrawRectangle(new Pen(Color.Cyan, 4), boxRect);
+                    strokePen = new Pen(Color.Cyan, 4);
 
             }
+            else
+            {
+                strokePen = new Pen(Color.FromArgb(0,0,0,0), 1);
+            }
 
+            //Drawing the Rounded corner box with image
+            if (_GameImage != null)
+                DrawRoundedRectangle(gr, boxRect, 25, strokePen, Color.FromArgb(50, 50, 50), _GameImage);
+            else
+                DrawRoundedRectangle(gr, boxRect, 25, strokePen, Color.FromArgb(50, 50, 50), GUI.Properties.Resources.LogoAtari);
+            
             //Game name on bottom
             GraphicsPath stringPath = new GraphicsPath();
             String NameToDisplay = _GameName;
@@ -245,6 +251,35 @@ namespace GUI.Boxes
 
             stringPath.Dispose();
         }
+
+        private void DrawRoundedRectangle(Graphics gfx, Rectangle Bounds, int CornerRadius, Pen DrawPen, Color FillColor, Image Cover)
+        {
+            gfx.SmoothingMode = SmoothingMode.HighQuality;
+
+            int strokeOffset = Convert.ToInt32(Math.Ceiling(DrawPen.Width));
+            Bounds = Rectangle.Inflate(Bounds, -strokeOffset, -strokeOffset);
+
+            DrawPen.EndCap = DrawPen.StartCap = LineCap.Round;
+
+            GraphicsPath gfxPath = new GraphicsPath();
+            gfxPath.AddArc(Bounds.X, Bounds.Y, CornerRadius, CornerRadius, 180, 90);
+            gfxPath.AddArc(Bounds.X + Bounds.Width - CornerRadius, Bounds.Y, CornerRadius, CornerRadius, 270, 90);
+            gfxPath.AddArc(Bounds.X + Bounds.Width - CornerRadius, Bounds.Y + Bounds.Height - CornerRadius, CornerRadius, CornerRadius, 0, 90);
+            gfxPath.AddArc(Bounds.X, Bounds.Y + Bounds.Height - CornerRadius, CornerRadius, CornerRadius, 90, 90);
+            gfxPath.CloseAllFigures();
+
+            gfx.FillPath(new SolidBrush(FillColor), gfxPath);
+
+            //Drawing image
+            if (Cover != null)
+            {
+                gfx.SetClip(gfxPath);
+                gfx.DrawImage(Cover, Bounds);
+            }
+
+            gfx.DrawPath(DrawPen, gfxPath);
+        }
+        #endregion
 
         #region "Properties"
         public string GameName
