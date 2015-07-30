@@ -87,7 +87,7 @@ namespace DosBox_Manager
             if (_DB.ConnectionStatus == ConnectionState.Closed)
                 return true;
             CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 12, "It seems there is another connection already open, you need to close it to continue.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 13, "Do you want to close the connection and continue?"), _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
-            int num = (int)customMessageBox.ShowDialog();
+            customMessageBox.ShowDialog();
             if (customMessageBox.Result != MessageBoxDialogResult.Yes)
                 return false;
             _DB.Disconnect();
@@ -134,7 +134,7 @@ namespace DosBox_Manager
             if (!_DB.Connect(openFileDialog.FileName))
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 6, "It has not been possible to open the database!"), _translator.GetTranslatedMessage(_AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
@@ -155,7 +155,7 @@ namespace DosBox_Manager
             if (_DB == null)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 16, "There are problems with the database connector, this feature can't be used at the moment."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
@@ -170,7 +170,7 @@ namespace DosBox_Manager
                     if (!_DB.CreateDB(saveFileDialog.FileName))
                     {
                         CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 18, "It has not been possible to create the database!"), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                        int num = (int)customMessageBox.ShowDialog();
+                        customMessageBox.ShowDialog();
                         customMessageBox.Dispose();
                     }
                     else
@@ -225,7 +225,7 @@ namespace DosBox_Manager
             if (_AppSettings.CategoryDeletePrompt)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(Body, translatedMessage, MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Warning, true, true);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes && _DB.RemoveCategory(category.ID))
                 {
                     RefreshCategories();
@@ -304,7 +304,7 @@ namespace DosBox_Manager
             if (str == null)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 22, "DOSBox cannot be run (was it removed?)!"), _translator.GetTranslatedMessage(_AppSettings.Language, 23, "Run Game"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
@@ -346,7 +346,7 @@ namespace DosBox_Manager
             else
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 24, "An issue raised while saving the game."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
         }
@@ -359,7 +359,7 @@ namespace DosBox_Manager
                 if (gamesFromId == null)
                 {
                     CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 25, "It is not possible to retrieve the information of the selected event!"), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                    int num = (int)customMessageBox.ShowDialog();
+                    customMessageBox.ShowDialog();
                     customMessageBox.Dispose();
                 }
                 else
@@ -393,14 +393,14 @@ namespace DosBox_Manager
                 else
                 {
                     CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 26, "The application can't find the text editor set in the application configuration.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 27, "Please amend the application settings to continue."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                    int num = (int)customMessageBox.ShowDialog();
+                    customMessageBox.ShowDialog();
                     customMessageBox.Dispose();
                 }
             }
             else
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 29, "The text editor has not been set in the configuration file.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 27, "Please amend the application settings to continue."), _translator.GetTranslatedMessage(_AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
         }
@@ -412,7 +412,7 @@ namespace DosBox_Manager
             if (_AppSettings.GameDeletePrompt)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(Body, translatedMessage, MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, true, true);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes)
                 {
                     try
@@ -468,7 +468,7 @@ namespace DosBox_Manager
             {
                 EnableGamesCommands(true, false);
                 CustomMessageBox customMessageBox = new CustomMessageBox("No games found which satisfy the specified search parameters.", "Warning", MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
-                int num = (int)customMessageBox.ShowDialog();
+                customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
