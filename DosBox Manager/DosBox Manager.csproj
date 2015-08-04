@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\AppManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +77,11 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\Dialogs\AboutDBM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,18 @@
     </Compile>
     <Compile Include="UI\Dialogs\GameDialog.Designer.cs">
       <DependentUpon>GameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareSearchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareSearchDialog.Designer.cs">
+      <DependentUpon>MyAbandonwareSearchDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareGameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareGameDialog.Designer.cs">
+      <DependentUpon>MyAbandonwareGameDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\SettingsDialog.cs">
       <SubType>Form</SubType>
@@ -161,7 +179,6 @@
       <DependentUpon>CategoryGames.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Panels\PanelsEventArgs\SearchEventArgs.cs" />
-    <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="UI\Panels\SearchGames.cs">
@@ -175,7 +192,10 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\AboutDBM.resx">
       <DependentUpon>AboutDBM.cs</DependentUpon>
     </EmbeddedResource>
@@ -184,6 +204,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\GameDialog.resx">
       <DependentUpon>GameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareGameDialog.resx">
+      <DependentUpon>MyAbandonwareGameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareSearchDialog.resx">
+      <DependentUpon>MyAbandonwareSearchDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\SettingsDialog.resx">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
@@ -248,6 +274,7 @@
     <Content Include="Resources\door_out.png" />
     <Content Include="Resources\DosBoxManager.jpg" />
     <Content Include="Resources\drive_magnify.png" />
+    <None Include="Resources\favicon.png" />
     <Content Include="Resources\folder_image.png" />
     <Content Include="Resources\folder_search.png" />
     <Content Include="Resources\game_monitor.png" />
@@ -259,6 +286,8 @@
     <Content Include="Resources\joystick_delete.png" />
     <Content Include="Resources\joystick_edit.png" />
     <Content Include="Resources\magnifier.png" />
+    <None Include="Resources\myabandonware.png" />
+    <None Include="Resources\myabandonware_big.png" />
     <Content Include="Resources\script_edit.png" />
     <Content Include="Resources\script_gear.png" />
     <Content Include="Resources\tick.png" />

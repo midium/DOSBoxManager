@@ -36,7 +36,8 @@ namespace GUI.MessageBoxes
         Information,
         Question,
         Warning,
-        Error
+        Error,
+        Fatal
     };
 
     public enum MessageBoxDialogResult
@@ -118,6 +119,11 @@ namespace GUI.MessageBoxes
                 case MessageBoxDialogIcon.Question:
                     pctImage.Image = GUI.Properties.Resources.question_round;
                     break;
+
+                case MessageBoxDialogIcon.Fatal:
+                    pctImage.Image = GUI.Properties.Resources.critical_round;
+                    break;
+
             }
 
             //Buttons

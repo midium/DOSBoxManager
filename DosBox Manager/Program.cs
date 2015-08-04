@@ -12,6 +12,7 @@
  */
 using System;
 using System.Windows.Forms;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager
 {
@@ -20,9 +21,15 @@ namespace DosBox_Manager
     [STAThread]
     private static void Main()
     {
-      Application.EnableVisualStyles();
-      Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run((Form) new MainForm());
+        AppManager manager = new AppManager();
+
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Form main = new MainForm(manager);
+        if(!main.IsDisposed)
+            Application.Run(main);
+
+        manager.Dispose();
     }
   }
 }

@@ -112,6 +112,8 @@ namespace DosBox_Manager
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAddDatabase = new System.Windows.Forms.ToolStripButton();
             this.tsbOpenDatabase = new System.Windows.Forms.ToolStripButton();
             this.tsbDisconnectDatabase = new System.Windows.Forms.ToolStripButton();
@@ -125,6 +127,7 @@ namespace DosBox_Manager
             this.tsbMakeGameConfigFile = new System.Windows.Forms.ToolStripButton();
             this.tsbGameConfig = new System.Windows.Forms.ToolStripButton();
             this.tsbMoveToCategory = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsbMyAbandonware = new System.Windows.Forms.ToolStripButton();
             this.tsbSettings = new System.Windows.Forms.ToolStripButton();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
@@ -143,6 +146,7 @@ namespace DosBox_Manager
             this.runGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeGameConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editGameConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getGameFromMyAbandonwareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -217,6 +221,8 @@ namespace DosBox_Manager
             this.makeGameConfigurationToolStripMenuItem,
             this.editGameConfigurationToolStripMenuItem,
             this.toolStripSeparator10,
+            this.getGameFromMyAbandonwareToolStripMenuItem,
+            this.toolStripSeparator12,
             this.moveToCategoryToolStripMenuItem});
             this.gamesToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.gamesToolStripMenuItem.Name = "gamesToolStripMenuItem";
@@ -226,12 +232,12 @@ namespace DosBox_Manager
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(211, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(246, 6);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(211, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(246, 6);
             // 
             // toolStrip
             // 
@@ -252,6 +258,8 @@ namespace DosBox_Manager
             this.tsbMakeGameConfigFile,
             this.tsbGameConfig,
             this.tsbMoveToCategory,
+            this.toolStripSeparator11,
+            this.tsbMyAbandonware,
             this.toolStripSeparator4,
             this.tsbSettings,
             this.toolStripSeparator9,
@@ -379,6 +387,16 @@ namespace DosBox_Manager
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "notifyIcon1";
             this.notifyIcon.Visible = true;
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(246, 6);
             // 
             // tsbAddDatabase
             // 
@@ -520,6 +538,16 @@ namespace DosBox_Manager
             this.tsbMoveToCategory.Size = new System.Drawing.Size(32, 22);
             this.tsbMoveToCategory.Text = "toolStripButton1";
             // 
+            // tsbMyAbandonware
+            // 
+            this.tsbMyAbandonware.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbMyAbandonware.Image = global::DosBox_Manager.Properties.Resources.myabandonware;
+            this.tsbMyAbandonware.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbMyAbandonware.Name = "tsbMyAbandonware";
+            this.tsbMyAbandonware.Size = new System.Drawing.Size(23, 22);
+            this.tsbMyAbandonware.ToolTipText = "Get Game from MyAbandonware";
+            this.tsbMyAbandonware.Click += new System.EventHandler(this.tsbMyAbandonware_Click);
+            // 
             // tsbSettings
             // 
             this.tsbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -641,7 +669,7 @@ namespace DosBox_Manager
             this.addGameToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.addGameToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.controller_add;
             this.addGameToolStripMenuItem.Name = "addGameToolStripMenuItem";
-            this.addGameToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.addGameToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.addGameToolStripMenuItem.Text = "Add Game...";
             this.addGameToolStripMenuItem.Click += new System.EventHandler(this.addGameToolStripMenuItem_Click);
             // 
@@ -650,7 +678,7 @@ namespace DosBox_Manager
             this.editGameToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.editGameToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.controller_edit;
             this.editGameToolStripMenuItem.Name = "editGameToolStripMenuItem";
-            this.editGameToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.editGameToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.editGameToolStripMenuItem.Text = "Edit Game...";
             this.editGameToolStripMenuItem.Click += new System.EventHandler(this.editGameToolStripMenuItem_Click);
             // 
@@ -659,7 +687,7 @@ namespace DosBox_Manager
             this.deleteGameToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.deleteGameToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.controller_delete;
             this.deleteGameToolStripMenuItem.Name = "deleteGameToolStripMenuItem";
-            this.deleteGameToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.deleteGameToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.deleteGameToolStripMenuItem.Text = "Delete Game";
             this.deleteGameToolStripMenuItem.Click += new System.EventHandler(this.deleteGameToolStripMenuItem_Click);
             // 
@@ -668,7 +696,7 @@ namespace DosBox_Manager
             this.runGameToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.runGameToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.control_play_blue;
             this.runGameToolStripMenuItem.Name = "runGameToolStripMenuItem";
-            this.runGameToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.runGameToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.runGameToolStripMenuItem.Text = "Run Game";
             this.runGameToolStripMenuItem.Click += new System.EventHandler(this.runGameToolStripMenuItem_Click);
             // 
@@ -677,7 +705,7 @@ namespace DosBox_Manager
             this.makeGameConfigurationToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.makeGameConfigurationToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.script_gear;
             this.makeGameConfigurationToolStripMenuItem.Name = "makeGameConfigurationToolStripMenuItem";
-            this.makeGameConfigurationToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.makeGameConfigurationToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.makeGameConfigurationToolStripMenuItem.Text = "Make Game Configuration";
             this.makeGameConfigurationToolStripMenuItem.Click += new System.EventHandler(this.makeGameConfigurationToolStripMenuItem_Click);
             // 
@@ -686,16 +714,25 @@ namespace DosBox_Manager
             this.editGameConfigurationToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.editGameConfigurationToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.script_edit;
             this.editGameConfigurationToolStripMenuItem.Name = "editGameConfigurationToolStripMenuItem";
-            this.editGameConfigurationToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.editGameConfigurationToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.editGameConfigurationToolStripMenuItem.Text = "Edit Game Configuration";
             this.editGameConfigurationToolStripMenuItem.Click += new System.EventHandler(this.editGameConfigurationToolStripMenuItem_Click);
+            // 
+            // getGameFromMyAbandonwareToolStripMenuItem
+            // 
+            this.getGameFromMyAbandonwareToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.getGameFromMyAbandonwareToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.myabandonware;
+            this.getGameFromMyAbandonwareToolStripMenuItem.Name = "getGameFromMyAbandonwareToolStripMenuItem";
+            this.getGameFromMyAbandonwareToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.getGameFromMyAbandonwareToolStripMenuItem.Text = "Get Game from MyAbandonware";
+            this.getGameFromMyAbandonwareToolStripMenuItem.Click += new System.EventHandler(this.getGameFromMyAbandonwareToolStripMenuItem_Click);
             // 
             // moveToCategoryToolStripMenuItem
             // 
             this.moveToCategoryToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.moveToCategoryToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.brick_go;
             this.moveToCategoryToolStripMenuItem.Name = "moveToCategoryToolStripMenuItem";
-            this.moveToCategoryToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.moveToCategoryToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
             this.moveToCategoryToolStripMenuItem.Text = "Move to Category";
             // 
             // MainForm
@@ -726,5 +763,10 @@ namespace DosBox_Manager
         }
 
         #endregion
+
+        private ToolStripSeparator toolStripSeparator11;
+        private ToolStripButton tsbMyAbandonware;
+        private ToolStripMenuItem getGameFromMyAbandonwareToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator12;
     }
 }

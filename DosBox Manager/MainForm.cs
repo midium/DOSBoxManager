@@ -21,7 +21,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DosBox_Manager.Business;
 using DosBox_Manager.UI.Dialogs;
+using DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs;
 using DosBox_Manager.UI.Panels;
 using DosBox_Manager.UI.Panels.PanelsEventArgs;
 using GUI.Menus.MenuStripRenderer;
@@ -39,16 +41,11 @@ namespace DosBox_Manager
     public partial class MainForm : Form
     {
         #region "Declarations"
-        private Settings _AppSettings = null;
-        private DOSBoxHelpers _DosBoxHelper = null;
-        private FileHelpers _fileHelper = null;
+        private AppManager _manager;
+
+        private CategoryGames catGames = null;
         private bool _flgRecentAdded = false;
         private bool _flgMoveToAdded = false;
-        private Dictionary<string, RecentDatabase> _recentDBs = null;
-        private TranslationsHelpers _translator = null;
-        private CategoryGames catGames = null;
-        private Database _DB;
-        private SettingsManager _SettingsDB;
         private int _SelectedCategory;
         private bool _flgLoading;
         private int _SelectedGame;
@@ -58,56 +55,71 @@ namespace DosBox_Manager
         private ToolStripMenuItem StatusBar_cms;
         #endregion
 
-        public MainForm()
+        public MainForm(AppManager manager)
         {
             _flgLoading = true;
             InitializeComponent();
+
+            _manager = manager;
+            if (_manager == null)
+            {
+                CustomMessageBox cmb = new CustomMessageBox("The application manager has not been loaded for some reason.\nThe application can't work and will be closed.", "FATAL", MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Fatal, false, false);
+                cmb.ShowDialog();
+                cmb.Dispose();
+                this.Close();
+            }
+
             InitializeStyle();
             InitializeGUIEventsHandlers();
-            _SettingsDB = new SettingsManager("settings.dbm");
-            _translator = new TranslationsHelpers(_SettingsDB.LoadMessagesTranslations(), _SettingsDB.LoadComponentsTranslations());
-            _AppSettings = _SettingsDB.LoadSettings();
-            _recentDBs = _SettingsDB.LoadRecentDatabases();
-            _DB = new Database();
-            _DosBoxHelper = new DOSBoxHelpers();
-            _fileHelper = new FileHelpers();
+
             SetupUI();
             _SelectedCategory = -1;
             _SelectedGame = -1;
             EnableMenus(false);
-            if (_AppSettings.ReloadLatestDB && (_recentDBs != null && _recentDBs.Count > 0))
-                OpenRecentDatabase(Enumerable.First<KeyValuePair<string, RecentDatabase>>((IEnumerable<KeyValuePair<string, RecentDatabase>>)_recentDBs).Value.DBPath, false);
+            if (_manager.AppSettings.ReloadLatestDB && (_manager.RecentDBs != null && _manager.RecentDBs.Count > 0))
+                OpenRecentDatabase(_manager.RecentDBs.First().Value.DBPath, false);
 
             _flgLoading = false;
         }
 
         #region "Private Helping Methods"
+        private void ShowMyAbandonware()
+        {
+
+            CustomMessageBox cmb = new CustomMessageBox("TO BE IMPLEMENTED", "INFORMATION", MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
+            cmb.ShowDialog();
+            cmb.Dispose();
+            return;
+
+            /*MyAbandonwareSearchDialog mad = new MyAbandonwareSearchDialog();
+            mad.ShowDialog();
+            mad.Dispose();*/
+        }
+
         private bool CheckConnection()
         {
-            if (_DB.ConnectionStatus == ConnectionState.Closed)
+            if (_manager.DB.ConnectionStatus == ConnectionState.Closed)
                 return true;
-            CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 12, "It seems there is another connection already open, you need to close it to continue.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 13, "Do you want to close the connection and continue?"), _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
+            CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 12, "It seems there is another connection already open, you need to close it to continue.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 13, "Do you want to close the connection and continue?"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
             customMessageBox.ShowDialog();
             if (customMessageBox.Result != MessageBoxDialogResult.Yes)
                 return false;
-            _DB.Disconnect();
+            _manager.DB.Disconnect();
             return true;
         }
 
         private void CloseApplication()
         {
-            if (this._DB != null)
-                this._DB.Disconnect();
-            Application.Exit();
+            this.Close();
         }
 
         private void OpenSettingsDialog()
         {
-            SettingsDialog settingsDialog = new SettingsDialog(_SettingsDB, _translator, _AppSettings);
+            SettingsDialog settingsDialog = new SettingsDialog(_manager);
             if (settingsDialog.ShowDialog() == DialogResult.OK)
             {
-                _AppSettings = settingsDialog.AppSettings;
-                _SettingsDB.SaveSettings(_AppSettings);
+                _manager.AppSettings = settingsDialog.AppSettings;
+                _manager.SettingsDB.SaveSettings(_manager.AppSettings);
                 SetupUI();
                 UpdateStatusBar();
                 LoadCategoryGames(_SelectedCategory);
@@ -126,22 +138,22 @@ namespace DosBox_Manager
         {
             if (!CheckConnection())
                 return;
-            openFileDialog.Title = _translator.GetTranslatedMessage(_AppSettings.Language, 14, "Open an existing DOSBox Manager database");
+            openFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 14, "Open an existing DOSBox Manager database");
             openFileDialog.FileName = "";
-            openFileDialog.Filter = _translator.GetTranslatedMessage(_AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
+            openFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
             if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
-            if (!_DB.Connect(openFileDialog.FileName))
+            if (!_manager.DB.Connect(openFileDialog.FileName))
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 6, "It has not been possible to open the database!"), _translator.GetTranslatedMessage(_AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 6, "It has not been possible to open the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
             {
-                if (_SettingsDB.AddToRecentDatabases(openFileDialog.FileName))
+                if (_manager.SettingsDB.AddToRecentDatabases(openFileDialog.FileName))
                 {
-                    _recentDBs = _SettingsDB.LoadRecentDatabases();
+                    _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
                     AddRecentDBs();
                 }
                 UpdateStatusBar();
@@ -152,9 +164,10 @@ namespace DosBox_Manager
 
         private void CreateDatabase()
         {
-            if (_DB == null)
+            if (_manager.DB == null)
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 16, "There are problems with the database connector, this feature can't be used at the moment."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 16, "There are problems with the database connector, this feature can't be used at the moment."),
+                                                                         _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
@@ -162,22 +175,22 @@ namespace DosBox_Manager
             {
                 if (!CheckConnection())
                     return;
-                saveFileDialog.Title = _translator.GetTranslatedMessage(_AppSettings.Language, 17, "Create a new DOSBox Manager database");
+                saveFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 17, "Create a new DOSBox Manager database");
                 saveFileDialog.FileName = "";
-                saveFileDialog.Filter = _translator.GetTranslatedMessage(_AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
+                saveFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (!_DB.CreateDB(saveFileDialog.FileName))
+                    if (!_manager.DB.CreateDB(saveFileDialog.FileName))
                     {
-                        CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 18, "It has not been possible to create the database!"), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                        CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 18, "It has not been possible to create the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                         customMessageBox.ShowDialog();
                         customMessageBox.Dispose();
                     }
                     else
                     {
-                        if (_SettingsDB.AddToRecentDatabases(saveFileDialog.FileName))
+                        if (_manager.SettingsDB.AddToRecentDatabases(saveFileDialog.FileName))
                         {
-                            _recentDBs = _SettingsDB.LoadRecentDatabases();
+                            _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
                             AddRecentDBs();
                         }
                         UpdateStatusBar();
@@ -190,9 +203,9 @@ namespace DosBox_Manager
 
         private void DisconnectDatabase()
         {
-            if (_DB == null || _DB.ConnectionStatus == ConnectionState.Closed)
+            if (_manager.DB == null || _manager.DB.ConnectionStatus == ConnectionState.Closed)
                 return;
-            _DB.Disconnect();
+            _manager.DB.Disconnect();
             EnableMenus(false);
             categoriesTabs.ClearTabs();
             RemoveGamesPanelHandlers();
@@ -202,8 +215,8 @@ namespace DosBox_Manager
 
         private void NewCategory()
         {
-            CategoryDialog categoryDialog = new CategoryDialog(_AppSettings, _translator);
-            if (categoryDialog.ShowDialog() != DialogResult.OK || !_DB.AddCategory(categoryDialog.CategoryName, categoryDialog.CategoryIcon))
+            CategoryDialog categoryDialog = new CategoryDialog(_manager.AppSettings, _manager.Translator);
+            if (categoryDialog.ShowDialog() != DialogResult.OK || !_manager.DB.AddCategory(categoryDialog.CategoryName, categoryDialog.CategoryIcon))
                 return;
             RefreshCategories();
             UpdateStatusBar();
@@ -211,34 +224,34 @@ namespace DosBox_Manager
 
         private void EditCategory()
         {
-            Category category = _DB.GetCategory(_SelectedCategory);
-            CategoryDialog categoryDialog = new CategoryDialog(_AppSettings, _translator, category);
-            if (categoryDialog.ShowDialog() == DialogResult.OK && _DB.EditCategory(category.ID, categoryDialog.CategoryName, categoryDialog.CategoryIcon))
+            Category category = _manager.DB.GetCategory(_SelectedCategory);
+            CategoryDialog categoryDialog = new CategoryDialog(_manager.AppSettings, _manager.Translator, category);
+            if (categoryDialog.ShowDialog() == DialogResult.OK && _manager.DB.EditCategory(category.ID, categoryDialog.CategoryName, categoryDialog.CategoryIcon))
                 RefreshCategories();
         }
 
         private void DeleteCategory()
         {
-            Category category = _DB.GetCategory(_SelectedCategory);
-            string Body = string.Format(_translator.GetTranslatedMessage(_AppSettings.Language, 19, "You are about to remove the {0} category."), (object)category.Name) + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 20, "This will also remove all the games of the category.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 21, "Are you sure you want to continue?");
-            string translatedMessage = _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention");
-            if (_AppSettings.CategoryDeletePrompt)
+            Category category = _manager.DB.GetCategory(_SelectedCategory);
+            string Body = string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 19, "You are about to remove the {0} category."), (object)category.Name) + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 20, "This will also remove all the games of the category.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 21, "Are you sure you want to continue?");
+            string translatedMessage = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention");
+            if (_manager.AppSettings.CategoryDeletePrompt)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(Body, translatedMessage, MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Warning, true, true);
                 customMessageBox.ShowDialog();
-                if (customMessageBox.Result == MessageBoxDialogResult.Yes && _DB.RemoveCategory(category.ID))
+                if (customMessageBox.Result == MessageBoxDialogResult.Yes && _manager.DB.RemoveCategory(category.ID))
                 {
                     RefreshCategories();
                     UpdateStatusBar();
                 }
                 if (!customMessageBox.AskAgain)
                 {
-                    _AppSettings.CategoryDeletePrompt = false;
-                    _SettingsDB.SaveSettings(_AppSettings);
+                    _manager.AppSettings.CategoryDeletePrompt = false;
+                    _manager.SettingsDB.SaveSettings(_manager.AppSettings);
                 }
                 customMessageBox.Dispose();
             }
-            else if (_DB.RemoveCategory(category.ID))
+            else if (_manager.DB.RemoveCategory(category.ID))
             {
                 RefreshCategories();
                 UpdateStatusBar();
@@ -290,7 +303,7 @@ namespace DosBox_Manager
 
         private void MoveGameToCategory(int GameID, int CategoryID)
         {
-            if (GameID == -1 || CategoryID == -1 || !_DB.MoveGameToCategory(GameID, CategoryID))
+            if (GameID == -1 || CategoryID == -1 || !_manager.DB.MoveGameToCategory(GameID, CategoryID))
                 return;
             LoadCategoryGames(_SelectedCategory);
         }
@@ -299,32 +312,32 @@ namespace DosBox_Manager
         {
             if (GameID == -1)
                 return;
-            Game gamesFromId = _DB.GetGamesFromID(GameID);
-            string str = _DosBoxHelper.BuildArgs(false, gamesFromId, _AppSettings);
+            Game gamesFromId = _manager.DB.GetGamesFromID(GameID);
+            string str = _manager.DosBoxHelper.BuildArgs(false, gamesFromId, _manager.AppSettings);
             if (str == null)
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 22, "DOSBox cannot be run (was it removed?)!"), _translator.GetTranslatedMessage(_AppSettings.Language, 23, "Run Game"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 22, "DOSBox cannot be run (was it removed?)!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 23, "Run Game"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
             else
             {
-                if (_AppSettings.ReduceToTrayOnPlay)
+                if (_manager.AppSettings.ReduceToTrayOnPlay)
                 {
                     notifyIcon.Visible = true;
-                    notifyIcon.BalloonTipText = _translator.GetTranslatedMessage(_AppSettings.Language, 73, "DOSBox Manager is still running and will raise back once closing the game.");
+                    notifyIcon.BalloonTipText = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 73, "DOSBox Manager is still running and will raise back once closing the game.");
                     notifyIcon.BalloonTipTitle = "DOSBox Manager";
                     notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
                     notifyIcon.ShowBalloonTip(500);
                     Hide();
                 }
                 Process process = new Process();
-                process.StartInfo.WorkingDirectory = gamesFromId.Directory != string.Empty ? gamesFromId.Directory : _fileHelper.ExtractFilePath(gamesFromId.DOSExePath);
-                process.StartInfo.FileName = _AppSettings.DosboxPath;
+                process.StartInfo.WorkingDirectory = gamesFromId.Directory != string.Empty ? gamesFromId.Directory : _manager.FileHelper.ExtractFilePath(gamesFromId.DOSExePath);
+                process.StartInfo.FileName = _manager.AppSettings.DosboxPath;
                 process.StartInfo.Arguments = str;
                 process.Start();
                 process.WaitForExit();
-                if (_AppSettings.ReduceToTrayOnPlay)
+                if (_manager.AppSettings.ReduceToTrayOnPlay)
                 {
                     notifyIcon.Visible = false;
                     Show();
@@ -334,18 +347,18 @@ namespace DosBox_Manager
 
         private void OpenGameDialog(Game game, bool isEditing)
         {
-            GameDialog gameDialog = new GameDialog(_translator, _AppSettings, game, isEditing);
+            GameDialog gameDialog = new GameDialog(_manager.Translator, _manager.AppSettings, game, isEditing);
             if (gameDialog.ShowDialog() != DialogResult.OK)
                 return;
             game = gameDialog.GameData;
-            if (_DB.SaveGame(game))
+            if (_manager.DB.SaveGame(game))
             {
                 LoadCategoryGames(_SelectedCategory);
                 UpdateStatusBar();
             }
             else
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 24, "An issue raised while saving the game."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 24, "An issue raised while saving the game."), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
@@ -355,10 +368,10 @@ namespace DosBox_Manager
         {
             try
             {
-                Game gamesFromId = _DB.GetGamesFromID(GameID);
+                Game gamesFromId = _manager.DB.GetGamesFromID(GameID);
                 if (gamesFromId == null)
                 {
-                    CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 25, "It is not possible to retrieve the information of the selected event!"), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                    CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 25, "It is not possible to retrieve the information of the selected event!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                     customMessageBox.ShowDialog();
                     customMessageBox.Dispose();
                 }
@@ -375,31 +388,31 @@ namespace DosBox_Manager
         {
             if (_SelectedGame == -1)
                 return;
-            Game gamesFromId = _DB.GetGamesFromID(_SelectedGame);
-            if (_DosBoxHelper.MakeGamesConfiguration(_translator, _AppSettings, gamesFromId))
-                _DB.SaveGame(gamesFromId);
+            Game gamesFromId = _manager.DB.GetGamesFromID(_SelectedGame);
+            if (_manager.DosBoxHelper.MakeGamesConfiguration(_manager.Translator, _manager.AppSettings, gamesFromId))
+                _manager.DB.SaveGame(gamesFromId);
         }
 
         private void EditGameConfigurationFile()
         {
             if (_SelectedGame == -1)
                 return;
-            if (_AppSettings.ConfigEditorPath != string.Empty)
+            if (_manager.AppSettings.ConfigEditorPath != string.Empty)
             {
-                if (File.Exists(_AppSettings.ConfigEditorPath))
+                if (File.Exists(_manager.AppSettings.ConfigEditorPath))
                 {
-                    Process.Start(_AppSettings.ConfigEditorPath, _DB.GetGamesFromID(_SelectedGame).DBConfigPath + " " + _AppSettings.ConfigEditorAdditionalParameters);
+                    Process.Start(_manager.AppSettings.ConfigEditorPath, _manager.DB.GetGamesFromID(_SelectedGame).DBConfigPath + " " + _manager.AppSettings.ConfigEditorAdditionalParameters);
                 }
                 else
                 {
-                    CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 26, "The application can't find the text editor set in the application configuration.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 27, "Please amend the application settings to continue."), _translator.GetTranslatedMessage(_AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                    CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 26, "The application can't find the text editor set in the application configuration.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 27, "Please amend the application settings to continue."), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
                     customMessageBox.ShowDialog();
                     customMessageBox.Dispose();
                 }
             }
             else
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 29, "The text editor has not been set in the configuration file.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 27, "Please amend the application settings to continue."), _translator.GetTranslatedMessage(_AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 29, "The text editor has not been set in the configuration file.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 27, "Please amend the application settings to continue."), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
@@ -407,9 +420,9 @@ namespace DosBox_Manager
 
         private void DeleteGame(int GameID)
         {
-            string Body = _translator.GetTranslatedMessage(_AppSettings.Language, 31, "The text editor has not been set in the configuration file.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 21, "Are you sure you want to continue?");
-            string translatedMessage = _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention");
-            if (_AppSettings.GameDeletePrompt)
+            string Body = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 31, "The text editor has not been set in the configuration file.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 21, "Are you sure you want to continue?");
+            string translatedMessage = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention");
+            if (_manager.AppSettings.GameDeletePrompt)
             {
                 CustomMessageBox customMessageBox = new CustomMessageBox(Body, translatedMessage, MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, true, true);
                 customMessageBox.ShowDialog();
@@ -417,7 +430,7 @@ namespace DosBox_Manager
                 {
                     try
                     {
-                        if (_DB.RemoveGame(GameID))
+                        if (_manager.DB.RemoveGame(GameID))
                         {
                             LoadCategoryGames(_SelectedCategory);
                             UpdateStatusBar();
@@ -430,12 +443,12 @@ namespace DosBox_Manager
                 }
                 if (!customMessageBox.AskAgain)
                 {
-                    _AppSettings.GameDeletePrompt = false;
-                    _SettingsDB.SaveSettings(_AppSettings);
+                    _manager.AppSettings.GameDeletePrompt = false;
+                    _manager.SettingsDB.SaveSettings(_manager.AppSettings);
                 }
                 customMessageBox.Dispose();
             }
-            else if (_DB.RemoveGame(GameID))
+            else if (_manager.DB.RemoveGame(GameID))
             {
                 LoadCategoryGames(_SelectedCategory);
                 UpdateStatusBar();
@@ -445,13 +458,13 @@ namespace DosBox_Manager
         private void LoadFoundedGames(SearchEventArgs args)
         {
             RemoveGamesPanelHandlers();
-            List<Game> games = _DB.SearchGames(args.Title, args.Year, args.Developer, args.CategoryID);
-            List<Category> allCategories = _DB.GetAllCategories();
+            List<Game> games = _manager.DB.SearchGames(args.Title, args.Year, args.Developer, args.CategoryID);
+            List<Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Dispose();
             if (games != null)
             {
-                catGames = new CategoryGames(_translator, _AppSettings, games, allCategories);
+                catGames = new CategoryGames(_manager.Translator, _manager.AppSettings, games, allCategories);
                 catGames.BoxChangedSelection += new CategoryGames.BoxChangedSelectionDelegate(CategoryGame_BoxChangedSelection);
                 catGames.BoxDoubleClick += new CategoryGames.BoxDoubleClickDelegate(CategoryGame_BoxDoubleClick);
                 catGames.BoxEditClick += new CategoryGames.BoxEditClickDelegate(CategoryGame_BoxEditClick);
@@ -480,11 +493,11 @@ namespace DosBox_Manager
             if (CategoryID == -1)
                 return;
             RemoveGamesPanelHandlers();
-            List<Game> gamesForCategory = _DB.GetAllGamesForCategory(CategoryID);
-            List<Category> allCategories = _DB.GetAllCategories();
+            List<Game> gamesForCategory = _manager.DB.GetAllGamesForCategory(CategoryID);
+            List<Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Dispose();
-            catGames = new CategoryGames(_translator, _AppSettings, gamesForCategory, allCategories);
+            catGames = new CategoryGames(_manager.Translator, _manager.AppSettings, gamesForCategory, allCategories);
             catGames.BoxChangedSelection += new CategoryGames.BoxChangedSelectionDelegate(CategoryGame_BoxChangedSelection);
             catGames.BoxDoubleClick += new CategoryGames.BoxDoubleClickDelegate(CategoryGame_BoxDoubleClick);
             catGames.BoxEditClick += new CategoryGames.BoxEditClickDelegate(CategoryGame_BoxEditClick);
@@ -519,7 +532,7 @@ namespace DosBox_Manager
 
         private void RefreshCategories()
         {
-            List<Category> allCategories = _DB.GetAllCategories();
+            List<Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Categories = allCategories;
             categoriesTabs.ClearTabs();
@@ -534,7 +547,7 @@ namespace DosBox_Manager
                 if (category.IsSelected)
                     num = category.ID;
             }
-            categoriesTabs.AddTab(-100, _translator.GetTranslatedMessage(_AppSettings.Language, 74, "Search Games"), DosBox_Manager.Properties.Resources.magnifier, true);
+            categoriesTabs.AddTab(-100, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 74, "Search Games"), DosBox_Manager.Properties.Resources.magnifier, true);
             categoriesTabs.SelectTab(num == -1 ? allCategories[0].ID : num);
             AddMovetoCategoryMenu(allCategories);
         }
@@ -544,28 +557,28 @@ namespace DosBox_Manager
         private void UpdateStatusBar()
         {
             statusStrip.Items.Clear();
-            AddStatusBarDB(_DB.DBName);
-            AddStatusBarCategoriesCount(_DB.GetCategoriesCount());
-            AddStatusBarGamesCount(_DB.GetTotalGamesCount());
+            AddStatusBarDB(_manager.DB.DBName);
+            AddStatusBarCategoriesCount(_manager.DB.GetCategoriesCount());
+            AddStatusBarGamesCount(_manager.DB.GetTotalGamesCount());
         }
 
         private void AddStatusBarGamesCount(int GamesCount)
         {
-            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_translator.GetTranslatedMessage(_AppSettings.Language, 32, "Available Games: {0}"), (object)GamesCount), DosBox_Manager.Properties.Resources.game_monitor);
+            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 32, "Available Games: {0}"), (object)GamesCount), DosBox_Manager.Properties.Resources.game_monitor);
             toolStripLabel.ForeColor = Color.White;
             statusStrip.Items.Add((ToolStripItem)toolStripLabel);
         }
 
         private void AddStatusBarDB(string DBName)
         {
-            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_translator.GetTranslatedMessage(_AppSettings.Language, 33, "Database: {0}"), (object)DBName), DosBox_Manager.Properties.Resources.database);
+            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 33, "Database: {0}"), (object)DBName), DosBox_Manager.Properties.Resources.database);
             toolStripLabel.ForeColor = Color.White;
             statusStrip.Items.Add((ToolStripItem)toolStripLabel);
         }
 
         private void AddStatusBarCategoriesCount(int CatsCount)
         {
-            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_translator.GetTranslatedMessage(_AppSettings.Language, 34, "Available Categories: {0}"), (object)CatsCount), DosBox_Manager.Properties.Resources.brick);
+            ToolStripLabel toolStripLabel = new ToolStripLabel(string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 34, "Available Categories: {0}"), (object)CatsCount), DosBox_Manager.Properties.Resources.brick);
             toolStripLabel.ForeColor = Color.White;
             statusStrip.Items.Add((ToolStripItem)toolStripLabel);
         }
@@ -577,35 +590,35 @@ namespace DosBox_Manager
 
         private void SetupUI()
         {
-            if (_AppSettings.AppFullscreen)
+            if (_manager.AppSettings.AppFullscreen)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
             else
             {
-                this.Width = _AppSettings.AppWidth;
-                this.Height = _AppSettings.AppHeight;
+                this.Width = _manager.AppSettings.AppWidth;
+                this.Height = _manager.AppSettings.AppHeight;
             }
-            menuStrip.Visible = _AppSettings.MenuBarVisible;
-            toolStrip.Visible = _AppSettings.ToolbarVisible;
-            statusStrip.Visible = _AppSettings.StatusBarVisible;
+            menuStrip.Visible = _manager.AppSettings.MenuBarVisible;
+            toolStrip.Visible = _manager.AppSettings.ToolbarVisible;
+            statusStrip.Visible = _manager.AppSettings.StatusBarVisible;
             AddRecentDBs();
             InitializeStripsContextMenu();
-            _translator.TranslateUI(_AppSettings.Language, this.Name, this.Controls);
+            _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
         }
 
         private void InitializeStripsContextMenu()
         {
             cms = new ContextMenuStrip();
-            MenuBar_cms = new ToolStripMenuItem(_translator.GetTranslatedMessage(_AppSettings.Language, 3, "Show Menu bar"));
-            ToolBar_cms = new ToolStripMenuItem(_translator.GetTranslatedMessage(_AppSettings.Language, 4, "Show Toolbar"));
-            StatusBar_cms = new ToolStripMenuItem(_translator.GetTranslatedMessage(_AppSettings.Language, 5, "Show Status bar"));
+            MenuBar_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 3, "Show Menu bar"));
+            ToolBar_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 4, "Show Toolbar"));
+            StatusBar_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 5, "Show Status bar"));
             MenuBar_cms.Click += new EventHandler(MenuBar_CMS_Click);
             ToolBar_cms.Click += new EventHandler(ToolBar_CMS_Click);
             StatusBar_cms.Click += new EventHandler(StatusBar_CMS_Click);
-            MenuBar_cms.Checked = _AppSettings.MenuBarVisible;
-            ToolBar_cms.Checked = _AppSettings.ToolbarVisible;
-            StatusBar_cms.Checked = _AppSettings.StatusBarVisible;
+            MenuBar_cms.Checked = _manager.AppSettings.MenuBarVisible;
+            ToolBar_cms.Checked = _manager.AppSettings.ToolbarVisible;
+            StatusBar_cms.Checked = _manager.AppSettings.StatusBarVisible;
             cms.Items.Add((ToolStripItem)MenuBar_cms);
             cms.Items.Add((ToolStripItem)ToolBar_cms);
             cms.Items.Add((ToolStripItem)StatusBar_cms);
@@ -692,9 +705,9 @@ namespace DosBox_Manager
         private void RecentDatabaseItemClickHandler(object sender, EventArgs e)
         {
             string text = ((ToolStripItem)sender).Text;
-            if (_DB != null && _DB.ConnectionStatus == ConnectionState.Open)
+            if (_manager.DB != null && _manager.DB.ConnectionStatus == ConnectionState.Open)
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 9, "You are already connected to another database.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 11, "Do you want to close the previous database and open the selected one?"), _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 9, "You are already connected to another database.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 11, "Do you want to close the previous database and open the selected one?"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
                 customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes)
                     OpenRecentDatabase(text, true);
@@ -708,7 +721,7 @@ namespace DosBox_Manager
         {
             if (!File.Exists(dbPath))
             {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 7, "We are not able to find the selected database inside this computer.") + "\n" + _translator.GetTranslatedMessage(_AppSettings.Language, 10, "Do you want to remove it from the list?"), _translator.GetTranslatedMessage(_AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 7, "We are not able to find the selected database inside this computer.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 10, "Do you want to remove it from the list?"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention"), MessageBoxDialogButtons.YesNo, MessageBoxDialogIcon.Question, false, false);
                 customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes)
                 {
@@ -719,16 +732,16 @@ namespace DosBox_Manager
             else
             {
                 if (closePreviousConnection)
-                    _DB.Disconnect();
-                if (!_DB.Connect(dbPath))
+                    _manager.DB.Disconnect();
+                if (!_manager.DB.Connect(dbPath))
                 {
-                    CustomMessageBox customMessageBox = new CustomMessageBox(_translator.GetTranslatedMessage(_AppSettings.Language, 6, "It has not been possible to open the database!"), _translator.GetTranslatedMessage(_AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
+                    CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 6, "It has not been possible to open the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
                     customMessageBox.ShowDialog();
                     customMessageBox.Dispose();
                 }
                 else
                 {
-                    _SettingsDB.AddToRecentDatabases(dbPath);
+                    _manager.SettingsDB.AddToRecentDatabases(dbPath);
                     UpdateStatusBar();
                     EnableMenus(true);
                     RefreshCategories();
@@ -738,25 +751,30 @@ namespace DosBox_Manager
 
         private void AddRecentDBs()
         {
-            if (_recentDBs == null || _recentDBs.Count <= 0)
+            if (_manager.RecentDBs == null || _manager.RecentDBs.Count <= 0)
                 return;
             int index1 = 4;
             if (_flgRecentAdded)
             {
                 fileToolStripMenuItem.DropDownItems.RemoveAt(index1);
-                for (int index2 = 0; index2 < _recentDBs.Count; ++index2)
+                for (int index2 = 0; index2 < _manager.RecentDBs.Count; ++index2)
                     fileToolStripMenuItem.DropDownItems.RemoveAt(index1);
             }
             else
                 _flgRecentAdded = true;
             fileToolStripMenuItem.DropDownItems.Insert(index1, (ToolStripItem)new ToolStripSeparator());
-            foreach (RecentDatabase recentDatabase in _recentDBs.Values)
+            foreach (RecentDatabase recentDatabase in _manager.RecentDBs.Values)
                 fileToolStripMenuItem.DropDownItems.Insert(index1, (ToolStripItem)CreateToolStripMenuItem("recentDB" + recentDatabase.ID.ToString(), recentDatabase.DBPath, DosBox_Manager.Properties.Resources.database_refresh, new EventHandler(RecentDatabaseItemClickHandler)));
         }
         #endregion
 
         #region "Events Handling"
         #region "Toolstrip Menu Items"
+        private void getGameFromMyAbandonwareToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowMyAbandonware();
+        }
+
         private void createDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateDatabase();
@@ -834,6 +852,11 @@ namespace DosBox_Manager
         #endregion
 
         #region "Toolbar Items"
+        private void tsbMyAbandonware_Click(object sender, EventArgs e)
+        {
+            ShowMyAbandonware();
+        }
+
         private void tsbAddDatabase_Click(object sender, EventArgs e)
         {
             CreateDatabase();
@@ -912,9 +935,7 @@ namespace DosBox_Manager
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _SettingsDB.SaveSettings(_AppSettings);
-            _SettingsDB.Disconnect();
-            _DB.Disconnect();
+            _manager.SettingsDB.SaveSettings(_manager.AppSettings);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -923,13 +944,13 @@ namespace DosBox_Manager
                 return;
             if (WindowState == FormWindowState.Maximized)
             {
-                _AppSettings.AppFullscreen = true;
+                _manager.AppSettings.AppFullscreen = true;
             }
             else
             {
-                _AppSettings.AppFullscreen = false;
-                _AppSettings.AppWidth = Width;
-                _AppSettings.AppHeight = Height;
+                _manager.AppSettings.AppFullscreen = false;
+                _manager.AppSettings.AppWidth = Width;
+                _manager.AppSettings.AppHeight = Height;
             }
         }
 
@@ -978,7 +999,7 @@ namespace DosBox_Manager
             EnableCategoriesCommands(true);
             tableLayoutPanel.RowStyles[1].Height = 0.0f;
             _SelectedCategory = CategoryID;
-            _DB.SwitchExpandedStatus(PreviousID, CategoryID);
+            _manager.DB.SwitchExpandedStatus(PreviousID, CategoryID);
             LoadCategoryGames(_SelectedCategory);
         }
 
@@ -988,7 +1009,7 @@ namespace DosBox_Manager
             EnableCategoriesCommands(false);
             RemoveGamesPanelHandlers();
             _SelectedCategory = -1;
-            SearchGames searchGamesPanel = new SearchGames(_translator, _AppSettings, _DB.GetAllCategories());
+            SearchGames searchGamesPanel = new SearchGames(_manager.Translator, _manager.AppSettings, _manager.DB.GetAllCategories());
             searchGamesPanel.SearchCommitted += new SearchGames.SearchCommittedDelegate(search_SearchCommitted);
             pnlGames.Controls.Clear();
             tableLayoutPanel.RowStyles[1].Height = 160f;
@@ -1024,7 +1045,7 @@ namespace DosBox_Manager
                 MenuBar_cms.Checked = true;
                 menuStrip.Visible = true;
             }
-            _AppSettings.MenuBarVisible = menuStrip.Visible;
+            _manager.AppSettings.MenuBarVisible = menuStrip.Visible;
         }
 
         private void ToolBar_CMS_Click(object sender, EventArgs e)
@@ -1039,7 +1060,7 @@ namespace DosBox_Manager
                 ToolBar_cms.Checked = true;
                 toolStrip.Visible = true;
             }
-            _AppSettings.ToolbarVisible = toolStrip.Visible;
+            _manager.AppSettings.ToolbarVisible = toolStrip.Visible;
         }
 
         private void StatusBar_CMS_Click(object sender, EventArgs e)
@@ -1054,8 +1075,9 @@ namespace DosBox_Manager
                 StatusBar_cms.Checked = true;
                 statusStrip.Visible = true;
             }
-            _AppSettings.StatusBarVisible = statusStrip.Visible;
+            _manager.AppSettings.StatusBarVisible = statusStrip.Visible;
         }
         #endregion
+
     }
 }

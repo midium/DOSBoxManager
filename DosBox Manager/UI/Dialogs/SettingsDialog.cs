@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DosBox_Manager.Business;
 using DosBox_Manager.UI.Dialogs.SettingsPanels;
 using DosBox_Manager.UI.Dialogs.SettingsPanels.Base;
 using Helpers.Data;
@@ -47,12 +48,12 @@ namespace DosBox_Manager.UI.Dialogs
         #endregion
 
         #region "Constructor"
-        public SettingsDialog(SettingsManager SettingsDB, TranslationsHelpers Translator, Settings AppSettings)
+        public SettingsDialog(AppManager manager)//SettingsManager SettingsDB, TranslationsHelpers Translator, Settings AppSettings)
         {
             InitializeComponent();
-            _Settings = (Settings)AppSettings.Clone();
-            _SettingsDB = SettingsDB;
-            _Translator = Translator;
+            _Settings = (Settings)manager.AppSettings.Clone(); //(Settings)AppSettings.Clone();
+            _SettingsDB = manager.SettingsDB;
+            _Translator = manager.Translator;
             this.Text = _Translator.GetTranslatedMessage(_Settings.Language, 51, "Application Settings");
             _Translator.TranslateUI(_Settings.Language, Name, Controls);
             InitiateUI();
