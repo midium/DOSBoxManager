@@ -25,6 +25,7 @@ using Helpers.Data.Objects;
 using Helpers.Translation;
 using GUI.Boxes;
 using GUI.Menus.MenuStripRenderer;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Panels
 {
@@ -74,16 +75,16 @@ namespace DosBox_Manager.UI.Panels
         #endregion
 
         #region "Constructors / Distructors"
-        public CategoryGames(TranslationsHelpers Translator, Settings AppSettings)
-            : base(Translator, AppSettings)
+        public CategoryGames(AppManager manager)
+            : base(manager)
         {
             InitializeComponent();
             _previousGameID = -1;
             scroller = null;
         }
 
-        public CategoryGames(TranslationsHelpers Translator, Settings AppSettings, List<Game> games, List<Category> cats)
-            : base(Translator, AppSettings, games, cats)
+        public CategoryGames(AppManager manager, List<Game> games, List<Category> cats)
+            : base(manager, games, cats)
         {
             InitializeComponent();
             _previousGameID = -1;

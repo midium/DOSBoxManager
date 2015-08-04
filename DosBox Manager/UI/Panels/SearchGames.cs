@@ -24,6 +24,7 @@ using Helpers.Data;
 using DosBox_Manager.UI.Panels.PanelsEventArgs;
 using Helpers.Translation;
 using Helpers.Data.Objects;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Panels
 {
@@ -36,8 +37,8 @@ namespace DosBox_Manager.UI.Panels
         #endregion
 
         #region "Constructors"
-        public SearchGames(TranslationsHelpers Translator, Settings AppSettings)
-            : base(Translator, AppSettings)
+        public SearchGames(AppManager manager)
+            : base(manager)
         {
             InitializeComponent();
             txtTitle.Focus();
@@ -45,8 +46,8 @@ namespace DosBox_Manager.UI.Panels
             pnlSearch.KeyDown += panel_KeyDown;
         }
 
-        public SearchGames(TranslationsHelpers Translator, Settings AppSettings, List<Category> cats)
-            : base(Translator, AppSettings, null, cats)
+        public SearchGames(AppManager manager, List<Category> cats)
+            : base(manager, null, cats)
         {
             InitializeComponent();
             UpdateUI();

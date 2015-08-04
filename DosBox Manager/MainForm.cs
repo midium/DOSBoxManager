@@ -215,7 +215,7 @@ namespace DosBox_Manager
 
         private void NewCategory()
         {
-            CategoryDialog categoryDialog = new CategoryDialog(_manager.AppSettings, _manager.Translator);
+            CategoryDialog categoryDialog = new CategoryDialog(_manager);
             if (categoryDialog.ShowDialog() != DialogResult.OK || !_manager.DB.AddCategory(categoryDialog.CategoryName, categoryDialog.CategoryIcon))
                 return;
             RefreshCategories();
@@ -347,7 +347,7 @@ namespace DosBox_Manager
 
         private void OpenGameDialog(Game game, bool isEditing)
         {
-            GameDialog gameDialog = new GameDialog(_manager.Translator, _manager.AppSettings, game, isEditing);
+            GameDialog gameDialog = new GameDialog(_manager, game, isEditing);
             if (gameDialog.ShowDialog() != DialogResult.OK)
                 return;
             game = gameDialog.GameData;
@@ -464,7 +464,7 @@ namespace DosBox_Manager
                 catGames.Dispose();
             if (games != null)
             {
-                catGames = new CategoryGames(_manager.Translator, _manager.AppSettings, games, allCategories);
+                catGames = new CategoryGames(_manager, games, allCategories);
                 catGames.BoxChangedSelection += new CategoryGames.BoxChangedSelectionDelegate(CategoryGame_BoxChangedSelection);
                 catGames.BoxDoubleClick += new CategoryGames.BoxDoubleClickDelegate(CategoryGame_BoxDoubleClick);
                 catGames.BoxEditClick += new CategoryGames.BoxEditClickDelegate(CategoryGame_BoxEditClick);
@@ -497,7 +497,7 @@ namespace DosBox_Manager
             List<Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Dispose();
-            catGames = new CategoryGames(_manager.Translator, _manager.AppSettings, gamesForCategory, allCategories);
+            catGames = new CategoryGames(_manager, gamesForCategory, allCategories);
             catGames.BoxChangedSelection += new CategoryGames.BoxChangedSelectionDelegate(CategoryGame_BoxChangedSelection);
             catGames.BoxDoubleClick += new CategoryGames.BoxDoubleClickDelegate(CategoryGame_BoxDoubleClick);
             catGames.BoxEditClick += new CategoryGames.BoxEditClickDelegate(CategoryGame_BoxEditClick);
@@ -1009,7 +1009,7 @@ namespace DosBox_Manager
             EnableCategoriesCommands(false);
             RemoveGamesPanelHandlers();
             _SelectedCategory = -1;
-            SearchGames searchGamesPanel = new SearchGames(_manager.Translator, _manager.AppSettings, _manager.DB.GetAllCategories());
+            SearchGames searchGamesPanel = new SearchGames(_manager, _manager.DB.GetAllCategories());
             searchGamesPanel.SearchCommitted += new SearchGames.SearchCommittedDelegate(search_SearchCommitted);
             pnlGames.Controls.Clear();
             tableLayoutPanel.RowStyles[1].Height = 160f;

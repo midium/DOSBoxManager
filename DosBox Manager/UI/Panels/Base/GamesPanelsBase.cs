@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Data.Objects;
 using Helpers.Translation;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Panels.Base
 {
@@ -49,20 +50,20 @@ namespace DosBox_Manager.UI.Panels.Base
             _translator = (TranslationsHelpers)null;
         }
 
-        public GamesPanelsBase(TranslationsHelpers Translator, Settings AppSettings)
+        public GamesPanelsBase(AppManager manager)
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;
-            _settings = AppSettings;
-            _translator = Translator;
+            _settings = manager.AppSettings;
+            _translator = manager.Translator;
         }
 
-        public GamesPanelsBase(TranslationsHelpers Translator, Settings AppSettings, List<Game> games, List<Category> cats)
+        public GamesPanelsBase(AppManager manager, List<Game> games, List<Category> cats)
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;
-            _settings = AppSettings;
-            _translator = Translator;
+            _settings = manager.AppSettings;
+            _translator = manager.Translator;
             _games = games;
             _cats = cats;
         }

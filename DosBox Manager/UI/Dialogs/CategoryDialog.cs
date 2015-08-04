@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Translation;
 using Helpers.Data.Objects;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Dialogs
 {
@@ -44,11 +45,11 @@ namespace DosBox_Manager.UI.Dialogs
         #endregion
 
         #region "Constructors"
-        public CategoryDialog(Helpers.Data.Objects.Settings AppSettings, TranslationsHelpers translator)
+        public CategoryDialog(AppManager manager)
         {
             InitializeComponent();
-            _translator = translator;
-            _AppSettings = AppSettings;
+            _translator = manager.Translator;
+            _AppSettings = manager.AppSettings;
             this.Text = _translator.GetTranslatedMessage(_AppSettings.Language, 35, "Add New Category");
             _translator.TranslateUI(_AppSettings.Language, Name, Controls);
         }

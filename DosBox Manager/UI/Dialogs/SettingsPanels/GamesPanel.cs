@@ -23,6 +23,7 @@ using DosBox_Manager.UI.Dialogs.SettingsPanels.Base;
 using Helpers.Dialogs;
 using Helpers.Translation;
 using Helpers.Data.Objects;
+using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Dialogs.SettingsPanels
 {
@@ -42,13 +43,13 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             _flgInitiation = false;
         }
 
-        public GamesPanel(TranslationsHelpers Translator, Settings AppSettings, string PanelName)
-            : base(Translator, AppSettings, PanelName)
+        public GamesPanel(AppManager manager, string PanelName)
+            : base(manager, PanelName)
         {
             _flgInitiation = true;
             InitializeComponent();
             _dialogsHelpers = new DialogsHelpers();
-            CompileUI(AppSettings);
+            CompileUI(_AppSettings);
             _flgInitiation = false;
         }
         #endregion

@@ -33,7 +33,7 @@ namespace DosBox_Manager.UI.Dialogs
         #region "Declarations"
         private BaseSettingsPanel _tabPanel;
         private Settings _Settings;
-        private SettingsManager _SettingsDB;
+        private AppManager _manager;
         private TranslationsHelpers _Translator;
         #endregion
 
@@ -48,11 +48,13 @@ namespace DosBox_Manager.UI.Dialogs
         #endregion
 
         #region "Constructor"
-        public SettingsDialog(AppManager manager)//SettingsManager SettingsDB, TranslationsHelpers Translator, Settings AppSettings)
+        public SettingsDialog(AppManager manager)
         {
             InitializeComponent();
-            _Settings = (Settings)manager.AppSettings.Clone(); //(Settings)AppSettings.Clone();
-            _SettingsDB = manager.SettingsDB;
+            _Settings = (Settings)manager.AppSettings.Clone();
+
+            _manager = manager;
+
             _Translator = manager.Translator;
             this.Text = _Translator.GetTranslatedMessage(_Settings.Language, 51, "Application Settings");
             _Translator.TranslateUI(_Settings.Language, Name, Controls);
@@ -63,7 +65,7 @@ namespace DosBox_Manager.UI.Dialogs
         #region "Private Methods"
         private void InitiateUI()
         {
-            _tabPanel = new DOSBoxPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
+            _tabPanel = new DOSBoxPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
             LoadTabPanel(_tabPanel);
         }
 
@@ -96,15 +98,15 @@ namespace DosBox_Manager.UI.Dialogs
             switch (index)
             {
                 case 1:
-                    _tabPanel = new DOSBoxPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
+                    _tabPanel = new DOSBoxPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
                     break;
 
                 case 2:
-                    _tabPanel = new GamesPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 53, "Games Settings"));
+                    _tabPanel = new GamesPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 53, "Games Settings"));
                     break;
 
                 case 3:
-                    _tabPanel = new BehavioursPanel(_SettingsDB, _Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 54, "Application Behaviours"));
+                    _tabPanel = new BehavioursPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 54, "Application Behaviours"));
                     ((BehavioursPanel)_tabPanel).LanguageChanged += new BehavioursPanel.LanguageChangedDelegate(pnl_LanguageChanged);
                     break;
 
