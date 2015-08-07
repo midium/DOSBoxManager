@@ -23,6 +23,7 @@ namespace Helpers.Data.Objects.MyAbandonwareData
         #region "Declarations"
         private string _title;
         private string _year;
+        private string _platform;
         private string _coverUri;
         private string _uri;
         #endregion
@@ -32,14 +33,16 @@ namespace Helpers.Data.Objects.MyAbandonwareData
         {
             _title = string.Empty;
             _year = string.Empty;
+            _platform = string.Empty;
             _coverUri = string.Empty;
             _uri = string.Empty;
         }
 
-        public MyAbandonGameFound(string Title, string Year, string CoverUri, string Uri)
+        public MyAbandonGameFound(string Title, string Year, string Platform, string CoverUri, string Uri)
         {
             _title = Title;
             _year = Year;
+            _platform = Platform;
             _coverUri = CoverUri;
             _uri = Uri;
         }
@@ -57,6 +60,12 @@ namespace Helpers.Data.Objects.MyAbandonwareData
         {
             get { return _title; }
             set { _title = value; }
+        }
+
+        public string Platform
+        {
+            get { return _platform; }
+            set { _platform = value; }
         }
 
         public string Year

@@ -28,11 +28,21 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
     {
         #region "Declarations"
         MyAbandonware scraper = new MyAbandonware();
+        MyAbandonGameFound selectedGame = null;
         #endregion
 
         public MyAbandonwareSearchDialog()
         {
             InitializeComponent();
+        }
+
+        private void LoadGameData()
+        {
+            MyAbandonGameInfo game = scraper.RetrieveGameData(selectedGame.Uri);
+
+            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(game, scraper);
+            gameData.ShowDialog();
+            gameData.Dispose();
         }
 
         private void pnlMain_Paint(object sender, PaintEventArgs e)
@@ -46,25 +56,40 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         {
             if (txtGameName.Text.Trim() != string.Empty)
             {
+                this.Cursor = Cursors.WaitCursor;
+
                 List<MyAbandonGameFound> result = scraper.SearchGames(txtGameName.Text.Trim());
 
-                listBox1.Items.Clear();
-                foreach (MyAbandonGameFound item in result)
+                foundedGamesList.Clear();
+                if (result != null)
                 {
-                    listBox1.Items.Add(item);
+                    foundedGamesList.Games = result;
                 }
 
+                this.Cursor = Cursors.Default;
             }
         }
 
         private void btnGameData_Click(object sender, EventArgs e)
         {
+            LoadGameData();
+        }
+        
+        private void txtGameName_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                btnFind_Click(null, null);
+        }
 
-            MyAbandonGameInfo game = scraper.RetrieveGameData();
+        private void foundedGamesList_GameSelected(object sender, MyAbandonGameFound game)
+        {
+            selectedGame = game;
+        }
 
-            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(game, scraper);
-            gameData.ShowDialog();
-            gameData.Dispose();
+        private void foundedGamesList_GameDoubleClick(object sender, MyAbandonGameFound game)
+        {
+            selectedGame = game;
+            LoadGameData();
         }
     }
 }

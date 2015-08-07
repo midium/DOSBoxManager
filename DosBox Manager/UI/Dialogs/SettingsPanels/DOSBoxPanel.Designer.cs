@@ -61,7 +61,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnRescan.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnRescan.Image = global::DosBox_Manager.Properties.Resources.drive_magnify;
             this.btnRescan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRescan.Location = new System.Drawing.Point(606, 170);
+            this.btnRescan.Location = new System.Drawing.Point(900, 170);
             this.btnRescan.Name = "btnRescan";
             this.btnRescan.Size = new System.Drawing.Size(232, 31);
             this.btnRescan.TabIndex = 22;
@@ -86,7 +86,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnDosBoxLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDosBoxLanguage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDosBoxLanguage.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnDosBoxLanguage.Location = new System.Drawing.Point(814, 135);
+            this.btnDosBoxLanguage.Location = new System.Drawing.Point(1108, 135);
             this.btnDosBoxLanguage.Name = "btnDosBoxLanguage";
             this.btnDosBoxLanguage.Size = new System.Drawing.Size(24, 24);
             this.btnDosBoxLanguage.TabIndex = 20;
@@ -100,7 +100,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDosBoxLanguageFile.Location = new System.Drawing.Point(6, 136);
             this.txtDosBoxLanguageFile.Name = "txtDosBoxLanguageFile";
-            this.txtDosBoxLanguageFile.Size = new System.Drawing.Size(802, 22);
+            this.txtDosBoxLanguageFile.Size = new System.Drawing.Size(1096, 22);
             this.txtDosBoxLanguageFile.TabIndex = 19;
             this.txtDosBoxLanguageFile.TextChanged += new System.EventHandler(this.txtDosBoxLanguageFile_TextChanged);
             // 
@@ -119,7 +119,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnDosBoxConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDosBoxConfig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDosBoxConfig.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnDosBoxConfig.Location = new System.Drawing.Point(814, 94);
+            this.btnDosBoxConfig.Location = new System.Drawing.Point(1108, 94);
             this.btnDosBoxConfig.Name = "btnDosBoxConfig";
             this.btnDosBoxConfig.Size = new System.Drawing.Size(24, 24);
             this.btnDosBoxConfig.TabIndex = 17;
@@ -133,7 +133,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDosBoxConfigFile.Location = new System.Drawing.Point(6, 95);
             this.txtDosBoxConfigFile.Name = "txtDosBoxConfigFile";
-            this.txtDosBoxConfigFile.Size = new System.Drawing.Size(802, 22);
+            this.txtDosBoxConfigFile.Size = new System.Drawing.Size(1096, 22);
             this.txtDosBoxConfigFile.TabIndex = 16;
             this.txtDosBoxConfigFile.TextChanged += new System.EventHandler(this.txtDosBoxConfigFile_TextChanged);
             // 
@@ -152,7 +152,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnOpenGameEXE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenGameEXE.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpenGameEXE.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnOpenGameEXE.Location = new System.Drawing.Point(814, 53);
+            this.btnOpenGameEXE.Location = new System.Drawing.Point(1108, 53);
             this.btnOpenGameEXE.Name = "btnOpenGameEXE";
             this.btnOpenGameEXE.Size = new System.Drawing.Size(24, 24);
             this.btnOpenGameEXE.TabIndex = 14;
@@ -166,7 +166,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDosBoxExePath.Location = new System.Drawing.Point(6, 54);
             this.txtDosBoxExePath.Name = "txtDosBoxExePath";
-            this.txtDosBoxExePath.Size = new System.Drawing.Size(802, 22);
+            this.txtDosBoxExePath.Size = new System.Drawing.Size(1096, 22);
             this.txtDosBoxExePath.TabIndex = 1;
             this.txtDosBoxExePath.TextChanged += new System.EventHandler(this.txtDosBoxExePath_TextChanged);
             // 
@@ -195,7 +195,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.Controls.Add(this.txtDosBoxExePath);
             this.Controls.Add(this.lblDosBoxExe);
             this.Name = "DOSBoxPanel";
-            this.Size = new System.Drawing.Size(841, 862);
+            this.Size = new System.Drawing.Size(1135, 859);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using GUI.MessageBoxes;
+using CustomMessageBoxes.MessageBoxes;
 using Helpers.Data.Objects;
 using Helpers.Translation;
 

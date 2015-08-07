@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GUI.Images;
 using Helpers.Data.Objects.MyAbandonwareData;
 using Helpers.Web;
 
@@ -19,6 +20,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         #region "Declarations"
         MyAbandonGameInfo _game = null;
         MyAbandonware _helper = null;
+        Image _gameScreenshot = null;
         #endregion
 
         #region "Constructor"
@@ -49,34 +51,34 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             txtThemes.Text = (_game.Themes != null) ? String.Join(", ", _game.Themes.ToArray()) : string.Empty;
             txtVote.Text = _game.Vote;
 
-            if (_game.Screenshots != null)
-            {
-                int i = 0;
-                foreach (string uri in _game.Screenshots)
-                {
-                    Stream screen = _helper.DownloadMediaStream(uri);
-                    PictureBox pct = new PictureBox();
-                    pct.Image = Image.FromStream(screen);
-                    pct.Width = pnlScreenshots.Width;
-                    pct.Height = 150;
-                    pct.Top = i*150;
-                    pct.SizeMode = PictureBoxSizeMode.StretchImage;
+            SetupDownloadButton();
 
-                    pnlScreenshots.Controls.Add(pct);
+            screenshotsList.ImageURIs = _game.Screenshots;
 
-                    i++;
-                }
-            }
-            
+        }
+
+        private void SetupDownloadButton()
+        {
+            gameDownloader.DownloadURI = _game.DownloadLink;
+            gameDownloader.DestinationFile = string.Format("{0}.zip", _game.Title);
+            gameDownloader.Helper = _helper;
+
+            gameDownloader.ButtonText = string.Format("Download Game {0}", (_game.DownloadSize != string.Empty) ? string.Format("[{0}]", _game.DownloadSize) : string.Empty);
         }
         #endregion
 
         #region "Controls Events Handling"
+        private void screenshotsList_ScreenshotSelected(object sender, Image screenshot)
+        {
+            _gameScreenshot = screenshot;
+        }
+
         private void pnlMain_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawLine(Pens.LightGray, 0, pctIcon.Top + pctIcon.Height + 1, pnlMain.Width, pctIcon.Top + pctIcon.Height + 1);
             e.Graphics.DrawLine(Pens.LightGray, 0, pnlMain.Height - 1, pnlMain.Width, pnlMain.Height - 1);
         }
         #endregion
+
     }
 }

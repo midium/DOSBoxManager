@@ -21,7 +21,7 @@ using System.Windows.Forms;
 using Helpers.Data.Objects;
 using Helpers.Data.Objects.Translation;
 using Helpers.Translation;
-using GUI.MessageBoxes;
+using CustomMessageBoxes.MessageBoxes;
 
 namespace Helpers.Data
 {

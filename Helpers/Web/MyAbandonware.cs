@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 using Helpers.Data.Objects.MyAbandonwareData;
 using Helpers.IO;
 using HtmlAgilityPack;
+using Helpers.Threading.Workers;
+using System.Threading;
 
 namespace Helpers.Web
 {
@@ -34,6 +36,17 @@ namespace Helpers.Web
         string baseUri = "http://www.myabandonware.com/{0}";
 
         FlagsHelper flags = null;
+
+        FileDownloader _fileDownload = null;
+        Thread _thread = null;
+
+        #region "Event"
+        public delegate void DownloadFileCompletedDelegate(object sender, string DestinationFile);
+        public event DownloadFileCompletedDelegate DownloadFileCompleted;
+
+        public delegate void DownloadProgressChangedDelegate(object sender, DownloadProgressChangedEventArgs e);
+        public event DownloadProgressChangedDelegate DownloadProgressChanged;
+        #endregion
         #endregion
 
         #region "Constructors"
@@ -185,7 +198,7 @@ namespace Helpers.Web
                                         if (result.Screenshots == null)
                                             result.Screenshots = new List<string>();
 
-                                        result.Screenshots.Add(screen.Attributes["src"].Value);
+                                        result.Screenshots.Add(GetMediaURI(screen.Attributes["src"].Value));
                                     }
                                             
                                         
@@ -248,21 +261,27 @@ namespace Helpers.Web
 
                                     string title = nameNode.InnerText.Trim();
                                     string gameUri = nameNode.SelectSingleNode("a").Attributes["href"].Value.Trim();
+                                    gameUri = string.Format(baseUri, gameUri.Substring(1, gameUri.Length - 1));
                                     string year = yearNode.InnerText.Trim();
+                                    string platform = string.Empty;
+
                                     if(year != string.Empty)
                                     {
                                         string[] yearData = year.Split('-');
                                         if (yearData.GetLength(0) == 2)
+                                        {
+                                            platform = yearData[0].Trim();
                                             year = yearData[1].Trim();
+                                        }
                                         else
+                                        {
+                                            platform = string.Empty;
                                             year = string.Empty;
+                                        }
                                     }
-                                    string coverUri = coverNode.Attributes["src"].Value.Trim();
+                                    string coverUri = string.Format(baseUri, coverNode.Attributes["src"].Value.Trim());
 
-
-
-
-                                    result.Add(new MyAbandonGameFound(title, year, coverUri, gameUri));
+                                    result.Add(new MyAbandonGameFound(title, year, platform, coverUri, gameUri));
                                     Console.WriteLine(node.OuterHtml);
                                 }
                             }
@@ -275,63 +294,58 @@ namespace Helpers.Web
 
             return result;
         }
+
+        private void RemoveDownloadHandlers(FileDownloader downloader)
+        {
+            downloader.DownloadFileCompleted -= downloader_DownloadFileCompleted;
+            downloader.DownloadProgressChanged -= downloader_DownloadProgressChanged;
+        }
+
+        private void AddDownloadHandlers(FileDownloader downloader)
+        {
+            downloader.DownloadFileCompleted += downloader_DownloadFileCompleted;
+            downloader.DownloadProgressChanged += downloader_DownloadProgressChanged;
+        }
+        #endregion
+
+        #region "Download event handler"
+        private void downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if (DownloadProgressChanged != null)
+                DownloadProgressChanged(sender, e);
+        }
+
+        private void downloader_DownloadFileCompleted(object sender, string DestinationFile)
+        {
+            if (DownloadFileCompleted != null)
+                DownloadFileCompleted(sender, DestinationFile);
+
+            RemoveDownloadHandlers(_fileDownload);
+            _fileDownload.Dispose();
+            _thread = null;
+        }
         #endregion
 
         #region "Public Methods"
         public void DownloadMedia(string MediaUri, string DownloadPath)
         {
-            FileHelpers fh = new FileHelpers();
-            string fileName = fh.ExtractFileName(MediaUri);
+            _fileDownload = new FileDownloader(string.Format(baseUri, MediaUri.Substring(1,MediaUri.Length -1)), DownloadPath); 
 
-            using (var client = new WebClient())
-            {
-                client.DownloadFile(MediaUri, DownloadPath + "\\" + fileName);
-            }
-        }
+            AddDownloadHandlers(_fileDownload);
 
-        public Stream DownloadMediaStream(string MediaUri)
-        {
-            Stream result = null;
+            _thread = new Thread(_fileDownload.DoWork);
+            _thread.Start();
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(string.Format(baseUri,MediaUri));
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            // Check that the remote file was found. The ContentType
-            // check is performed since a request for a non-existent
-            // image file might be redirected to a 404-page, which would
-            // yield the StatusCode "OK", even though the image was not
-            // found.
-            if ((response.StatusCode == HttpStatusCode.OK ||
-                response.StatusCode == HttpStatusCode.Moved ||
-                response.StatusCode == HttpStatusCode.Redirect) &&
-                response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
-            {
-
-                // if the remote file was found, download oit
-                /*using (Stream inputStream = response.GetResponseStream())
-                using (Stream outputStream = File.OpenWrite(fileName))
-                {
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    do
-                    {
-                        bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-                        outputStream.Write(buffer, 0, bytesRead);
-                    } while (bytesRead != 0);
-                }*/
-
-                result = response.GetResponseStream();
-            }
-
-            return result;
         }
 
         public List<MyAbandonGameFound> SearchGames(string GameName)
         {
+            //Preparing URL and result holder
             string queryResult = string.Empty;
             string queryUri = string.Format(baseSearchUri, GameName);
 
-            /*request = (HttpWebRequest)WebRequest.Create(queryUri);
+            //Performing web request to retrieve the page.
+            request = (HttpWebRequest)WebRequest.Create(queryUri);
             response = (HttpWebResponse)request.GetResponse();
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -352,26 +366,20 @@ namespace Helpers.Web
 
                 response.Close();
                 readStream.Close();
-            }*/
+            }
 
-            StreamReader read = new StreamReader("D:\\Progetti .NET\\Search_result.txt");
-
-            queryResult = read.ReadToEnd();
-
-            read.Close();
-
+            //Scraping the response to extract the founded games
             List<MyAbandonGameFound> result = ParseSearchResult(queryResult);
 
             return result;
         }
 
-        public MyAbandonGameInfo RetrieveGameData()
+        public MyAbandonGameInfo RetrieveGameData(string GameURI)
         {
             string queryResult = string.Empty;
-            //string queryUri = string.Format(baseSearchUri, GameName);
+            string queryUri = GameURI;
 
-            //TODO: Make proper web search
-            /*request = (HttpWebRequest)WebRequest.Create(queryUri);
+            request = (HttpWebRequest)WebRequest.Create(queryUri);
             response = (HttpWebResponse)request.GetResponse();
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -392,13 +400,7 @@ namespace Helpers.Web
 
                 response.Close();
                 readStream.Close();
-            }*/
-
-            StreamReader read = new StreamReader("D:\\Game_page.txt");
-
-            queryResult = read.ReadToEnd();
-
-            read.Close();
+            }
 
             MyAbandonGameInfo result = ParseGamePage(queryResult);
 
@@ -407,5 +409,10 @@ namespace Helpers.Web
         #endregion
         #endregion
 
+
+        public string GetMediaURI(string uri)
+        {
+            return string.Format(baseUri, uri);
+        }
     }
 }

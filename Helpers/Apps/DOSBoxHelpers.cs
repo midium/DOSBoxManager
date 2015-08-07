@@ -19,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Translation;
-using GUI.MessageBoxes;
+using CustomMessageBoxes.MessageBoxes;
 
 namespace Helpers.Apps
 {

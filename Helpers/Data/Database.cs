@@ -19,7 +19,7 @@ using System.Data.SQLite;
 using Helpers.Data.Base;
 using Helpers.Data.Objects;
 using System.Windows.Forms;
-using GUI.MessageBoxes;
+using CustomMessageBoxes.MessageBoxes;
 
 namespace Helpers.Data
 {

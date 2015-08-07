@@ -87,7 +87,13 @@
     <Compile Include="IO\FileHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\SettingsHelpers.cs" />
+    <Compile Include="Threading\Workers\Base\WorkerBase.cs" />
+    <Compile Include="Threading\Workers\FileDownloader.cs" />
+    <Compile Include="Threading\Workers\ImageDownloader.cs" />
     <Compile Include="Translation\TranslationsHelpers.cs" />
+    <Compile Include="Web\CookieAwareWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Web\FlagsHelper.cs" />
     <Compile Include="Web\MyAbandonware.cs" />
   </ItemGroup>
@@ -96,9 +102,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GUI\GUI.csproj">
-      <Project>{38962e38-6d91-4ffb-9f63-61c50982fccf}</Project>
-      <Name>GUI</Name>
+    <ProjectReference Include="..\CustomMessageBoxes\CustomMessageBoxes.csproj">
+      <Project>{7f903677-e156-4e90-9b24-7f74add609b8}</Project>
+      <Name>CustomMessageBoxes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

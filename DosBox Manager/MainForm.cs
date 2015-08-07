@@ -27,7 +27,7 @@ using DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs;
 using DosBox_Manager.UI.Panels;
 using DosBox_Manager.UI.Panels.PanelsEventArgs;
 using GUI.Menus.MenuStripRenderer;
-using GUI.MessageBoxes;
+using CustomMessageBoxes.MessageBoxes;
 using GUI.Tabs;
 using GUI.Toolbars;
 using Helpers.Apps;
@@ -85,15 +85,9 @@ namespace DosBox_Manager
         #region "Private Helping Methods"
         private void ShowMyAbandonware()
         {
-
-            CustomMessageBox cmb = new CustomMessageBox("TO BE IMPLEMENTED", "INFORMATION", MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
-            cmb.ShowDialog();
-            cmb.Dispose();
-            return;
-
-            /*MyAbandonwareSearchDialog mad = new MyAbandonwareSearchDialog();
+            MyAbandonwareSearchDialog mad = new MyAbandonwareSearchDialog();
             mad.ShowDialog();
-            mad.Dispose();*/
+            mad.Dispose();
         }
 
         private bool CheckConnection()

@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyAbandonwareSearchDialog));
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnGameData = new System.Windows.Forms.Button();
             this.lblFounded = new System.Windows.Forms.Label();
             this.btnFind = new System.Windows.Forms.Button();
             this.txtGameName = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.pctIcon = new System.Windows.Forms.PictureBox();
-            this.btnCommit = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnGameData = new System.Windows.Forms.Button();
+            this.foundedGamesList = new GUI.Images.FoundedGamesList(this.components);
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctIcon)).BeginInit();
             this.SuspendLayout();
@@ -50,19 +50,34 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.pnlMain.Controls.Add(this.foundedGamesList);
             this.pnlMain.Controls.Add(this.btnGameData);
             this.pnlMain.Controls.Add(this.lblFounded);
             this.pnlMain.Controls.Add(this.btnFind);
             this.pnlMain.Controls.Add(this.txtGameName);
             this.pnlMain.Controls.Add(this.lblSearch);
-            this.pnlMain.Controls.Add(this.listBox1);
             this.pnlMain.Controls.Add(this.lblTitle);
             this.pnlMain.Controls.Add(this.pctIcon);
             this.pnlMain.Location = new System.Drawing.Point(0, 0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(784, 644);
+            this.pnlMain.Size = new System.Drawing.Size(558, 467);
             this.pnlMain.TabIndex = 0;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
+            // 
+            // btnGameData
+            // 
+            this.btnGameData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGameData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnGameData.Image = global::DosBox_Manager.Properties.Resources.game_monitor;
+            this.btnGameData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGameData.Location = new System.Drawing.Point(422, 420);
+            this.btnGameData.Name = "btnGameData";
+            this.btnGameData.Size = new System.Drawing.Size(124, 30);
+            this.btnGameData.TabIndex = 16;
+            this.btnGameData.Text = "View Game Data";
+            this.btnGameData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnGameData.UseVisualStyleBackColor = true;
+            this.btnGameData.Click += new System.EventHandler(this.btnGameData_Click);
             // 
             // lblFounded
             // 
@@ -79,7 +94,7 @@
             this.btnFind.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFind.Image = global::DosBox_Manager.Properties.Resources.magnifier;
             this.btnFind.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFind.Location = new System.Drawing.Point(671, 69);
+            this.btnFind.Location = new System.Drawing.Point(445, 69);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(101, 30);
             this.btnFind.TabIndex = 14;
@@ -92,8 +107,9 @@
             // 
             this.txtGameName.Location = new System.Drawing.Point(15, 74);
             this.txtGameName.Name = "txtGameName";
-            this.txtGameName.Size = new System.Drawing.Size(650, 22);
+            this.txtGameName.Size = new System.Drawing.Size(420, 22);
             this.txtGameName.TabIndex = 4;
+            this.txtGameName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtGameName_KeyUp);
             // 
             // lblSearch
             // 
@@ -103,14 +119,6 @@
             this.lblSearch.Size = new System.Drawing.Size(76, 13);
             this.lblSearch.TabIndex = 3;
             this.lblSearch.Text = "Search Game:";
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(15, 150);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(650, 342);
-            this.listBox1.TabIndex = 2;
             // 
             // lblTitle
             // 
@@ -131,61 +139,40 @@
             this.pctIcon.TabIndex = 1;
             this.pctIcon.TabStop = false;
             // 
-            // btnCommit
-            // 
-            this.btnCommit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCommit.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnCommit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCommit.Image = global::DosBox_Manager.Properties.Resources.disk;
-            this.btnCommit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCommit.Location = new System.Drawing.Point(695, 658);
-            this.btnCommit.Name = "btnCommit";
-            this.btnCommit.Size = new System.Drawing.Size(77, 30);
-            this.btnCommit.TabIndex = 5;
-            this.btnCommit.Text = "Save";
-            this.btnCommit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCommit.UseVisualStyleBackColor = true;
-            // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCancel.Image = global::DosBox_Manager.Properties.Resources.cross;
+            this.btnCancel.Image = global::DosBox_Manager.Properties.Resources.door_out;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCancel.Location = new System.Drawing.Point(612, 658);
+            this.btnCancel.Location = new System.Drawing.Point(469, 481);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(77, 30);
             this.btnCancel.TabIndex = 6;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = "Close";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnGameData
+            // foundedGamesList
             // 
-            this.btnGameData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGameData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnGameData.Image = global::DosBox_Manager.Properties.Resources.game_monitor;
-            this.btnGameData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGameData.Location = new System.Drawing.Point(541, 498);
-            this.btnGameData.Name = "btnGameData";
-            this.btnGameData.Size = new System.Drawing.Size(124, 30);
-            this.btnGameData.TabIndex = 16;
-            this.btnGameData.Text = "View Game Data";
-            this.btnGameData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnGameData.UseVisualStyleBackColor = true;
-            this.btnGameData.Click += new System.EventHandler(this.btnGameData_Click);
+            this.foundedGamesList.AutoScroll = true;
+            this.foundedGamesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.foundedGamesList.Games = null;
+            this.foundedGamesList.Location = new System.Drawing.Point(15, 150);
+            this.foundedGamesList.Name = "foundedGamesList";
+            this.foundedGamesList.Size = new System.Drawing.Size(397, 300);
+            this.foundedGamesList.TabIndex = 18;
+            this.foundedGamesList.GameSelected += new GUI.Images.FoundedGamesList.GameSelectedDelegate(this.foundedGamesList_GameSelected);
+            this.foundedGamesList.GameDoubleClick += new GUI.Images.FoundedGamesList.GameDoubleClickDelegate(this.foundedGamesList_GameDoubleClick);
             // 
             // MyAbandonwareSearchDialog
             // 
-            this.AcceptButton = this.btnCommit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(784, 700);
+            this.ClientSize = new System.Drawing.Size(558, 523);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnCommit);
             this.Controls.Add(this.pnlMain);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
@@ -207,14 +194,13 @@
 
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnCommit;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.PictureBox pctIcon;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.TextBox txtGameName;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.Label lblFounded;
         private System.Windows.Forms.Button btnGameData;
+        private GUI.Images.FoundedGamesList foundedGamesList;
     }
 }

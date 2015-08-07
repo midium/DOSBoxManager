@@ -10,6 +10,7 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RootNamespace>DosBox_Manager</RootNamespace>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,7 +23,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -57,8 +57,7 @@
     <OutputPath>bin\x86\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>DosBox_Manager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
@@ -273,6 +272,7 @@
     <Content Include="Resources\disk.png" />
     <Content Include="Resources\door_out.png" />
     <Content Include="Resources\DosBoxManager.jpg" />
+    <None Include="Resources\download.png" />
     <Content Include="Resources\drive_magnify.png" />
     <None Include="Resources\favicon.png" />
     <Content Include="Resources\folder_image.png" />
@@ -299,6 +299,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomMessageBoxes\CustomMessageBoxes.csproj">
+      <Project>{7f903677-e156-4e90-9b24-7f74add609b8}</Project>
+      <Name>CustomMessageBoxes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GUI\GUI.csproj">
       <Project>{38962e38-6d91-4ffb-9f63-61c50982fccf}</Project>
       <Name>GUI</Name>

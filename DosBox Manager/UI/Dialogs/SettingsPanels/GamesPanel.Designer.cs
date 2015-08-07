@@ -68,7 +68,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnDefaultGamesFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDefaultGamesFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDefaultGamesFolder.Image = global::DosBox_Manager.Properties.Resources.folder_search;
-            this.btnDefaultGamesFolder.Location = new System.Drawing.Point(812, 53);
+            this.btnDefaultGamesFolder.Location = new System.Drawing.Point(1106, 53);
             this.btnDefaultGamesFolder.Name = "btnDefaultGamesFolder";
             this.btnDefaultGamesFolder.Size = new System.Drawing.Size(24, 24);
             this.btnDefaultGamesFolder.TabIndex = 17;
@@ -82,7 +82,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDefaultGamesFolder.Location = new System.Drawing.Point(6, 54);
             this.txtDefaultGamesFolder.Name = "txtDefaultGamesFolder";
-            this.txtDefaultGamesFolder.Size = new System.Drawing.Size(800, 22);
+            this.txtDefaultGamesFolder.Size = new System.Drawing.Size(1094, 22);
             this.txtDefaultGamesFolder.TabIndex = 16;
             this.txtDefaultGamesFolder.TextChanged += new System.EventHandler(this.txtDefaultGamesFolder_TextChanged);
             // 
@@ -101,7 +101,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnDefaultImagesFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDefaultImagesFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDefaultImagesFolder.Image = global::DosBox_Manager.Properties.Resources.folder_search;
-            this.btnDefaultImagesFolder.Location = new System.Drawing.Point(812, 94);
+            this.btnDefaultImagesFolder.Location = new System.Drawing.Point(1106, 94);
             this.btnDefaultImagesFolder.Name = "btnDefaultImagesFolder";
             this.btnDefaultImagesFolder.Size = new System.Drawing.Size(24, 24);
             this.btnDefaultImagesFolder.TabIndex = 20;
@@ -115,7 +115,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDefaultImagesFolder.Location = new System.Drawing.Point(6, 95);
             this.txtDefaultImagesFolder.Name = "txtDefaultImagesFolder";
-            this.txtDefaultImagesFolder.Size = new System.Drawing.Size(800, 22);
+            this.txtDefaultImagesFolder.Size = new System.Drawing.Size(1094, 22);
             this.txtDefaultImagesFolder.TabIndex = 19;
             this.txtDefaultImagesFolder.TextChanged += new System.EventHandler(this.txtDefaultImagesFolder_TextChanged);
             // 
@@ -135,7 +135,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAdditionalCommands.Location = new System.Drawing.Point(6, 136);
             this.txtAdditionalCommands.Name = "txtAdditionalCommands";
-            this.txtAdditionalCommands.Size = new System.Drawing.Size(800, 22);
+            this.txtAdditionalCommands.Size = new System.Drawing.Size(1094, 22);
             this.txtAdditionalCommands.TabIndex = 22;
             this.txtAdditionalCommands.TextChanged += new System.EventHandler(this.txtAdditionalCommands_TextChanged);
             // 
@@ -160,7 +160,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.pnlOtherOptions.Controls.Add(this.lblOtherNewGameOptions);
             this.pnlOtherOptions.Location = new System.Drawing.Point(6, 164);
             this.pnlOtherOptions.Name = "pnlOtherOptions";
-            this.pnlOtherOptions.Size = new System.Drawing.Size(800, 52);
+            this.pnlOtherOptions.Size = new System.Drawing.Size(1094, 52);
             this.pnlOtherOptions.TabIndex = 32;
             // 
             // chkQuitOnExit
@@ -231,7 +231,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.Controls.Add(this.txtDefaultGamesFolder);
             this.Controls.Add(this.lblDefaultGamesFolder);
             this.Name = "GamesPanel";
-            this.Size = new System.Drawing.Size(841, 862);
+            this.Size = new System.Drawing.Size(1135, 859);
             this.pnlOtherOptions.ResumeLayout(false);
             this.pnlOtherOptions.PerformLayout();
             this.ResumeLayout(false);

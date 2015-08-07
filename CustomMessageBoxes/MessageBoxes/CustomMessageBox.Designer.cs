@@ -1,4 +1,4 @@
-﻿namespace GUI.MessageBoxes
+﻿namespace CustomMessageBoxes.MessageBoxes
 {
     partial class CustomMessageBox
     {

@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GUI.MessageBoxes
+namespace CustomMessageBoxes.MessageBoxes
 {
     #region "Enums"
     public enum MessageBoxDialogButtons
