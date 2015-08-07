@@ -26,6 +26,7 @@ using Helpers.Translation;
 using GUI.Boxes;
 using GUI.Menus.MenuStripRenderer;
 using DosBox_Manager.Business;
+using System.IO;
 
 namespace DosBox_Manager.UI.Panels
 {
@@ -125,10 +126,10 @@ namespace DosBox_Manager.UI.Panels
         public override void UpdateUI()
         {
             Controls.Clear();
-            int num1 = (Width - 20) / 100;
-            int num2 = Height / 150;
-            int num3 = 0;
-            int num4 = 0;
+            int maxRenderableColumns = (Width - 20) / 100;
+            int maxRenderableRows = Height / 150;
+            int rowsCount = 0;
+            int columnsCount = 0;
             if (_games == null || _games.Count <= 0)
                 return;
             int num5 = 0;
@@ -139,29 +140,33 @@ namespace DosBox_Manager.UI.Panels
                 gameBox.BoxDoubleClick += new GameBox.BoxDoubleClickDelegate(Box_BoxDoubleClick);
                 gameBox.ContextMenuStrip = CreateGameContextMenu(game.ID);
                 gameBox.GameName = game.Title;
-                int num6 = game.ImagePath == null ? 0 : (!(game.ImagePath == string.Empty) ? 1 : 0);
-                gameBox.GameImage = num6 != 0 ? Image.FromFile(game.ImagePath) : (Image)null;
+
+                if (File.Exists(game.ImagePath))
+                    gameBox.GameImage = Image.FromFile(game.ImagePath);
+                else
+                    gameBox.GameImage = null;
+
                 gameBox.GameID = game.ID;
-                gameBox.Top = num3 * 150 + (num3 == 0 ? 0 : 5);
+                gameBox.Top = rowsCount * 150 + (rowsCount == 0 ? 0 : 5);
                 gameBox.Left = num5;
                 num5 += gameBox.Width;
                 this.Controls.Add((Control)gameBox);
-                ++num4;
-                if (num4 >= num1)
+                ++columnsCount;
+                if (columnsCount >= maxRenderableColumns)
                 {
-                    num4 = 0;
-                    ++num3;
+                    columnsCount = 0;
+                    ++rowsCount;
                     num5 = 0;
                 }
             }
-            if (num3 + 1 > num2)
+            if (rowsCount + 1 > maxRenderableRows)
             {
                 scroller = new ScrollBarEx();
                 scroller.Orientation = ScrollBarOrientation.Vertical;
                 scroller.BorderColor = Color.FromArgb(64, 64, 64);
                 scroller.Dock = DockStyle.Right;
                 scroller.Visible = true;
-                scroller.Maximum = num2 * 150;
+                scroller.Maximum = maxRenderableRows * 150;
                 scroller.Scroll += new ScrollEventHandler(scroller_Scroll);
                 MouseWheel += new MouseEventHandler(CategoryGames_MouseWheel);
                 this.Controls.Add((Control)scroller);
@@ -280,7 +285,12 @@ namespace DosBox_Manager.UI.Panels
                 toolStripMenuItemArray[index].Tag = GameID.ToString() + "|" + _cats[index].ID.ToString();
                 toolStripMenuItemArray[index].BackColor = Color.FromArgb(50, 50, 50);
                 toolStripMenuItemArray[index].ForeColor = Color.White;
-                toolStripMenuItemArray[index].Image = _cats[index].Icon != string.Empty ? Image.FromFile(_cats[index].Icon) : (Image)null;
+
+                if (File.Exists(_cats[index].Icon))
+                    toolStripMenuItemArray[index].Image = _cats[index].Icon != string.Empty ? Image.FromFile(_cats[index].Icon) : null;
+                else
+                    toolStripMenuItemArray[index].Image = null;
+
                 toolStripMenuItemArray[index].Click += new EventHandler(move_to_cat_Click);
             }
             move_to_cat.DropDownItems.AddRange((ToolStripItem[])toolStripMenuItemArray);

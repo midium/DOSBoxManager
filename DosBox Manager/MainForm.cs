@@ -275,11 +275,11 @@ namespace DosBox_Manager
             {
                 ToolStripItemCollection dropDownItems1 = moveToCategoryToolStripMenuItem.DropDownItems;
                 int id = category.ID;
-                ToolStripMenuItem toolStripMenuItem1 = CreateToolStripMenuItem(id.ToString(), category.Name, category.Icon == string.Empty ? (Image)null : Image.FromFile(category.Icon), new EventHandler(MoveToCategory_Click));
+                ToolStripMenuItem toolStripMenuItem1 = CreateToolStripMenuItem(id.ToString(), category.Name, category.Icon == string.Empty ? null : (File.Exists(category.Icon) ? Image.FromFile(category.Icon) : null), new EventHandler(MoveToCategory_Click));
                 dropDownItems1.Add((ToolStripItem)toolStripMenuItem1);
                 ToolStripItemCollection dropDownItems2 = tsbMoveToCategory.DropDownItems;
                 id = category.ID;
-                ToolStripMenuItem toolStripMenuItem2 = CreateToolStripMenuItem(id.ToString(), category.Name, category.Icon == string.Empty ? (Image)null : Image.FromFile(category.Icon), new EventHandler(MoveToCategory_Click));
+                ToolStripMenuItem toolStripMenuItem2 = CreateToolStripMenuItem(id.ToString(), category.Name, category.Icon == string.Empty ? null : (File.Exists(category.Icon) ? Image.FromFile(category.Icon) : null), new EventHandler(MoveToCategory_Click));
                 dropDownItems2.Add((ToolStripItem)toolStripMenuItem2);
             }
         }
@@ -536,7 +536,10 @@ namespace DosBox_Manager
             int num = -1;
             foreach (Category category in allCategories)
             {
-                Image TabIcon = category.Icon == string.Empty ? null : Image.FromFile(category.Icon);
+                Image TabIcon = null;
+                if (File.Exists(category.Icon))
+                    TabIcon = category.Icon == string.Empty ? null : Image.FromFile(category.Icon);
+
                 categoriesTabs.AddTab(category.ID, category.Name, TabIcon, false);
                 if (category.IsSelected)
                     num = category.ID;
