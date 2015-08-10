@@ -52,7 +52,7 @@
             this.lblThemes = new System.Windows.Forms.Label();
             this.txtGenre = new System.Windows.Forms.TextBox();
             this.lblGenre = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtPlatform = new System.Windows.Forms.TextBox();
             this.lblPlatform = new System.Windows.Forms.Label();
             this.txtReleasedIn = new System.Windows.Forms.TextBox();
             this.lblReleasedIn = new System.Windows.Forms.Label();
@@ -95,7 +95,7 @@
             this.pnlMain.Controls.Add(this.lblThemes);
             this.pnlMain.Controls.Add(this.txtGenre);
             this.pnlMain.Controls.Add(this.lblGenre);
-            this.pnlMain.Controls.Add(this.textBox1);
+            this.pnlMain.Controls.Add(this.txtPlatform);
             this.pnlMain.Controls.Add(this.lblPlatform);
             this.pnlMain.Controls.Add(this.txtReleasedIn);
             this.pnlMain.Controls.Add(this.lblReleasedIn);
@@ -300,13 +300,13 @@
             this.lblGenre.TabIndex = 13;
             this.lblGenre.Text = "Genre:";
             // 
-            // textBox1
+            // txtPlatform
             // 
-            this.textBox1.Location = new System.Drawing.Point(86, 109);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(135, 22);
-            this.textBox1.TabIndex = 12;
+            this.txtPlatform.Location = new System.Drawing.Point(86, 109);
+            this.txtPlatform.Name = "txtPlatform";
+            this.txtPlatform.ReadOnly = true;
+            this.txtPlatform.Size = new System.Drawing.Size(135, 22);
+            this.txtPlatform.TabIndex = 12;
             // 
             // lblPlatform
             // 
@@ -459,7 +459,7 @@
         private System.Windows.Forms.Label lblReleasedIn;
         private System.Windows.Forms.TextBox txtGenre;
         private System.Windows.Forms.Label lblGenre;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtPlatform;
         private System.Windows.Forms.Label lblPlatform;
         private System.Windows.Forms.TextBox txtThemes;
         private System.Windows.Forms.Label lblThemes;

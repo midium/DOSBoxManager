@@ -131,41 +131,41 @@ namespace Helpers.Web
                                     {
 
                                         if(flags.IsYear)
-                                            result.Year= itemNode.InnerText.Trim();
+                                            result.Year= WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if (flags.IsPlatform)
-                                            result.Platform = itemNode.InnerText.Trim();
+                                            result.Platform = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if (flags.IsReleasedIn)
-                                            result.ReleasedIn = itemNode.InnerText.Trim();
+                                            result.ReleasedIn = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if(flags.IsGenre)
-                                            result.Genre = itemNode.InnerText.Trim();
+                                            result.Genre = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if (flags.IsTheme)
                                         {
-                                            string themeString = itemNode.InnerText.Trim();
+                                            string themeString = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                             if (themeString != string.Empty)
                                                 result.Themes = themeString.Replace(", ",",").Split(',').ToList();
                                         }
 
                                         if (flags.IsPublisher)
-                                            result.Publisher = itemNode.InnerText.Trim();
+                                            result.Publisher = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if (flags.IsDeveloper)
-                                            result.Developer = itemNode.InnerText.Trim();
+                                            result.Developer = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                         if (flags.IsPerspectives)
                                         {
-                                            string perspectiveString = itemNode.InnerText.Trim();
+                                            string perspectiveString = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
 
                                             if (perspectiveString != string.Empty)
                                                 result.Perspectives = perspectiveString.Replace(", ", ",").Split(',', ' ').ToList();
                                         }
 
                                         if (flags.IsDosBox)
-                                            result.DosBoxVersion = itemNode.InnerText.Trim();
+                                            result.DosBoxVersion = WebUtility.HtmlDecode(itemNode.InnerText.Trim());
                                            
                                     }
                                 }
@@ -183,7 +183,7 @@ namespace Helpers.Web
                             {
                                 if (descriptionNode.FirstChild != null)
                                 {
-                                    result.Description = descriptionNode.FirstChild.InnerText;
+                                    result.Description = WebUtility.HtmlDecode(descriptionNode.FirstChild.InnerText);
                                 }
                             }
 
@@ -327,6 +327,11 @@ namespace Helpers.Web
         #endregion
 
         #region "Public Methods"
+        public string GetMediaURI(string uri)
+        {
+            return string.Format(baseUri, uri);
+        }
+
         public void DownloadMedia(string MediaUri, string DownloadPath)
         {
             _fileDownload = new FileDownloader(string.Format(baseUri, MediaUri.Substring(1,MediaUri.Length -1)), DownloadPath); 
@@ -408,11 +413,5 @@ namespace Helpers.Web
         }
         #endregion
         #endregion
-
-
-        public string GetMediaURI(string uri)
-        {
-            return string.Format(baseUri, uri);
-        }
     }
 }

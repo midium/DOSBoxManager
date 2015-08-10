@@ -48,6 +48,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             txtGenre.Text = _game.Genre;
             txtPerspectives.Text = (_game.Perspectives != null) ? String.Join(", ", _game.Perspectives.ToArray()) : string.Empty;
             txtPublisher.Text = _game.Publisher;
+            txtPlatform.Text = _game.Platform;
             txtThemes.Text = (_game.Themes != null) ? String.Join(", ", _game.Themes.ToArray()) : string.Empty;
             txtVote.Text = _game.Vote;
 
