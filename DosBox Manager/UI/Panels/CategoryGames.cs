@@ -25,7 +25,7 @@ using Helpers.Data.Objects;
 using Helpers.Translation;
 using GUI.Boxes;
 using GUI.Menus.MenuStripRenderer;
-using DosBox_Manager.Business;
+using Helpers.Business;
 using System.IO;
 
 namespace DosBox_Manager.UI.Panels

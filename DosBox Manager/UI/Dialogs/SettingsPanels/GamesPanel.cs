@@ -23,7 +23,7 @@ using DosBox_Manager.UI.Dialogs.SettingsPanels.Base;
 using Helpers.Dialogs;
 using Helpers.Translation;
 using Helpers.Data.Objects;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager.UI.Dialogs.SettingsPanels
 {

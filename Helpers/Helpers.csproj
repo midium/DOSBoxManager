@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\DOSBoxHelpers.cs" />
+    <Compile Include="Business\AppManager.cs" />
     <Compile Include="Data\Base\BaseData.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\Objects\Category.cs" />

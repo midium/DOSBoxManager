@@ -21,7 +21,7 @@ using Helpers.Data.Objects;
 using Helpers.IO;
 using Helpers.Translation;
 
-namespace DosBox_Manager.Business
+namespace Helpers.Business
 {
     public class AppManager : IDisposable 
     {

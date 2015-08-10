@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GUI.Images;
+using Helpers.Business;
 using Helpers.Data.Objects.MyAbandonwareData;
 using Helpers.Web;
 
@@ -18,18 +19,22 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
     {
 
         #region "Declarations"
-        MyAbandonGameInfo _game = null;
-        MyAbandonware _helper = null;
-        Image _gameScreenshot = null;
+        private MyAbandonGameInfo _game = null;
+        private MyAbandonware _helper = null;
+        private Image _gameScreenshot = null;
+        private AppManager _manager = null;
         #endregion
 
         #region "Constructor"
-        public MyAbandonwareGameDialog(MyAbandonGameInfo game, MyAbandonware helper)
+        public MyAbandonwareGameDialog(AppManager Manager, MyAbandonGameInfo game, MyAbandonware helper)
         {
             InitializeComponent();
 
+            _manager = Manager;
             _game = game;
             _helper = helper;
+
+            _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
 
             CompileUI();
         }
@@ -64,7 +69,9 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             gameDownloader.DestinationFile = string.Format("{0}.zip", _game.Title);
             gameDownloader.Helper = _helper;
 
-            gameDownloader.ButtonText = string.Format("Download Game {0}", (_game.DownloadSize != string.Empty) ? string.Format("[{0}]", _game.DownloadSize) : string.Empty);
+            gameDownloader.ButtonText = string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 76, "Download Game {0}"), (_game.DownloadSize != string.Empty) ? string.Format("[{0}]", _game.DownloadSize) : string.Empty);
+            gameDownloader.CompletedText = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!");
+            gameDownloader.FolderSelectionText = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 78, "Choose a folder where to download the game.");
         }
         #endregion
 

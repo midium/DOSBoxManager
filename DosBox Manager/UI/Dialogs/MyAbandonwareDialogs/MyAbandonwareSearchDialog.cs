@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Helpers.Business;
 using Helpers.Data.Objects.MyAbandonwareData;
 using Helpers.Web;
 
@@ -27,20 +28,26 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
     public partial class MyAbandonwareSearchDialog : Form
     {
         #region "Declarations"
-        MyAbandonware scraper = new MyAbandonware();
-        MyAbandonGameFound selectedGame = null;
+        private MyAbandonware scraper = null;
+        private MyAbandonGameFound selectedGame = null;
+        private AppManager _manager;
         #endregion
 
-        public MyAbandonwareSearchDialog()
+        public MyAbandonwareSearchDialog(AppManager Manager)
         {
             InitializeComponent();
+            _manager = Manager;
+
+            _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
+
+            scraper = new MyAbandonware(Manager);
         }
 
         private void LoadGameData()
         {
             MyAbandonGameInfo game = scraper.RetrieveGameData(selectedGame.Uri);
 
-            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(game, scraper);
+            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, game, scraper);
             gameData.ShowDialog();
             gameData.Dispose();
         }

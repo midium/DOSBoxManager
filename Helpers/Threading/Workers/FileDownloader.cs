@@ -99,12 +99,16 @@ namespace Helpers.Threading.Workers
         #region "Events Handling"
         private void _downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            DownloadProgressChanged(this, e);
+            if (!this.IsDisposed)
+                if (DownloadProgressChanged!=null)
+                    DownloadProgressChanged(this, e);
         }
 
         void _downloader_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            DownloadFileCompleted(this, _DestinationFile);
+            if (!this.IsDisposed)
+                if (DownloadFileCompleted != null)
+                    DownloadFileCompleted(this, _DestinationFile);
         }
         #endregion
         #endregion

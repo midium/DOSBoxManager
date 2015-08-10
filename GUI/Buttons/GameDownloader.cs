@@ -19,9 +19,11 @@ namespace GUI.Buttons
         private string _destinationFile;
         private string _buttonText = "Download Game";
         private string _completedText = "Download Completed!!!";
+        private string _folderSelectionText = "Choose a folder where to download the game.";
 
         private MyAbandonware _helper = null;
         private DialogsHelpers _dialogsHelpers = null;
+
 
         #region "Events"
         #endregion
@@ -35,6 +37,15 @@ namespace GUI.Buttons
             {
                 _completedText = value;
                 lblStatus.Text = _completedText;
+            }
+        }
+
+        public string FolderSelectionText
+        {
+            get { return _folderSelectionText; }
+            set
+            {
+                _folderSelectionText = value;
             }
         }
 
@@ -152,7 +163,10 @@ namespace GUI.Buttons
         #region "Controls Events Handling"
         private void btnDownloadGame_Click(object sender, EventArgs e)
         {
-            string path = _dialogsHelpers.OpenFolder("Choose a folder where to download the game.", string.Empty, true, string.Empty);
+            string path = _dialogsHelpers.OpenFolder(_folderSelectionText, string.Empty, true, string.Empty);
+
+            if (path == string.Empty)
+                return;
             
             lblStatus.Visible = false;
             pgbDownload.Visible = true;
@@ -169,7 +183,8 @@ namespace GUI.Buttons
             if (InvokeRequired)
             {
                 //Cross-thread error prevention
-                Invoke(new EventHandler<System.Net.DownloadProgressChangedEventArgs>(_helper_DownloadProgressChanged), sender, e);
+                if(!this.IsDisposed)
+                    Invoke(new EventHandler<System.Net.DownloadProgressChangedEventArgs>(_helper_DownloadProgressChanged), sender, e);
 
             }
             else
@@ -197,7 +212,8 @@ namespace GUI.Buttons
             if (InvokeRequired)
             {
                 //Cross-thread error prevention
-                Invoke(new EventHandler<string>(_helper_DownloadFileCompleted), sender, DestinationFile);
+                if (!this.IsDisposed)
+                    Invoke(new EventHandler<string>(_helper_DownloadFileCompleted), sender, DestinationFile);
 
             }
             else

@@ -23,7 +23,7 @@ using Helpers.Dialogs;
 using Helpers.Data.Objects;
 using Helpers.Translation;
 using System.IO;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager.UI.Dialogs
 {
@@ -49,7 +49,7 @@ namespace DosBox_Manager.UI.Dialogs
         {
             InitializeComponent();
             _translator = manager.Translator;
-            _translator.TranslateUI(manager.AppSettings.Language, Name, Controls);
+            _translator.TranslateUI(manager.AppSettings.Language, this.Name, this.Controls);
             Text = isEditing ? _translator.GetTranslatedMessage(manager.AppSettings.Language, 39, "Edit Game") : _translator.GetTranslatedMessage(manager.AppSettings.Language, 40, "Add Game");
             _GameImage = game.ImagePath;
             _dialogsHelpers = new DialogsHelpers();

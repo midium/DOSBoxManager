@@ -114,17 +114,19 @@ namespace Helpers.Threading.Workers
         #region "Events Handling"
         private void _downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            if (DownloadProgressChanged != null)
-                DownloadProgressChanged(this, e);
+            if (!this.IsDisposed)
+                if (DownloadProgressChanged != null)
+                    DownloadProgressChanged(this, e);
         }
 
         private void _downloader_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            if (DownloadDataCompleted != null)
-            {
-                _imageStream = new MemoryStream(e.Result);
-                DownloadDataCompleted(this, _imageStream);
-            }
+            if (!this.IsDisposed)
+                if (DownloadDataCompleted != null)
+                {
+                    _imageStream = new MemoryStream(e.Result);
+                    DownloadDataCompleted(this, _imageStream);
+                }
         }
         #endregion
         #endregion

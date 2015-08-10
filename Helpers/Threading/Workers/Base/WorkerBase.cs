@@ -12,6 +12,7 @@ namespace Helpers.Threading.Workers.Base
     {
         #region "Declarations"
         protected ManualResetEvent _eventX;
+        private bool _isDisposed = false;
         #endregion
 
         #region "Declaration"
@@ -36,8 +37,14 @@ namespace Helpers.Threading.Workers.Base
         #region "IDisposable Implementation"
         public virtual void Dispose()
         {
+            _isDisposed = true;
             if(_eventX != null)
                 _eventX.Dispose();
+        }
+
+        public virtual bool IsDisposed
+        {
+            get { return _isDisposed; }
         }
         #endregion
     }

@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DosBox_Manager.Business;
+using Helpers.Business;
 using DosBox_Manager.UI.Dialogs;
 using DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs;
 using DosBox_Manager.UI.Panels;
@@ -85,7 +85,7 @@ namespace DosBox_Manager
         #region "Private Helping Methods"
         private void ShowMyAbandonware()
         {
-            MyAbandonwareSearchDialog mad = new MyAbandonwareSearchDialog();
+            MyAbandonwareSearchDialog mad = new MyAbandonwareSearchDialog(_manager );
             mad.ShowDialog();
             mad.Dispose();
         }

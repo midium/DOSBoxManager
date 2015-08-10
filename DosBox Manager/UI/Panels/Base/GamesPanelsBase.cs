@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Data.Objects;
 using Helpers.Translation;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager.UI.Panels.Base
 {

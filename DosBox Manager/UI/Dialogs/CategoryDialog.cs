@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Translation;
 using Helpers.Data.Objects;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager.UI.Dialogs
 {
@@ -51,7 +51,7 @@ namespace DosBox_Manager.UI.Dialogs
             _translator = manager.Translator;
             _AppSettings = manager.AppSettings;
             this.Text = _translator.GetTranslatedMessage(_AppSettings.Language, 35, "Add New Category");
-            _translator.TranslateUI(_AppSettings.Language, Name, Controls);
+            _translator.TranslateUI(_AppSettings.Language, this.Name, this.Controls);
         }
 
         public CategoryDialog(Helpers.Data.Objects.Settings AppSettings, TranslationsHelpers translator, Category editCat)
@@ -60,7 +60,7 @@ namespace DosBox_Manager.UI.Dialogs
             _translator = translator;
             _AppSettings = AppSettings;
             this.Text = _translator.GetTranslatedMessage(_AppSettings.Language, 36, "Edit Category");
-            _translator.TranslateUI(_AppSettings.Language, Name, Controls);
+            _translator.TranslateUI(_AppSettings.Language, this.Name, this.Controls);
             PopulateForm(editCat);
         }
         #endregion

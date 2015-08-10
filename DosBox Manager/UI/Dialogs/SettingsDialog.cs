@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DosBox_Manager.Business;
+using Helpers.Business;
 using DosBox_Manager.UI.Dialogs.SettingsPanels;
 using DosBox_Manager.UI.Dialogs.SettingsPanels.Base;
 using Helpers.Data;
@@ -57,7 +57,7 @@ namespace DosBox_Manager.UI.Dialogs
 
             _Translator = manager.Translator;
             this.Text = _Translator.GetTranslatedMessage(_Settings.Language, 51, "Application Settings");
-            _Translator.TranslateUI(_Settings.Language, Name, Controls);
+            _Translator.TranslateUI(_Settings.Language, this.Name, this.Controls);
             InitiateUI();
         }
         #endregion

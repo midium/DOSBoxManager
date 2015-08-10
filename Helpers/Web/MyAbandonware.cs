@@ -22,23 +22,26 @@ using Helpers.IO;
 using HtmlAgilityPack;
 using Helpers.Threading.Workers;
 using System.Threading;
+using Helpers.Business;
 
 namespace Helpers.Web
 {
     public class MyAbandonware
     {
         #region "Declarations"
-        HtmlDocument htmlDoc = null;
-        HttpWebRequest request = null;
-        HttpWebResponse response = null;
+        private HtmlDocument htmlDoc = null;
+        private HttpWebRequest request = null;
+        private HttpWebResponse response = null;
 
-        string baseSearchUri = "http://www.myabandonware.com/search/q/{0}";
-        string baseUri = "http://www.myabandonware.com/{0}";
+        private AppManager _manager = null;
 
-        FlagsHelper flags = null;
+        private string baseSearchUri = "http://www.myabandonware.com/search/q/{0}";
+        private string baseUri = "http://www.myabandonware.com/{0}";
 
-        FileDownloader _fileDownload = null;
-        Thread _thread = null;
+        private FlagsHelper flags = null;
+
+        private FileDownloader _fileDownload = null;
+        private Thread _thread = null;
 
         #region "Event"
         public delegate void DownloadFileCompletedDelegate(object sender, string DestinationFile);
@@ -50,10 +53,11 @@ namespace Helpers.Web
         #endregion
 
         #region "Constructors"
-        public MyAbandonware()
+        public MyAbandonware(AppManager Manager)
         {
             htmlDoc = new HtmlDocument();
             flags = new FlagsHelper();
+            _manager = Manager;
         }
         #endregion
 
@@ -69,7 +73,7 @@ namespace Helpers.Web
                 if (htmlDoc.ParseErrors != null && htmlDoc.ParseErrors.Count() > 0)
                 {
                     // Handle any parse errors as required
-
+                    
                 }
                 else
                 {

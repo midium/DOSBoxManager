@@ -24,7 +24,7 @@ using Helpers.Data;
 using DosBox_Manager.UI.Panels.PanelsEventArgs;
 using Helpers.Translation;
 using Helpers.Data.Objects;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager.UI.Panels
 {

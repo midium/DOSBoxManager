@@ -12,7 +12,7 @@
  */
 using System;
 using System.Windows.Forms;
-using DosBox_Manager.Business;
+using Helpers.Business;
 
 namespace DosBox_Manager
 {
