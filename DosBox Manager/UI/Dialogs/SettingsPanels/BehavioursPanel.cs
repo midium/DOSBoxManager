@@ -25,7 +25,6 @@ using Helpers.Data;
 using Helpers.Dialogs;
 using Helpers.Translation;
 using Helpers.Data.Objects;
-using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Dialogs.SettingsPanels
 {
@@ -46,15 +45,14 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             InitializeComponent();
         }
 
-        public BehavioursPanel(AppManager manager, string PanelName)
-            : base(manager, PanelName)
+        public BehavioursPanel(TranslationsHelpers Translator, Settings AppSettings, SettingsManager SettingsDB, string PanelName)
+            : base(Translator, AppSettings, PanelName)
         {
-            InitializeComponent();
-
             _flgInitiation = true;
+            InitializeComponent();
             _helpers = new SettingsHelpers();
             _dialogsHelpers = new DialogsHelpers();
-            _SettingsDB = manager.SettingsDB;
+            _SettingsDB = SettingsDB;
             CompileUI(_AppSettings);
             _flgInitiation = false;
 

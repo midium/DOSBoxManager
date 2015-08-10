@@ -65,7 +65,7 @@ namespace DosBox_Manager.UI.Dialogs
         #region "Private Methods"
         private void InitiateUI()
         {
-            _tabPanel = new DOSBoxPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
+            _tabPanel = new DOSBoxPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
             LoadTabPanel(_tabPanel);
         }
 
@@ -98,15 +98,15 @@ namespace DosBox_Manager.UI.Dialogs
             switch (index)
             {
                 case 1:
-                    _tabPanel = new DOSBoxPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
+                    _tabPanel = new DOSBoxPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 52, "DOSBox Settings"));
                     break;
 
                 case 2:
-                    _tabPanel = new GamesPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 53, "Games Settings"));
+                    _tabPanel = new GamesPanel(_Translator, _Settings, _Translator.GetTranslatedMessage(_Settings.Language, 53, "Games Settings"));
                     break;
 
                 case 3:
-                    _tabPanel = new BehavioursPanel(_manager, _Translator.GetTranslatedMessage(_Settings.Language, 54, "Application Behaviours"));
+                    _tabPanel = new BehavioursPanel(_Translator, _Settings, _manager.SettingsDB, _Translator.GetTranslatedMessage(_Settings.Language, 54, "Application Behaviours"));
                     ((BehavioursPanel)_tabPanel).LanguageChanged += new BehavioursPanel.LanguageChangedDelegate(pnl_LanguageChanged);
                     break;
 
@@ -126,5 +126,6 @@ namespace DosBox_Manager.UI.Dialogs
             _tabPanel.PanelName = _Translator.GetTranslatedMessage(_Settings.Language, 54, "Application Behaviours");
         }
         #endregion
+
     }
 }

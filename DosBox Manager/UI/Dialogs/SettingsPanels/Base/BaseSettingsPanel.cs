@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Helpers.Data.Objects;
 using Helpers.Translation;
-using DosBox_Manager.Business;
 
 namespace DosBox_Manager.UI.Dialogs.SettingsPanels.Base
 {
@@ -56,12 +55,12 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels.Base
             this.Dock = DockStyle.Fill;
         }
 
-        public BaseSettingsPanel(AppManager manager, string PanelName)
+        public BaseSettingsPanel(TranslationsHelpers Translator, Settings AppSettings, string PanelName)
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;
-            _AppSettings = manager.AppSettings;
-            _translator = manager.Translator;
+            _AppSettings = AppSettings;
+            _translator = Translator;
             this.PanelName = PanelName;
         }
         #endregion

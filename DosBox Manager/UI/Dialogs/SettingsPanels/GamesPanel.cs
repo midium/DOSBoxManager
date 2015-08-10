@@ -43,8 +43,8 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             _flgInitiation = false;
         }
 
-        public GamesPanel(AppManager manager, string PanelName)
-            : base(manager, PanelName)
+        public GamesPanel(TranslationsHelpers Translator, Settings AppSettings, string PanelName)
+            : base(Translator, AppSettings, PanelName)
         {
             _flgInitiation = true;
             InitializeComponent();

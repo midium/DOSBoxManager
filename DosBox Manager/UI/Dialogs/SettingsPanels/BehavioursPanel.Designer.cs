@@ -94,7 +94,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnSearchTextEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearchTextEditor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSearchTextEditor.Image = global::DosBox_Manager.Properties.Resources.drive_magnify;
-            this.btnSearchTextEditor.Location = new System.Drawing.Point(811, 66);
+            this.btnSearchTextEditor.Location = new System.Drawing.Point(1236, 66);
             this.btnSearchTextEditor.Name = "btnSearchTextEditor";
             this.btnSearchTextEditor.Size = new System.Drawing.Size(24, 24);
             this.btnSearchTextEditor.TabIndex = 28;
@@ -107,7 +107,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.btnTextEditor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTextEditor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnTextEditor.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnTextEditor.Location = new System.Drawing.Point(811, 39);
+            this.btnTextEditor.Location = new System.Drawing.Point(1236, 39);
             this.btnTextEditor.Name = "btnTextEditor";
             this.btnTextEditor.Size = new System.Drawing.Size(24, 24);
             this.btnTextEditor.TabIndex = 25;
@@ -158,7 +158,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.pnlPromptOptions.Controls.Add(this.lblPromptBefore);
             this.pnlPromptOptions.Location = new System.Drawing.Point(6, 275);
             this.pnlPromptOptions.Name = "pnlPromptOptions";
-            this.pnlPromptOptions.Size = new System.Drawing.Size(799, 77);
+            this.pnlPromptOptions.Size = new System.Drawing.Size(1224, 77);
             this.pnlPromptOptions.TabIndex = 34;
             // 
             // chkPromptGame
@@ -204,7 +204,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.pnlShowOptions.Controls.Add(this.lblShow);
             this.pnlShowOptions.Location = new System.Drawing.Point(6, 169);
             this.pnlShowOptions.Name = "pnlShowOptions";
-            this.pnlShowOptions.Size = new System.Drawing.Size(799, 100);
+            this.pnlShowOptions.Size = new System.Drawing.Size(1224, 100);
             this.pnlShowOptions.TabIndex = 33;
             // 
             // chkStatusBar
@@ -267,7 +267,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAdditionalCommands.Location = new System.Drawing.Point(6, 95);
             this.txtAdditionalCommands.Name = "txtAdditionalCommands";
-            this.txtAdditionalCommands.Size = new System.Drawing.Size(799, 22);
+            this.txtAdditionalCommands.Size = new System.Drawing.Size(1224, 22);
             this.txtAdditionalCommands.TabIndex = 27;
             this.txtAdditionalCommands.TextChanged += new System.EventHandler(this.txtAdditionalCommands_TextChanged);
             // 
@@ -287,7 +287,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTextEditor.Location = new System.Drawing.Point(6, 54);
             this.txtTextEditor.Name = "txtTextEditor";
-            this.txtTextEditor.Size = new System.Drawing.Size(799, 22);
+            this.txtTextEditor.Size = new System.Drawing.Size(1224, 22);
             this.txtTextEditor.TabIndex = 24;
             this.txtTextEditor.TextChanged += new System.EventHandler(this.txtTextEditor_TextChanged);
             // 
@@ -331,7 +331,7 @@ namespace DosBox_Manager.UI.Dialogs.SettingsPanels
             this.Controls.Add(this.txtTextEditor);
             this.Controls.Add(this.lblTextEditor);
             this.Name = "BehavioursPanel";
-            this.Size = new System.Drawing.Size(841, 862);
+            this.Size = new System.Drawing.Size(1266, 859);
             this.pnlPromptOptions.ResumeLayout(false);
             this.pnlPromptOptions.PerformLayout();
             this.pnlShowOptions.ResumeLayout(false);
