@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GUI.Scrollbar;
+using System.Drawing;
 
 namespace GUI.Images
 {
@@ -18,6 +20,8 @@ namespace GUI.Images
 
         private int _countItems = 0;
         private int _currentlySelected = 0;
+
+        private ScrollBarEx scroller;
 
         #region "Events"
         public delegate void GameSelectedDelegate(object sender, MyAbandonGameFound game);
@@ -105,12 +109,33 @@ namespace GUI.Images
 
                     _countItems++;
                 }
+
+                //Now checking if it is necessary to add the scrollbar
+                if ((_gameCards.Count * 150) > this.Height)
+                {
+                    scroller = new ScrollBarEx();
+                    scroller.BringToFront();
+                    scroller.Orientation = ScrollBarOrientation.Vertical;
+                    scroller.BorderColor = Color.FromArgb(64, 64, 64);
+                    scroller.Dock = DockStyle.Right;
+                    scroller.Visible = true;
+                    scroller.Maximum = (_gameCards.Count - 1) * 85;
+                    scroller.Scroll += scroller_Scroll;
+                    this.MouseWheel += cards_MouseWheel;
+                    this.Controls.Add(scroller);
+                }
+                else if (scroller != null)
+                {
+                    scroller.Scroll -= scroller_Scroll;
+                    scroller.Dispose();
+                    scroller = null;
+                }
             }
         }
 
         private void SetupCard(FoundedGameCard card)
         {
-            card.Width = this.Width - 20;
+            card.Width = this.Width - 22;
             card.Height = 85;
             card.Top = _countItems * 85;
 
@@ -140,6 +165,28 @@ namespace GUI.Images
         #endregion
 
         #region "Control Events Handling"
+        private void cards_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (scroller == null)
+                return;
+            if (scroller.Value - e.Delta < scroller.Minimum)
+                scroller.Value = scroller.Minimum;
+            else if (scroller.Value - e.Delta > scroller.Maximum)
+                scroller.Value = scroller.Maximum;
+            else
+                scroller.Value -= e.Delta;
+        }
+
+        private void scroller_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.OldValue == -1)
+                return;
+
+            foreach (Control c in this.Controls)
+                c.Top -= (e.NewValue - e.OldValue);
+
+        }
+
         void card_FoundedGameCardClick(object sender)
         {
             FoundedGameCard fgc = (FoundedGameCard)sender;

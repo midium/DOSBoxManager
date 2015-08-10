@@ -198,7 +198,7 @@ namespace GUI.Images
             else if (_isHover)
                 e.Graphics.DrawLine(Pens.Orange, 0, this.Height - 1, this.Width, this.Height - 1);
             else
-                e.Graphics.DrawLine(new Pen(Color.DarkOrange, 2), 0, this.Height - 1, this.Width, this.Height - 1);
+                e.Graphics.DrawLine(new Pen(Color.Cyan, 2), 0, this.Height - 1, this.Width, this.Height - 1);
         }
         #endregion
         #endregion

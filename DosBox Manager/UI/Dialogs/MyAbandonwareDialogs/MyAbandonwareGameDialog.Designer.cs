@@ -129,7 +129,6 @@
             // 
             // screenshotsList
             // 
-            this.screenshotsList.AutoScroll = true;
             this.screenshotsList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.screenshotsList.ImageURIs = null;
             this.screenshotsList.Location = new System.Drawing.Point(378, 68);

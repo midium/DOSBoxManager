@@ -156,12 +156,11 @@
             // 
             // foundedGamesList
             // 
-            this.foundedGamesList.AutoScroll = true;
             this.foundedGamesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.foundedGamesList.Games = null;
             this.foundedGamesList.Location = new System.Drawing.Point(15, 150);
             this.foundedGamesList.Name = "foundedGamesList";
-            this.foundedGamesList.Size = new System.Drawing.Size(397, 300);
+            this.foundedGamesList.Size = new System.Drawing.Size(400, 300);
             this.foundedGamesList.TabIndex = 18;
             this.foundedGamesList.GameSelected += new GUI.Images.FoundedGamesList.GameSelectedDelegate(this.foundedGamesList_GameSelected);
             this.foundedGamesList.GameDoubleClick += new GUI.Images.FoundedGamesList.GameDoubleClickDelegate(this.foundedGamesList_GameDoubleClick);
@@ -171,6 +170,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(558, 523);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.pnlMain);

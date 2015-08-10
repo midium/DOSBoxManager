@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GUI.Scrollbar;
 
 namespace GUI.Images
 {
@@ -18,6 +19,8 @@ namespace GUI.Images
 
         private int _countItems = 0;
         private int _currentlySelected = 0;
+
+        private ScrollBarEx scroller;
 
         #region "Events"
         public delegate void ScreenshotSelectedDelegate(object sender, Image screenshot);
@@ -101,6 +104,27 @@ namespace GUI.Images
 
                     _countItems++;
                 }
+
+                //Now checking if it is necessary to add the scrollbar
+                if ((_screenshots.Count * 150) > this.Height)
+                {
+                    scroller = new ScrollBarEx();
+                    scroller.BringToFront();
+                    scroller.Orientation = ScrollBarOrientation.Vertical;
+                    scroller.BorderColor = Color.FromArgb(64, 64, 64);
+                    scroller.Dock = DockStyle.Right;
+                    scroller.Visible = true;
+                    scroller.Maximum = (_screenshots.Count - 1) * 150;
+                    scroller.Scroll += scroller_Scroll;
+                    this.MouseWheel += screenshot_MouseWheel;
+                    this.Controls.Add(scroller);
+                }
+                else if (scroller != null)
+                {
+                    scroller.Scroll -= scroller_Scroll;
+                    scroller.Dispose();
+                    scroller = null;
+                }
             }
         }
 
@@ -126,7 +150,7 @@ namespace GUI.Images
 
         private void SetupScreenshot(Screenshot screenshot)
         {
-            screenshot.Width = this.Width - 20;
+            screenshot.Width = this.Width - 22;
             screenshot.Height = 150;
             screenshot.Top = _countItems * 150;
             screenshot.IsSelected = false;
@@ -153,6 +177,28 @@ namespace GUI.Images
         #endregion
 
         #region "Events Handling"
+        private void screenshot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (scroller == null)
+                return;
+            if (scroller.Value - e.Delta < scroller.Minimum)
+                scroller.Value = scroller.Minimum;
+            else if (scroller.Value - e.Delta > scroller.Maximum)
+                scroller.Value = scroller.Maximum;
+            else
+                scroller.Value -= e.Delta;
+        }
+
+        private void scroller_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.OldValue == -1)
+                return;
+
+            foreach (Control c in this.Controls)
+                c.Top -= (e.NewValue - e.OldValue);
+
+        }
+
         private void screenshot_MouseEnter(object sender, EventArgs e)
         {
             this.Focus();

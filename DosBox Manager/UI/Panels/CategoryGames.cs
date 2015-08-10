@@ -113,6 +113,12 @@ namespace DosBox_Manager.UI.Panels
             if (cms == null)
                 return;
             cms.Dispose();
+
+            if (scroller != null)
+            {
+                scroller.Scroll -= scroller_Scroll;
+                scroller.Dispose();
+            }
         }
         #endregion
 
@@ -150,7 +156,7 @@ namespace DosBox_Manager.UI.Panels
                 gameBox.Top = rowsCount * 150 + (rowsCount == 0 ? 0 : 5);
                 gameBox.Left = num5;
                 num5 += gameBox.Width;
-                this.Controls.Add((Control)gameBox);
+                this.Controls.Add(gameBox);
                 ++columnsCount;
                 if (columnsCount >= maxRenderableColumns)
                 {
@@ -167,15 +173,15 @@ namespace DosBox_Manager.UI.Panels
                 scroller.Dock = DockStyle.Right;
                 scroller.Visible = true;
                 scroller.Maximum = maxRenderableRows * 150;
-                scroller.Scroll += new ScrollEventHandler(scroller_Scroll);
-                MouseWheel += new MouseEventHandler(CategoryGames_MouseWheel);
-                this.Controls.Add((Control)scroller);
+                scroller.Scroll += scroller_Scroll;
+                this.MouseWheel += CategoryGames_MouseWheel;
+                this.Controls.Add(scroller);
             }
             else if (scroller != null)
             {
-                scroller.Scroll -= new ScrollEventHandler(scroller_Scroll);
+                scroller.Scroll -= scroller_Scroll;
                 scroller.Dispose();
-                scroller = (ScrollBarEx)null;
+                scroller = null;
             }
             this.Focus();
         }
@@ -186,12 +192,12 @@ namespace DosBox_Manager.UI.Panels
         {
             if (scroller == null)
                 return;
-            if (scroller.Value + e.Delta < scroller.Minimum)
+            if (scroller.Value - e.Delta < scroller.Minimum)
                 scroller.Value = scroller.Minimum;
-            else if (scroller.Value + e.Delta > scroller.Maximum)
+            else if (scroller.Value - e.Delta > scroller.Maximum)
                 scroller.Value = scroller.Maximum;
             else
-                scroller.Value += e.Delta;
+                scroller.Value -= e.Delta;
         }
 
         private void scroller_Scroll(object sender, ScrollEventArgs e)

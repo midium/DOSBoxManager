@@ -36,7 +36,7 @@ namespace DosBox_Manager.UI.Panels
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "CategoryGames";
-            this.Size = new System.Drawing.Size(841, 862);
+            this.Size = new System.Drawing.Size(1266, 859);
             this.ResumeLayout(false);
 
         }
