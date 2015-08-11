@@ -53,6 +53,10 @@ namespace GUI.Tabs.Base
         #region "Tab Buttons"
         protected void tabButton_CheckedChanged(object sender, EventArgs e)
         {
+            //Preventing creshing
+            if (TabChanged == null)
+                return;
+
             RadioButton btn = (RadioButton)sender;
 
             if (_buttons.ContainsKey(btn.Name))
