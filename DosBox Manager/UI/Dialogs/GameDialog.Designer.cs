@@ -187,15 +187,17 @@ namespace DosBox_Manager.UI.Dialogs
             this.pnlMain.Controls.Add(this.lblTitle);
             this.pnlMain.Location = new System.Drawing.Point(0, 0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(517, 644);
+            this.pnlMain.Size = new System.Drawing.Size(565, 644);
             this.pnlMain.TabIndex = 5;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
             // txtAdditionalCommands
             // 
+            this.txtAdditionalCommands.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAdditionalCommands.Location = new System.Drawing.Point(15, 543);
             this.txtAdditionalCommands.Name = "txtAdditionalCommands";
-            this.txtAdditionalCommands.Size = new System.Drawing.Size(425, 22);
+            this.txtAdditionalCommands.Size = new System.Drawing.Size(473, 22);
             this.txtAdditionalCommands.TabIndex = 30;
             // 
             // label9
@@ -211,9 +213,11 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // txtCDImage
             // 
+            this.txtCDImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCDImage.Location = new System.Drawing.Point(15, 416);
             this.txtCDImage.Name = "txtCDImage";
-            this.txtCDImage.Size = new System.Drawing.Size(425, 22);
+            this.txtCDImage.Size = new System.Drawing.Size(473, 22);
             this.txtCDImage.TabIndex = 25;
             // 
             // label8
@@ -229,9 +233,11 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // txtGameConfigurationFile
             // 
+            this.txtGameConfigurationFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGameConfigurationFile.Location = new System.Drawing.Point(15, 347);
             this.txtGameConfigurationFile.Name = "txtGameConfigurationFile";
-            this.txtGameConfigurationFile.Size = new System.Drawing.Size(461, 22);
+            this.txtGameConfigurationFile.Size = new System.Drawing.Size(509, 22);
             this.txtGameConfigurationFile.TabIndex = 21;
             // 
             // label7
@@ -247,9 +253,11 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // txtGameSetupExe
             // 
+            this.txtGameSetupExe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGameSetupExe.Location = new System.Drawing.Point(15, 301);
             this.txtGameSetupExe.Name = "txtGameSetupExe";
-            this.txtGameSetupExe.Size = new System.Drawing.Size(461, 22);
+            this.txtGameSetupExe.Size = new System.Drawing.Size(509, 22);
             this.txtGameSetupExe.TabIndex = 18;
             // 
             // label6
@@ -265,9 +273,11 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // txtMountDirectory
             // 
+            this.txtMountDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMountDirectory.Location = new System.Drawing.Point(15, 255);
             this.txtMountDirectory.Name = "txtMountDirectory";
-            this.txtMountDirectory.Size = new System.Drawing.Size(461, 22);
+            this.txtMountDirectory.Size = new System.Drawing.Size(509, 22);
             this.txtMountDirectory.TabIndex = 15;
             // 
             // label5
@@ -283,9 +293,11 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // txtGameExe
             // 
+            this.txtGameExe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGameExe.Location = new System.Drawing.Point(15, 209);
             this.txtGameExe.Name = "txtGameExe";
-            this.txtGameExe.Size = new System.Drawing.Size(461, 22);
+            this.txtGameExe.Size = new System.Drawing.Size(509, 22);
             this.txtGameExe.TabIndex = 12;
             // 
             // label4
@@ -348,6 +360,8 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // pnlOtherOptions
             // 
+            this.pnlOtherOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOtherOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlOtherOptions.Controls.Add(this.chkQuitOnExit);
             this.pnlOtherOptions.Controls.Add(this.chkFullscreen);
@@ -355,7 +369,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.pnlOtherOptions.Controls.Add(this.lblOtherOptions);
             this.pnlOtherOptions.Location = new System.Drawing.Point(15, 571);
             this.pnlOtherOptions.Name = "pnlOtherOptions";
-            this.pnlOtherOptions.Size = new System.Drawing.Size(425, 52);
+            this.pnlOtherOptions.Size = new System.Drawing.Size(473, 52);
             this.pnlOtherOptions.TabIndex = 31;
             // 
             // chkQuitOnExit
@@ -412,6 +426,8 @@ namespace DosBox_Manager.UI.Dialogs
             // 
             // pnlMountingOptions
             // 
+            this.pnlMountingOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMountingOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlMountingOptions.Controls.Add(this.rdbNone);
             this.pnlMountingOptions.Controls.Add(this.rdbMountFloppy);
@@ -419,7 +435,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.pnlMountingOptions.Controls.Add(this.lblMountingOptions);
             this.pnlMountingOptions.Location = new System.Drawing.Point(15, 444);
             this.pnlMountingOptions.Name = "pnlMountingOptions";
-            this.pnlMountingOptions.Size = new System.Drawing.Size(425, 75);
+            this.pnlMountingOptions.Size = new System.Drawing.Size(473, 75);
             this.pnlMountingOptions.TabIndex = 28;
             // 
             // rdbNone
@@ -470,7 +486,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnCDFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCDFolder.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCDFolder.Image = global::DosBox_Manager.Properties.Resources.folder_search;
-            this.btnCDFolder.Location = new System.Drawing.Point(482, 412);
+            this.btnCDFolder.Location = new System.Drawing.Point(530, 412);
             this.btnCDFolder.Name = "btnCDFolder";
             this.btnCDFolder.Size = new System.Drawing.Size(30, 30);
             this.btnCDFolder.TabIndex = 27;
@@ -483,7 +499,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnCDImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCDImage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCDImage.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnCDImage.Location = new System.Drawing.Point(446, 412);
+            this.btnCDImage.Location = new System.Drawing.Point(494, 412);
             this.btnCDImage.Name = "btnCDImage";
             this.btnCDImage.Size = new System.Drawing.Size(30, 30);
             this.btnCDImage.TabIndex = 26;
@@ -519,7 +535,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnCustomConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCustomConfig.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCustomConfig.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnCustomConfig.Location = new System.Drawing.Point(482, 343);
+            this.btnCustomConfig.Location = new System.Drawing.Point(530, 343);
             this.btnCustomConfig.Name = "btnCustomConfig";
             this.btnCustomConfig.Size = new System.Drawing.Size(30, 30);
             this.btnCustomConfig.TabIndex = 22;
@@ -544,7 +560,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnGameSetupEXE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGameSetupEXE.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGameSetupEXE.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnGameSetupEXE.Location = new System.Drawing.Point(482, 297);
+            this.btnGameSetupEXE.Location = new System.Drawing.Point(530, 297);
             this.btnGameSetupEXE.Name = "btnGameSetupEXE";
             this.btnGameSetupEXE.Size = new System.Drawing.Size(30, 30);
             this.btnGameSetupEXE.TabIndex = 19;
@@ -569,7 +585,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnChooseMountDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChooseMountDirectory.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnChooseMountDirectory.Image = global::DosBox_Manager.Properties.Resources.folder_search;
-            this.btnChooseMountDirectory.Location = new System.Drawing.Point(482, 251);
+            this.btnChooseMountDirectory.Location = new System.Drawing.Point(530, 251);
             this.btnChooseMountDirectory.Name = "btnChooseMountDirectory";
             this.btnChooseMountDirectory.Size = new System.Drawing.Size(30, 30);
             this.btnChooseMountDirectory.TabIndex = 16;
@@ -594,7 +610,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnOpenGameEXE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenGameEXE.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpenGameEXE.Image = global::DosBox_Manager.Properties.Resources.magnifier;
-            this.btnOpenGameEXE.Location = new System.Drawing.Point(482, 205);
+            this.btnOpenGameEXE.Location = new System.Drawing.Point(530, 205);
             this.btnOpenGameEXE.Name = "btnOpenGameEXE";
             this.btnOpenGameEXE.Size = new System.Drawing.Size(30, 30);
             this.btnOpenGameEXE.TabIndex = 13;
@@ -650,7 +666,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnClearImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearImage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnClearImage.Image = global::DosBox_Manager.Properties.Resources.broom;
-            this.btnClearImage.Location = new System.Drawing.Point(482, 61);
+            this.btnClearImage.Location = new System.Drawing.Point(530, 61);
             this.btnClearImage.Name = "btnClearImage";
             this.btnClearImage.Size = new System.Drawing.Size(30, 30);
             this.btnClearImage.TabIndex = 6;
@@ -663,7 +679,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnOpenImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOpenImage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpenImage.Image = global::DosBox_Manager.Properties.Resources.folder_image;
-            this.btnOpenImage.Location = new System.Drawing.Point(482, 25);
+            this.btnOpenImage.Location = new System.Drawing.Point(530, 25);
             this.btnOpenImage.Name = "btnOpenImage";
             this.btnOpenImage.Size = new System.Drawing.Size(30, 30);
             this.btnOpenImage.TabIndex = 5;
@@ -677,7 +693,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.pctCover.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pctCover.Location = new System.Drawing.Point(368, 25);
             this.pctCover.Name = "pctCover";
-            this.pctCover.Size = new System.Drawing.Size(108, 151);
+            this.pctCover.Size = new System.Drawing.Size(157, 119);
             this.pctCover.TabIndex = 3;
             this.pctCover.TabStop = false;
             // 
@@ -710,7 +726,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnCommit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCommit.Image = global::DosBox_Manager.Properties.Resources.disk;
             this.btnCommit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCommit.Location = new System.Drawing.Point(432, 653);
+            this.btnCommit.Location = new System.Drawing.Point(480, 653);
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Size = new System.Drawing.Size(77, 30);
             this.btnCommit.TabIndex = 3;
@@ -726,7 +742,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCancel.Image = global::DosBox_Manager.Properties.Resources.cross;
             this.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCancel.Location = new System.Drawing.Point(349, 653);
+            this.btnCancel.Location = new System.Drawing.Point(397, 653);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(77, 30);
             this.btnCancel.TabIndex = 4;
@@ -739,7 +755,7 @@ namespace DosBox_Manager.UI.Dialogs
             this.AcceptButton = this.btnCommit;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(516, 692);
+            this.ClientSize = new System.Drawing.Size(564, 692);
             this.ControlBox = false;
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.btnCancel);
