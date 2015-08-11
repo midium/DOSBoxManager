@@ -41,6 +41,8 @@ namespace GUI.Boxes
         private Font _textFont = null;
         private bool _render3D = true;
 
+        private int _maxNameLength = 25;
+
         public GameBox()
         {
             InitializeComponent();
@@ -196,7 +198,7 @@ namespace GUI.Boxes
 
             //Reducting game name to max of 18 chars
             if (NameToDisplay.Length > 18)
-                NameToDisplay = NameToDisplay.Substring(0, 17) + "...";
+                NameToDisplay = NameToDisplay.Substring(0, _maxNameLength) + "...";
 
             SizeF measures = gr.MeasureString(NameToDisplay, _textFont);
 
@@ -218,9 +220,9 @@ namespace GUI.Boxes
             GraphicsPath stringPath = new GraphicsPath();
             String NameToDisplay = _GameName;
 
-            //Reducting game name to max of 18 chars
-            if (NameToDisplay.Length > 18)
-                NameToDisplay = NameToDisplay.Substring(0, 17) + "...";
+            //Reducting game name to a given max 
+            if (NameToDisplay.Length > _maxNameLength)
+                NameToDisplay = NameToDisplay.Substring(0, _maxNameLength) + "...";
 
             SizeF measures = gr.MeasureString(NameToDisplay, _textFont);
 

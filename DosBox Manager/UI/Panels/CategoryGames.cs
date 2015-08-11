@@ -132,13 +132,13 @@ namespace DosBox_Manager.UI.Panels
         public override void UpdateUI()
         {
             Controls.Clear();
-            int maxRenderableColumns = (Width - 20) / 100;
-            int maxRenderableRows = Height / 150;
+            int maxRenderableColumns = (Width - 20) / 180;
+            int maxRenderableRows = Height / 160;
             int rowsCount = 0;
             int columnsCount = 0;
             if (_games == null || _games.Count <= 0)
                 return;
-            int num5 = 0;
+            int currentLeft = 0;
             foreach (Game game in _games)
             {
                 GameBox gameBox = new GameBox(_settings.BoxRendered);
@@ -153,16 +153,16 @@ namespace DosBox_Manager.UI.Panels
                     gameBox.GameImage = null;
 
                 gameBox.GameID = game.ID;
-                gameBox.Top = rowsCount * 150 + (rowsCount == 0 ? 0 : 5);
-                gameBox.Left = num5;
-                num5 += gameBox.Width;
+                gameBox.Top = rowsCount * 160 + (rowsCount == 0 ? 0 : 5);
+                gameBox.Left = currentLeft;
+                currentLeft += gameBox.Width;
                 this.Controls.Add(gameBox);
                 ++columnsCount;
                 if (columnsCount >= maxRenderableColumns)
                 {
                     columnsCount = 0;
                     ++rowsCount;
-                    num5 = 0;
+                    currentLeft = 0;
                 }
             }
             if (rowsCount + 1 > maxRenderableRows)
@@ -172,7 +172,7 @@ namespace DosBox_Manager.UI.Panels
                 scroller.BorderColor = Color.FromArgb(64, 64, 64);
                 scroller.Dock = DockStyle.Right;
                 scroller.Visible = true;
-                scroller.Maximum = maxRenderableRows * 150;
+                scroller.Maximum = maxRenderableRows * 160;
                 scroller.Scroll += scroller_Scroll;
                 this.MouseWheel += CategoryGames_MouseWheel;
                 this.Controls.Add(scroller);

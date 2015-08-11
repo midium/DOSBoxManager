@@ -87,7 +87,7 @@ namespace DosBox_Manager.UI.Panels
             this.pnlSearch.Location = new System.Drawing.Point(0, 0);
             this.pnlSearch.Margin = new System.Windows.Forms.Padding(0);
             this.pnlSearch.Name = "pnlSearch";
-            this.pnlSearch.Size = new System.Drawing.Size(841, 862);
+            this.pnlSearch.Size = new System.Drawing.Size(1266, 859);
             this.pnlSearch.TabIndex = 1;
             this.pnlSearch.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSearch_Paint);
             // 
@@ -98,7 +98,7 @@ namespace DosBox_Manager.UI.Panels
             this.btnCommit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCommit.Image = global::DosBox_Manager.Properties.Resources.magnifier;
             this.btnCommit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCommit.Location = new System.Drawing.Point(750, 811);
+            this.btnCommit.Location = new System.Drawing.Point(1175, 808);
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Size = new System.Drawing.Size(77, 30);
             this.btnCommit.TabIndex = 47;
@@ -137,7 +137,7 @@ namespace DosBox_Manager.UI.Panels
             this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Image = global::DosBox_Manager.Properties.Resources.box_closed;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(598, 34);
+            this.label3.Location = new System.Drawing.Point(1023, 34);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(21, 22);
             this.label3.TabIndex = 45;
@@ -146,7 +146,7 @@ namespace DosBox_Manager.UI.Panels
             // txtYear
             // 
             this.txtYear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtYear.Location = new System.Drawing.Point(501, 56);
+            this.txtYear.Location = new System.Drawing.Point(926, 56);
             this.txtYear.Name = "txtYear";
             this.txtYear.Size = new System.Drawing.Size(85, 22);
             this.txtYear.TabIndex = 1;
@@ -158,7 +158,7 @@ namespace DosBox_Manager.UI.Panels
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Image = global::DosBox_Manager.Properties.Resources.calendar;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(498, 34);
+            this.label2.Location = new System.Drawing.Point(923, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(21, 22);
             this.label2.TabIndex = 44;
@@ -170,7 +170,7 @@ namespace DosBox_Manager.UI.Panels
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTitle.Location = new System.Drawing.Point(22, 56);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(464, 22);
+            this.txtTitle.Size = new System.Drawing.Size(889, 22);
             this.txtTitle.TabIndex = 0;
             this.txtTitle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.panel_KeyDown);
             // 
@@ -188,7 +188,7 @@ namespace DosBox_Manager.UI.Panels
             // txtDeveloper
             // 
             this.txtDeveloper.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDeveloper.Location = new System.Drawing.Point(601, 56);
+            this.txtDeveloper.Location = new System.Drawing.Point(1026, 56);
             this.txtDeveloper.Name = "txtDeveloper";
             this.txtDeveloper.Size = new System.Drawing.Size(226, 22);
             this.txtDeveloper.TabIndex = 2;
@@ -200,7 +200,7 @@ namespace DosBox_Manager.UI.Panels
             this.lblDeveloper.AutoSize = true;
             this.lblDeveloper.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDeveloper.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblDeveloper.Location = new System.Drawing.Point(615, 39);
+            this.lblDeveloper.Location = new System.Drawing.Point(1040, 39);
             this.lblDeveloper.Name = "lblDeveloper";
             this.lblDeveloper.Size = new System.Drawing.Size(63, 13);
             this.lblDeveloper.TabIndex = 41;
@@ -213,7 +213,7 @@ namespace DosBox_Manager.UI.Panels
             this.lblYear.AutoSize = true;
             this.lblYear.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblYear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblYear.Location = new System.Drawing.Point(516, 39);
+            this.lblYear.Location = new System.Drawing.Point(941, 39);
             this.lblYear.Name = "lblYear";
             this.lblYear.Size = new System.Drawing.Size(33, 13);
             this.lblYear.TabIndex = 39;
@@ -257,7 +257,7 @@ namespace DosBox_Manager.UI.Panels
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlSearch);
             this.Name = "SearchGames";
-            this.Size = new System.Drawing.Size(841, 862);
+            this.Size = new System.Drawing.Size(1266, 859);
             this.pnlSearch.ResumeLayout(false);
             this.pnlSearch.PerformLayout();
             this.ResumeLayout(false);

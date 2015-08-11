@@ -37,10 +37,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaximumSize = new System.Drawing.Size(100, 150);
-            this.MinimumSize = new System.Drawing.Size(100, 150);
+            this.MaximumSize = new System.Drawing.Size(180, 160);
+            this.MinimumSize = new System.Drawing.Size(180, 160);
             this.Name = "GameBox";
-            this.Size = new System.Drawing.Size(100, 150);
+            this.Size = new System.Drawing.Size(180, 160);
             this.ResumeLayout(false);
 
         }
