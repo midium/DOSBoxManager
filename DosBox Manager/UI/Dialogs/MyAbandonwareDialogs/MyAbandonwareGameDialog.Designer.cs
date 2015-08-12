@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyAbandonwareGameDialog));
             this.pnlMain = new System.Windows.Forms.Panel();
-            this.gameDownloader = new GUI.Buttons.GameDownloader();
-            this.screenshotsList = new GUI.Images.ScreenshotsList(this.components);
             this.lblScreenshots = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.lblDescription = new System.Windows.Forms.Label();
@@ -64,6 +62,8 @@
             this.pctIcon = new System.Windows.Forms.PictureBox();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.gameDownloader = new GUI.Buttons.GameDownloader();
+            this.screenshotsList = new GUI.Images.ScreenshotsList(this.components);
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctIcon)).BeginInit();
             this.SuspendLayout();
@@ -111,32 +111,6 @@
             this.pnlMain.TabIndex = 0;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
-            // gameDownloader
-            // 
-            this.gameDownloader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.gameDownloader.ButtonText = "Download Game";
-            this.gameDownloader.CompletedText = "Download Completed!!!";
-            this.gameDownloader.DestinationFile = null;
-            this.gameDownloader.DownloadURI = null;
-            this.gameDownloader.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gameDownloader.ForeColor = System.Drawing.Color.White;
-            this.gameDownloader.Helper = null;
-            this.gameDownloader.Location = new System.Drawing.Point(374, 514);
-            this.gameDownloader.MinimumSize = new System.Drawing.Size(150, 59);
-            this.gameDownloader.Name = "gameDownloader";
-            this.gameDownloader.Size = new System.Drawing.Size(236, 59);
-            this.gameDownloader.TabIndex = 36;
-            // 
-            // screenshotsList
-            // 
-            this.screenshotsList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.screenshotsList.ImageURIs = null;
-            this.screenshotsList.Location = new System.Drawing.Point(378, 68);
-            this.screenshotsList.Name = "screenshotsList";
-            this.screenshotsList.Size = new System.Drawing.Size(230, 440);
-            this.screenshotsList.TabIndex = 35;
-            this.screenshotsList.ScreenshotSelected += new GUI.Images.ScreenshotsList.ScreenshotSelectedDelegate(this.screenshotsList_ScreenshotSelected);
-            // 
             // lblScreenshots
             // 
             this.lblScreenshots.AutoSize = true;
@@ -152,6 +126,7 @@
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.ReadOnly = true;
+            this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtDescription.Size = new System.Drawing.Size(350, 174);
             this.txtDescription.TabIndex = 30;
             // 
@@ -417,6 +392,33 @@
             this.btnCancel.Text = "Close";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // gameDownloader
+            // 
+            this.gameDownloader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.gameDownloader.ButtonText = "Download Game";
+            this.gameDownloader.CompletedText = "Download Completed!!!";
+            this.gameDownloader.DestinationFile = null;
+            this.gameDownloader.DownloadURI = null;
+            this.gameDownloader.FolderSelectionText = "Choose a folder where to download the game.";
+            this.gameDownloader.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameDownloader.ForeColor = System.Drawing.Color.White;
+            this.gameDownloader.Helper = null;
+            this.gameDownloader.Location = new System.Drawing.Point(374, 514);
+            this.gameDownloader.MinimumSize = new System.Drawing.Size(150, 59);
+            this.gameDownloader.Name = "gameDownloader";
+            this.gameDownloader.Size = new System.Drawing.Size(236, 59);
+            this.gameDownloader.TabIndex = 36;
+            // 
+            // screenshotsList
+            // 
+            this.screenshotsList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.screenshotsList.ImageURIs = null;
+            this.screenshotsList.Location = new System.Drawing.Point(378, 68);
+            this.screenshotsList.Name = "screenshotsList";
+            this.screenshotsList.Size = new System.Drawing.Size(230, 440);
+            this.screenshotsList.TabIndex = 35;
+            this.screenshotsList.ScreenshotSelected += new GUI.Images.ScreenshotsList.ScreenshotSelectedDelegate(this.screenshotsList_ScreenshotSelected);
             // 
             // MyAbandonwareGameDialog
             // 

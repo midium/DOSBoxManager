@@ -90,7 +90,7 @@
             this.gameTabs.TabIndex = 0;
             this.gameTabs.TabChanged += new GUI.Tabs.Base.TabsBase.TabChangedDelegate(this.gameTabs_TabChanged);
             // 
-            // NewGameDialog
+            // GameDialog
             // 
             this.AcceptButton = this.btnCommit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

@@ -32,7 +32,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.components = new System.ComponentModel.Container();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.lblImage = new System.Windows.Forms.Label();
-            this.txtVote = new GUI.TextBoxes.NumericTextBox(this.components);
             this.txtDosBox = new System.Windows.Forms.TextBox();
             this.txtPerspectives = new System.Windows.Forms.TextBox();
             this.txtPublisher = new System.Windows.Forms.TextBox();
@@ -48,7 +47,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.lblCategory = new System.Windows.Forms.Label();
             this.lblPlatform = new System.Windows.Forms.Label();
             this.lblReleasedIn = new System.Windows.Forms.Label();
-            this.txtYear = new GUI.TextBoxes.NumericTextBox(this.components);
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.txtDeveloper = new System.Windows.Forms.TextBox();
             this.lblDeveloper = new System.Windows.Forms.Label();
@@ -71,6 +69,9 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.btnClearImage = new System.Windows.Forms.Button();
             this.btnOpenImage = new System.Windows.Forms.Button();
             this.cboCategory = new System.Windows.Forms.ComboBox();
+            this.btnInfo = new System.Windows.Forms.Button();
+            this.txtVote = new GUI.TextBoxes.NumericTextBox(this.components);
+            this.txtYear = new GUI.TextBoxes.NumericTextBox(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pctCover)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +80,8 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.txtDescription.Location = new System.Drawing.Point(16, 323);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(262, 111);
+            this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtDescription.Size = new System.Drawing.Size(262, 73);
             this.txtDescription.TabIndex = 112;
             this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
             // 
@@ -92,14 +94,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.lblImage.Size = new System.Drawing.Size(42, 13);
             this.lblImage.TabIndex = 85;
             this.lblImage.Text = "Image:";
-            // 
-            // txtVote
-            // 
-            this.txtVote.Location = new System.Drawing.Point(187, 274);
-            this.txtVote.Name = "txtVote";
-            this.txtVote.Size = new System.Drawing.Size(91, 22);
-            this.txtVote.TabIndex = 121;
-            this.txtVote.TextChanged += new System.EventHandler(this.txtVote_TextChanged);
             // 
             // txtDosBox
             // 
@@ -238,14 +232,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.lblReleasedIn.Size = new System.Drawing.Size(69, 13);
             this.lblReleasedIn.TabIndex = 96;
             this.lblReleasedIn.Text = "Released In:";
-            // 
-            // txtYear
-            // 
-            this.txtYear.Location = new System.Drawing.Point(16, 81);
-            this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(85, 22);
-            this.txtYear.TabIndex = 90;
-            this.txtYear.TextChanged += new System.EventHandler(this.txtYear_TextChanged);
             // 
             // txtTitle
             // 
@@ -489,10 +475,42 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             this.cboCategory.TabIndex = 124;
             this.cboCategory.SelectedIndexChanged += new System.EventHandler(this.cboCategory_SelectedIndexChanged);
             // 
+            // btnInfo
+            // 
+            this.btnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInfo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnInfo.Image = global::DosBox_Manager.Properties.Resources.myabandonware;
+            this.btnInfo.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnInfo.Location = new System.Drawing.Point(15, 404);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(263, 30);
+            this.btnInfo.TabIndex = 125;
+            this.btnInfo.Text = "Get Info from MyAbandonware";
+            this.btnInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInfo.UseVisualStyleBackColor = true;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            // 
+            // txtVote
+            // 
+            this.txtVote.Location = new System.Drawing.Point(187, 274);
+            this.txtVote.Name = "txtVote";
+            this.txtVote.Size = new System.Drawing.Size(91, 22);
+            this.txtVote.TabIndex = 121;
+            this.txtVote.TextChanged += new System.EventHandler(this.txtVote_TextChanged);
+            // 
+            // txtYear
+            // 
+            this.txtYear.Location = new System.Drawing.Point(16, 81);
+            this.txtYear.Name = "txtYear";
+            this.txtYear.Size = new System.Drawing.Size(85, 22);
+            this.txtYear.TabIndex = 90;
+            this.txtYear.TextChanged += new System.EventHandler(this.txtYear_TextChanged);
+            // 
             // GameInfoPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.cboCategory);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label13);
@@ -585,5 +603,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
         private System.Windows.Forms.Button btnOpenImage;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.ComboBox cboCategory;
+        private System.Windows.Forms.Button btnInfo;
     }
 }

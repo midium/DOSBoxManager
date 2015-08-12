@@ -22,7 +22,6 @@ namespace DosBox_Manager.UI.Dialogs
         private AppManager _manager = null;
         private Game _game = null;
         private DialogsHelpers _dialogsHelpers = null;
-        private bool _isEditing = false;
         #endregion
 
         #region "Constructors"
@@ -32,7 +31,6 @@ namespace DosBox_Manager.UI.Dialogs
             _manager = Manager;
             _game = (Game)GameData.Clone();
             _dialogsHelpers = new DialogsHelpers();
-            _isEditing = true;
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
             LoadPanel(1);
         }

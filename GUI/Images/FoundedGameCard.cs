@@ -113,9 +113,9 @@ namespace GUI.Images
         {
             if (_gameData != null)
             {
-                lblGameName.Text = _gameData.Title;
-                lblYear.Text = _gameData.Year;
-                lblPlatform.Text = _gameData.Platform;
+                lblGameName.Text = _gameData.Title.Replace("&","&&");
+                lblYear.Text = _gameData.Year.Replace("&", "&&");
+                lblPlatform.Text = _gameData.Platform.Replace("&", "&&");
 
                 screenshot.LoadScreenshot(_gameData.CoverUri);
             }

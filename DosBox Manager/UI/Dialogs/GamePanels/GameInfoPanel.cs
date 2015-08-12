@@ -13,6 +13,9 @@ using Helpers.Data.Objects;
 using Helpers.Dialogs;
 using Helpers.Business;
 using System.IO;
+using CustomMessageBoxes.MessageBoxes;
+using DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs;
+using Helpers.Data.Objects.MyAbandonwareData;
 
 namespace DosBox_Manager.UI.Dialogs.GamePanels
 {
@@ -169,6 +172,30 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             _game.Description = txtDescription.Text.Trim();
         }
         #endregion
+
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            MyAbandonwareSearchDialog msd = new MyAbandonwareSearchDialog(_manager, _game.Title);
+            if (msd.ShowDialog() == DialogResult.OK)
+            {
+                MyAbandonGameInfo gameData = msd.GameData;
+
+                _game.Title = gameData.Title;
+                _game.Description = gameData.Description;
+                _game.Developer = gameData.Developer;
+                _game.Perspectives = (gameData.Perspectives == null) ? string.Empty : string.Join(",", gameData.Perspectives);
+                _game.Platform = gameData.Platform;
+                _game.Publisher = gameData.Publisher;
+                _game.ReleasedIn = gameData.ReleasedIn;
+                _game.Themes = (gameData.Themes == null) ? string.Empty : string.Join(",", gameData.Themes);
+                _game.Vote = gameData.Vote.ToString();
+                _game.Year = Convert.ToInt32(gameData.Year);
+
+                InitializePanel();
+                
+            }
+            msd.Dispose();
+        }
 
         #region "Public"
         #endregion

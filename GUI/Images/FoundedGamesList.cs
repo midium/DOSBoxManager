@@ -102,14 +102,16 @@ namespace GUI.Images
                     card.IsSelected = (_countItems == 0);
                     card.Visible = true;
                    
-                    _currentlySelected = 0;
-
                     this.Controls.Add(card);
                     _gameCards.Add(card);
 
                     _countItems++;
                 }
 
+                //As I default the first element to be selected I need to raise the event
+                _currentlySelected = 0;
+                GameSelected(this, _gameCards[0].GameData);
+                                
                 //Now checking if it is necessary to add the scrollbar
                 if ((_gameCards.Count * 150) > this.Height)
                 {

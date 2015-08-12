@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CustomMessageBoxes.MessageBoxes;
 using Helpers.Business;
 using Helpers.Data.Objects.MyAbandonwareData;
 using Helpers.Web;
@@ -31,41 +32,54 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         private MyAbandonware scraper = null;
         private MyAbandonGameFound selectedGame = null;
         private AppManager _manager;
+        private MyAbandonGameInfo _game = null;
+        private bool _allowGameDownload = false;
         #endregion
 
+        #region "Properties"
+        public MyAbandonGameInfo GameData
+        {
+            get { return _game; }
+        }
+        #endregion
+
+        #region "Constructors"
         public MyAbandonwareSearchDialog(AppManager Manager)
         {
             InitializeComponent();
+            _allowGameDownload = true;
+            btnSave.Visible = false;
             _manager = Manager;
-
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
 
             scraper = new MyAbandonware(Manager);
         }
 
-        private void LoadGameData()
+        public MyAbandonwareSearchDialog(AppManager Manager, string SearchFor)
         {
-            MyAbandonGameInfo game = scraper.RetrieveGameData(selectedGame.Uri);
+            InitializeComponent();
 
-            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, game, scraper);
-            gameData.ShowDialog();
-            gameData.Dispose();
+            _allowGameDownload = false;
+
+            btnSave.Visible = true;
+
+            _manager = Manager;
+            _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
+
+            scraper = new MyAbandonware(Manager);
+
+            txtGameName.Text = SearchFor;
         }
+        #endregion
 
-        private void pnlMain_Paint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawLine(Pens.LightGray, 0, pctIcon.Top + pctIcon.Height + 1, pnlMain.Width, pctIcon.Top + pctIcon.Height + 1);
-            e.Graphics.DrawLine(Pens.Gray, 0, txtGameName.Top + txtGameName.Height + 20, pnlMain.Width, txtGameName.Top + txtGameName.Height + 20);
-            e.Graphics.DrawLine(Pens.LightGray, 0, pnlMain.Height - 1, pnlMain.Width, pnlMain.Height - 1);
-        }
-
-        private void btnFind_Click(object sender, EventArgs e)
+        #region "Private Methods"
+        private void SearchGame()
         {
             if (txtGameName.Text.Trim() != string.Empty)
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                List<MyAbandonGameFound> result = scraper.SearchGames(txtGameName.Text.Trim());
+                List<MyAbandonGameFound> result = scraper.SearchGames(txtGameName.Text.Trim().Replace("&",""));
 
                 foundedGamesList.Clear();
                 if (result != null)
@@ -77,9 +91,32 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             }
         }
 
+        private void LoadGameData(bool noDownload)
+        {
+            _game = scraper.RetrieveGameData(selectedGame.Uri);
+
+            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, _game, scraper, noDownload);
+            gameData.ShowDialog();
+            gameData.Dispose();
+        }
+        #endregion
+
+        #region "Controls Events"
+        private void pnlMain_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawLine(Pens.LightGray, 0, pctIcon.Top + pctIcon.Height + 1, pnlMain.Width, pctIcon.Top + pctIcon.Height + 1);
+            e.Graphics.DrawLine(Pens.Gray, 0, txtGameName.Top + txtGameName.Height + 20, pnlMain.Width, txtGameName.Top + txtGameName.Height + 20);
+            e.Graphics.DrawLine(Pens.LightGray, 0, pnlMain.Height - 1, pnlMain.Width, pnlMain.Height - 1);
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
+        {
+            SearchGame();
+        }
+
         private void btnGameData_Click(object sender, EventArgs e)
         {
-            LoadGameData();
+            LoadGameData(_allowGameDownload);
         }
         
         private void txtGameName_KeyUp(object sender, KeyEventArgs e)
@@ -96,7 +133,32 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         private void foundedGamesList_GameDoubleClick(object sender, MyAbandonGameFound game)
         {
             selectedGame = game;
-            LoadGameData();
+            LoadGameData(_allowGameDownload);
         }
+
+        private void MyAbandonwareSearchDialog_Shown(object sender, EventArgs e)
+        {
+            Application.DoEvents();
+            SearchGame();
+        }
+
+        private void btnGetGameData_Click(object sender, EventArgs e)
+        {
+            if(selectedGame != null){
+                if (_game == null || _game.GameURI != selectedGame.Uri)
+                {
+                    _game = scraper.RetrieveGameData(selectedGame.Uri);
+                }
+
+                CustomMessageBox cmb = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!"),
+                                                            _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 59, "Information"),
+                                                            MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
+                cmb.ShowDialog();
+                cmb.Dispose();
+
+            }
+        }
+        #endregion
+
     }
 }

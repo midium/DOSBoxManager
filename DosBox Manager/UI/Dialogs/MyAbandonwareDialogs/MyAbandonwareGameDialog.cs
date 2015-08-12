@@ -26,7 +26,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         #endregion
 
         #region "Constructor"
-        public MyAbandonwareGameDialog(AppManager Manager, MyAbandonGameInfo game, MyAbandonware helper)
+        public MyAbandonwareGameDialog(AppManager Manager, MyAbandonGameInfo game, MyAbandonware helper, bool ShowDownload)
         {
             InitializeComponent();
 
@@ -34,6 +34,10 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             _game = game;
             _helper = helper;
 
+            gameDownloader.Visible = ShowDownload;
+            if (!ShowDownload)
+                screenshotsList.Height = 502;
+            
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
 
             CompileUI();

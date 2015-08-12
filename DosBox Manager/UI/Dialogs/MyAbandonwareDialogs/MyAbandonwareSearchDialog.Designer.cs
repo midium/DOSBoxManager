@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyAbandonwareSearchDialog));
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnGetGameData = new System.Windows.Forms.Button();
+            this.foundedGamesList = new GUI.Images.FoundedGamesList(this.components);
             this.btnGameData = new System.Windows.Forms.Button();
             this.lblFounded = new System.Windows.Forms.Label();
             this.btnFind = new System.Windows.Forms.Button();
@@ -39,7 +41,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.pctIcon = new System.Windows.Forms.PictureBox();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.foundedGamesList = new GUI.Images.FoundedGamesList(this.components);
+            this.btnSave = new System.Windows.Forms.Button();
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctIcon)).BeginInit();
             this.SuspendLayout();
@@ -50,6 +52,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.pnlMain.Controls.Add(this.btnGetGameData);
             this.pnlMain.Controls.Add(this.foundedGamesList);
             this.pnlMain.Controls.Add(this.btnGameData);
             this.pnlMain.Controls.Add(this.lblFounded);
@@ -64,13 +67,39 @@
             this.pnlMain.TabIndex = 0;
             this.pnlMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMain_Paint);
             // 
+            // btnGetGameData
+            // 
+            this.btnGetGameData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetGameData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnGetGameData.Image = global::DosBox_Manager.Properties.Resources.download;
+            this.btnGetGameData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnGetGameData.Location = new System.Drawing.Point(421, 186);
+            this.btnGetGameData.Name = "btnGetGameData";
+            this.btnGetGameData.Size = new System.Drawing.Size(124, 30);
+            this.btnGetGameData.TabIndex = 19;
+            this.btnGetGameData.Text = "Get Game Data";
+            this.btnGetGameData.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnGetGameData.UseVisualStyleBackColor = true;
+            this.btnGetGameData.Click += new System.EventHandler(this.btnGetGameData_Click);
+            // 
+            // foundedGamesList
+            // 
+            this.foundedGamesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.foundedGamesList.Games = null;
+            this.foundedGamesList.Location = new System.Drawing.Point(15, 150);
+            this.foundedGamesList.Name = "foundedGamesList";
+            this.foundedGamesList.Size = new System.Drawing.Size(400, 300);
+            this.foundedGamesList.TabIndex = 18;
+            this.foundedGamesList.GameSelected += new GUI.Images.FoundedGamesList.GameSelectedDelegate(this.foundedGamesList_GameSelected);
+            this.foundedGamesList.GameDoubleClick += new GUI.Images.FoundedGamesList.GameDoubleClickDelegate(this.foundedGamesList_GameDoubleClick);
+            // 
             // btnGameData
             // 
             this.btnGameData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGameData.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGameData.Image = global::DosBox_Manager.Properties.Resources.game_monitor;
             this.btnGameData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGameData.Location = new System.Drawing.Point(422, 420);
+            this.btnGameData.Location = new System.Drawing.Point(422, 150);
             this.btnGameData.Name = "btnGameData";
             this.btnGameData.Size = new System.Drawing.Size(124, 30);
             this.btnGameData.TabIndex = 16;
@@ -154,16 +183,21 @@
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // foundedGamesList
+            // btnSave
             // 
-            this.foundedGamesList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.foundedGamesList.Games = null;
-            this.foundedGamesList.Location = new System.Drawing.Point(15, 150);
-            this.foundedGamesList.Name = "foundedGamesList";
-            this.foundedGamesList.Size = new System.Drawing.Size(400, 300);
-            this.foundedGamesList.TabIndex = 18;
-            this.foundedGamesList.GameSelected += new GUI.Images.FoundedGamesList.GameSelectedDelegate(this.foundedGamesList_GameSelected);
-            this.foundedGamesList.GameDoubleClick += new GUI.Images.FoundedGamesList.GameDoubleClickDelegate(this.foundedGamesList_GameDoubleClick);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSave.Image = global::DosBox_Manager.Properties.Resources.disk;
+            this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSave.Location = new System.Drawing.Point(386, 481);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(77, 30);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Visible = false;
             // 
             // MyAbandonwareSearchDialog
             // 
@@ -172,6 +206,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(558, 523);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.pnlMain);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -183,6 +218,7 @@
             this.Name = "MyAbandonwareSearchDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MyAbandonware";
+            this.Shown += new System.EventHandler(this.MyAbandonwareSearchDialog_Shown);
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pctIcon)).EndInit();
@@ -202,5 +238,7 @@
         private System.Windows.Forms.Label lblFounded;
         private System.Windows.Forms.Button btnGameData;
         private GUI.Images.FoundedGamesList foundedGamesList;
+        private System.Windows.Forms.Button btnGetGameData;
+        private System.Windows.Forms.Button btnSave;
     }
 }

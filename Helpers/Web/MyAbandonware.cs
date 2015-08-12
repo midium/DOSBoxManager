@@ -23,6 +23,7 @@ using HtmlAgilityPack;
 using Helpers.Threading.Workers;
 using System.Threading;
 using Helpers.Business;
+using CustomMessageBoxes.MessageBoxes;
 
 namespace Helpers.Web
 {
@@ -182,12 +183,14 @@ namespace Helpers.Web
                                 result.Vote = voteNode.InnerText;
 
                             //Game Descritpion
-                            HtmlNode descriptionNode = bodyNode.SelectSingleNode("//div[@class='gameDescription dscr']/p");
+                            HtmlNode descriptionNode = bodyNode.SelectSingleNode("//div[@class='box']/h3[@class='cBoth']");
                             if (descriptionNode != null)
                             {
-                                if (descriptionNode.FirstChild != null)
+                                if (descriptionNode != null)
                                 {
-                                    result.Description = WebUtility.HtmlDecode(descriptionNode.FirstChild.InnerText);
+                                    HtmlNode descNone = descriptionNode.ParentNode.SelectSingleNode("p");
+                                    if(descNone!=null)
+                                        result.Description = WebUtility.HtmlDecode(descNone.InnerText);
                                 }
                             }
 
@@ -260,33 +263,24 @@ namespace Helpers.Web
                                 if (node.Attributes["class"] != null && node.Attributes["class"].Value.IndexOf("be") == -1 && node.Attributes["class"].Value.IndexOf("itemListGame") != -1)
                                 {
                                     HtmlNode nameNode = node.SelectSingleNode("div[@class='name']");
-                                    HtmlNode yearNode = node.SelectSingleNode("div[@class='year']");
+                                    HtmlNode yearNode = node.SelectSingleNode("div[@class='platyear']/span[@class='year']");
+                                    HtmlNode platformNode = node.SelectSingleNode("div[@class='platyear']/span[@class='ptf']");
                                     HtmlNode coverNode = node.SelectSingleNode("div[@class='thumb']/a/img");
 
-                                    string title = nameNode.InnerText.Trim();
-                                    string gameUri = nameNode.SelectSingleNode("a").Attributes["href"].Value.Trim();
-                                    gameUri = string.Format(baseUri, gameUri.Substring(1, gameUri.Length - 1));
-                                    string year = yearNode.InnerText.Trim();
-                                    string platform = string.Empty;
+                                    string title = string.Empty;
+                                    string gameUri = string.Empty;
 
-                                    if(year != string.Empty)
+                                    if (nameNode != null)
                                     {
-                                        string[] yearData = year.Split('-');
-                                        if (yearData.GetLength(0) == 2)
-                                        {
-                                            platform = yearData[0].Trim();
-                                            year = yearData[1].Trim();
-                                        }
-                                        else
-                                        {
-                                            platform = string.Empty;
-                                            year = string.Empty;
-                                        }
+                                        title = WebUtility.HtmlDecode(nameNode.InnerText.Trim());
+                                        gameUri = nameNode.SelectSingleNode("a").Attributes["href"].Value.Trim();
+                                        gameUri = string.Format(baseUri, gameUri.Substring(1, gameUri.Length - 1));
                                     }
-                                    string coverUri = string.Format(baseUri, coverNode.Attributes["src"].Value.Trim());
+                                    string year = (yearNode == null) ? string.Empty : yearNode.InnerText.Trim();
+                                    string platform = (platformNode == null) ? string.Empty : platformNode.InnerText.Trim();
+                                    string coverUri = (coverNode==null)?string.Empty:string.Format(baseUri, coverNode.Attributes["src"].Value.Trim());
 
                                     result.Add(new MyAbandonGameFound(title, year, platform, coverUri, gameUri));
-                                    Console.WriteLine(node.OuterHtml);
                                 }
                             }
                         }
@@ -349,38 +343,43 @@ namespace Helpers.Web
 
         public List<MyAbandonGameFound> SearchGames(string GameName)
         {
-            //Preparing URL and result holder
-            string queryResult = string.Empty;
-            string queryUri = string.Format(baseSearchUri, GameName);
 
-            //Performing web request to retrieve the page.
-            request = (HttpWebRequest)WebRequest.Create(queryUri);
-            response = (HttpWebResponse)request.GetResponse();
-
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = null;
+                //Preparing URL and result holder
+                string queryResult = string.Empty;
+                string queryUri = string.Format(baseSearchUri, GameName);
 
-                if (response.CharacterSet == null)
+                //Performing web request to retrieve the page.
+                request = (HttpWebRequest)WebRequest.Create(queryUri);
+                response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    readStream = new StreamReader(receiveStream);
-                }
-                else
-                {
-                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader readStream = null;
+
+                    readStream = new StreamReader(receiveStream, Encoding.UTF8);
+
+                    queryResult = WebUtility.HtmlDecode(readStream.ReadToEnd());
+
+                    response.Close();
+                    readStream.Close();
                 }
 
-                queryResult = readStream.ReadToEnd();
+                //Scraping the response to extract the founded games
+                List<MyAbandonGameFound> result = ParseSearchResult(queryResult);
 
-                response.Close();
-                readStream.Close();
+                return result;
             }
+            catch (Exception e)
+            {
+                CustomMessageBox cmb = new CustomMessageBox(e.Message, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                cmb.ShowDialog();
+                cmb.Dispose();
 
-            //Scraping the response to extract the founded games
-            List<MyAbandonGameFound> result = ParseSearchResult(queryResult);
-
-            return result;
+                return null;
+            }
         }
 
         public MyAbandonGameInfo RetrieveGameData(string GameURI)
@@ -396,14 +395,7 @@ namespace Helpers.Web
                 Stream receiveStream = response.GetResponseStream();
                 StreamReader readStream = null;
 
-                if (response.CharacterSet == null)
-                {
-                    readStream = new StreamReader(receiveStream);
-                }
-                else
-                {
-                    readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-                }
+                readStream = new StreamReader(receiveStream, Encoding.UTF8);
 
                 queryResult = readStream.ReadToEnd();
 
@@ -412,6 +404,7 @@ namespace Helpers.Web
             }
 
             MyAbandonGameInfo result = ParseGamePage(queryResult);
+            result.GameURI = GameURI;
 
             return result;
         }

@@ -24,6 +24,7 @@ namespace Helpers.Data.Objects.MyAbandonwareData
         string _vote;
         string _description;
         List<string> _screenshots;
+        string _gameUri; 
         #endregion
 
         #region "Properties"
@@ -116,6 +117,12 @@ namespace Helpers.Data.Objects.MyAbandonwareData
             get { return _screenshots; }
             set { _screenshots = value; }
         }
+
+        public string GameURI
+        {
+            get { return _gameUri; }
+            set { _gameUri = value; }
+        }
         #endregion
 
         #region "Constructors"
@@ -136,11 +143,12 @@ namespace Helpers.Data.Objects.MyAbandonwareData
             _vote = string.Empty;
             _description = string.Empty;
             _screenshots = null;
+            _gameUri = string.Empty;
         }
 
         public MyAbandonGameInfo(string Title, string Year, string Platform, string ReleasedIn, string Genre, List<string> Themes, string Publisher, 
                                  string Developer, List<string> Prospectives, string DosBoxVersion, string DownloadLink, string DownloadSize, 
-                                 string Vote, string Description, List<string> Screenshots)
+                                 string Vote, string Description, List<string> Screenshots, string GameURI)
         {
             _title = Title;
             _year = Year;
@@ -157,6 +165,7 @@ namespace Helpers.Data.Objects.MyAbandonwareData
             _vote = Vote;
             _description = Description;
             _screenshots = Screenshots;
+            _gameUri = GameURI;
 
         }
         #endregion 
