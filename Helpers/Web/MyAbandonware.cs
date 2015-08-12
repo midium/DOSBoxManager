@@ -404,7 +404,8 @@ namespace Helpers.Web
             }
 
             MyAbandonGameInfo result = ParseGamePage(queryResult);
-            result.GameURI = GameURI;
+            if(result != null)
+                result.GameURI = GameURI;
 
             return result;
         }
