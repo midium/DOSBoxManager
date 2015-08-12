@@ -95,9 +95,12 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         {
             _game = scraper.RetrieveGameData(selectedGame.Uri);
 
-            MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, _game, scraper, noDownload);
-            gameData.ShowDialog();
-            gameData.Dispose();
+            if (_game != null)
+            {
+                MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, _game, scraper, noDownload);
+                gameData.ShowDialog();
+                gameData.Dispose();
+            }
         }
         #endregion
 
@@ -148,6 +151,9 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
                 if (_game == null || _game.GameURI != selectedGame.Uri)
                 {
                     _game = scraper.RetrieveGameData(selectedGame.Uri);
+
+                    if (_game == null)
+                        return;
                 }
 
                 CustomMessageBox cmb = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!"),

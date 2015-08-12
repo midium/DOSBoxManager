@@ -74,6 +74,16 @@ namespace Helpers.Web
                 if (htmlDoc.ParseErrors != null && htmlDoc.ParseErrors.Count() > 0)
                 {
                     // Handle any parse errors as required
+                    string errorMessage = string.Empty;
+                    foreach (HtmlParseError error in htmlDoc.ParseErrors)
+                    {
+                        errorMessage += error.Reason + "\n";
+                    }
+
+                    CustomMessageBox cmb = new CustomMessageBox(errorMessage, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"),
+                                                                MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                    cmb.ShowDialog();
+                    cmb.Dispose();
                     
                 }
                 else

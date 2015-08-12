@@ -180,18 +180,21 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             {
                 MyAbandonGameInfo gameData = msd.GameData;
 
-                _game.Title = gameData.Title;
-                _game.Description = gameData.Description;
-                _game.Developer = gameData.Developer;
-                _game.Perspectives = (gameData.Perspectives == null) ? string.Empty : string.Join(",", gameData.Perspectives);
-                _game.Platform = gameData.Platform;
-                _game.Publisher = gameData.Publisher;
-                _game.ReleasedIn = gameData.ReleasedIn;
-                _game.Themes = (gameData.Themes == null) ? string.Empty : string.Join(",", gameData.Themes);
-                _game.Vote = gameData.Vote.ToString();
-                _game.Year = Convert.ToInt32(gameData.Year);
+                if (gameData != null)
+                {
+                    _game.Title = gameData.Title;
+                    _game.Description = gameData.Description;
+                    _game.Developer = gameData.Developer;
+                    _game.Perspectives = (gameData.Perspectives == null) ? string.Empty : string.Join(",", gameData.Perspectives);
+                    _game.Platform = gameData.Platform;
+                    _game.Publisher = gameData.Publisher;
+                    _game.ReleasedIn = gameData.ReleasedIn;
+                    _game.Themes = (gameData.Themes == null) ? string.Empty : string.Join(",", gameData.Themes);
+                    _game.Vote = gameData.Vote.ToString();
+                    _game.Year = Convert.ToInt32(gameData.Year);
 
-                InitializePanel();
+                    InitializePanel();
+                }
                 
             }
             msd.Dispose();
