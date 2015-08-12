@@ -88,7 +88,15 @@ namespace Helpers.Data
                              "    quit_on_exit        BOOLEAN, " + 
                              "    image_path          TEXT " +
                              "    created_at          DATETIME      NOT NULL, "+
-                             "    updated_at          DATETIME      DEFAULT (CURRENT_TIMESTAMP) NOT NULL " +
+                             "    updated_at          DATETIME      DEFAULT (CURRENT_TIMESTAMP) NOT NULL, " +
+                             "    platform            VARCHAR (256), " +
+                             "    released_in         VARCHAR (256), " +
+                             "    publisher           VARCHAR (256), " +
+                             "    themes              VARCHAR (256), " +
+                             "    perspectives        VARCHAR (256), " +
+                             "    dosbox_version      VARCHAR (100), " +
+                             "    vote                VARCHAR (5), " +
+                             "    description         TEXT " +
                              "); ";
 
                 SQLiteCommand command = new SQLiteCommand(sql, _Connection);
@@ -443,7 +451,9 @@ namespace Helpers.Data
                                         "category_id = {0}, title = '{1}', year = {2}, developer = '{3}', setup_exe_path = '{4}', " +
                                         "directory = '{5}', db_config_path = '{6}', dos_exe_path = '{7}', cd_path = '{8}', cd_image = {9}, " +
                                         "use_IOCTL = {10}, mount_as_floppy = {11}, additional_commands = '{12}', no_config = {13}, " +
-                                        "in_full_screen = {14}, no_console = {15}, quit_on_exit = {16}, image_path = '{17}', created_at = '{18}' " +
+                                        "in_full_screen = {14}, no_console = {15}, quit_on_exit = {16}, image_path = '{17}', created_at = '{18}', " +
+                                        "platform = '{20}', released_in = '{21}', publisher = '{22}', themes = '{23}', perspectives = '{24}', " +
+                                        "dosbox_version = '{25}', vote = '{26}', description = '{27}' " +
                                         "WHERE id = {19};",
                                         game.CategoryID, game.Title.Replace("'", "''"), game.Year, game.Developer.Replace("'", "''"),
                                         game.SetupExePath.Replace("'", "''"), game.Directory.Replace("'", "''"),
@@ -452,7 +462,10 @@ namespace Helpers.Data
                                         BoolToInt(game.MountAsFloppy), game.AdditionalCommands.Replace("'", "''"),
                                         BoolToInt(game.NoConfig), BoolToInt(game.InFullScreen), BoolToInt(game.NoConsole),
                                         BoolToInt(game.QuitOnExit), game.ImagePath.Replace("'", "''"),
-                                        DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), game.ID);
+                                        DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), game.ID, game.Platform.Replace("'", "''"),
+                                        game.ReleasedIn.Replace("'", "''"), game.Publisher.Replace("'", "''"),
+                                        game.Themes.Replace("'", "''"), game.Perspectives.Replace("'", "''"), game.DosboxVersion.Replace("'", "''"),
+                                        game.Vote.Replace("'", "''"), game.Description.Replace("'", "''"));
 
                 }
                 else
@@ -461,9 +474,12 @@ namespace Helpers.Data
                     sql = String.Format("INSERT INTO Games (category_id, title, year, developer, setup_exe_path, " +
                                                "directory, db_config_path, dos_exe_path, cd_path, cd_image, " +
                                                "use_IOCTL, mount_as_floppy, additional_commands, no_config, " +
-                                               "in_full_screen, no_console, quit_on_exit, image_path, created_at) " +
+                                               "in_full_screen, no_console, quit_on_exit, image_path, created_at, " +
+                                               "platform, released_in, publisher, themes, perspectives, dosbox_version, " +
+                                               "vote, description) " +
                                                "VALUES ({0}, '{1}', {2}, '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', " +
-                                               "{9}, {10}, {11}, '{12}', {13}, {14}, {15}, {16}, '{17}', '{18}');",
+                                               "{9}, {10}, {11}, '{12}', {13}, {14}, {15}, {16}, '{17}', '{18}', " +
+                                               "'{19}', '{20}', '{21}', '{22}', '{23}', '{24}', '{25}', '{26}');",
                                                game.CategoryID, game.Title.Replace("'", "''"), game.Year, game.Developer.Replace("'", "''"),
                                                game.SetupExePath.Replace("'", "''"), game.Directory.Replace("'", "''"),
                                                game.DBConfigPath.Replace("'", "''"), game.DOSExePath.Replace("'", "''"),
@@ -471,7 +487,10 @@ namespace Helpers.Data
                                                BoolToInt(game.MountAsFloppy), game.AdditionalCommands.Replace("'", "''"),
                                                BoolToInt(game.NoConfig), BoolToInt(game.InFullScreen), BoolToInt(game.NoConsole),
                                                BoolToInt(game.QuitOnExit), game.ImagePath.Replace("'", "''"),
-                                               DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
+                                               DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), game.Platform.Replace("'", "''"),
+                                               game.ReleasedIn.Replace("'", "''"), game.Publisher.Replace("'", "''"),
+                                               game.Themes.Replace("'", "''"), game.Perspectives.Replace("'", "''"), game.DosboxVersion.Replace("'", "''"),
+                                               game.Vote.Replace("'", "''"), game.Description.Replace("'", "''"));
 
                 }
 
@@ -526,7 +545,8 @@ namespace Helpers.Data
             String sql = string.Format("SELECT id, category_id, title, year, developer, setup_exe_path, " +
                          "directory, db_config_path, dos_exe_path, cd_path, cd_image, use_IOCTL, " +
                          "mount_as_floppy, additional_commands, no_config, in_full_screen, no_console, " +
-                         "quit_on_exit, image_path, created_at, updated_at " +
+                         "quit_on_exit, image_path, created_at, updated_at, platform, released_in, publisher, " +
+                         "themes, perspectives, dosbox_version, vote, description " +
                          "FROM Games G " +
                          "WHERE G.category_id = {0} " +
                          "ORDER BY title;", CategoryID);
@@ -540,95 +560,7 @@ namespace Helpers.Data
 
                 while (reader.Read())
                 {
-                    int itemID = -1;
-                    if (reader["id"] != DBNull.Value)
-                        itemID = reader.GetInt32(0);
-
-                    int itemCategoryID = -1;
-                    if (reader["category_id"] != DBNull.Value)
-                        itemCategoryID = reader.GetInt32(1);
-
-                    string itemTitle = string.Empty;
-                    if (reader["title"] != DBNull.Value)
-                        itemTitle = reader.GetString(2);
-
-                    int itemYear = -1;
-                    if (reader["year"] != DBNull.Value)
-                        itemYear = reader.GetInt32(3);
-
-                    string itemDeveloper = string.Empty;
-                    if (reader["developer"] != DBNull.Value)
-                        itemDeveloper = reader.GetString(4);
-
-                    string itemSetupExePath = string.Empty;
-                    if (reader["setup_exe_path"] != DBNull.Value)
-                        itemSetupExePath = reader.GetString(5);
-
-                    string itemDirectory = string.Empty;
-                    if (reader["directory"] != DBNull.Value)
-                        itemDirectory = reader.GetString(6);
-
-                    string itemDBConfigPath = string.Empty;
-                    if (reader["db_config_path"] != DBNull.Value)
-                        itemDBConfigPath = reader.GetString(7);
-
-                    string itemDosExePath = string.Empty;
-                    if (reader["dos_exe_path"] != DBNull.Value)
-                        itemDosExePath = reader.GetString(8);
-
-                    string itemCDPath = string.Empty;
-                    if (reader["cd_path"] != DBNull.Value)
-                        itemCDPath = reader.GetString(9);
-
-                    bool itemCDImage = false;
-                    if (reader["cd_image"] != DBNull.Value)
-                        itemCDImage = reader.GetBoolean(10);
-
-                    bool itemUseIOCTL = false;
-                    if (reader["use_IOCTL"] != DBNull.Value)
-                        itemUseIOCTL = reader.GetBoolean(11);
-
-                    bool itemMountAsFloppy = false;
-                    if (reader["mount_as_floppy"] != DBNull.Value)
-                        itemMountAsFloppy = reader.GetBoolean(12);
-
-                    string itemAdditionalCommands = string.Empty;
-                    if (reader["additional_commands"] != DBNull.Value)
-                        itemAdditionalCommands = reader.GetString(13);
-
-                    bool itemNoConfig = false;
-                    if (reader["no_config"] != DBNull.Value)
-                        itemNoConfig = reader.GetBoolean(14);
-
-                    bool itemInFullScreen = false;
-                    if (reader["in_full_screen"] != DBNull.Value)
-                        itemInFullScreen = reader.GetBoolean(15);
-
-                    bool itemNoConsole = false;
-                    if (reader["no_console"] != DBNull.Value)
-                        itemNoConsole = reader.GetBoolean(16);
-
-                    bool itemQuitOnExit = false;
-                    if (reader["quit_on_exit"] != DBNull.Value)
-                        itemQuitOnExit = reader.GetBoolean(17);
-
-                    string itemImagePath = string.Empty;
-                    if (reader["image_path"] != DBNull.Value)
-                        itemImagePath = reader.GetString(18);
-
-                    DateTime itemCreatedAt = DateTime.MinValue;
-                    if (reader["created_at"] != DBNull.Value)
-                        itemCreatedAt = reader.GetDateTime(19);
-
-                    DateTime itemUpdatedAt = DateTime.MinValue;
-                    if (reader["updated_at"] != DBNull.Value)
-                        itemUpdatedAt = reader.GetDateTime(20);
-
-                    games.Add(new Game(itemID,itemCategoryID,itemTitle,itemYear,itemDeveloper,
-                                       itemSetupExePath,itemDirectory,itemDBConfigPath,itemDosExePath,
-                                       itemCDPath,itemCDImage,itemUseIOCTL,itemMountAsFloppy,
-                                       itemAdditionalCommands,itemNoConfig,itemInFullScreen,
-                                       itemNoConsole, itemQuitOnExit, itemImagePath, itemCreatedAt, itemUpdatedAt));
+                    games.Add(GetGameFromData(reader));
                 }
 
             }
@@ -650,7 +582,8 @@ namespace Helpers.Data
                 String sql = "SELECT id, category_id, title, year, developer, setup_exe_path, " +
                          "directory, db_config_path, dos_exe_path, cd_path, cd_image, use_IOCTL, " +
                          "mount_as_floppy, additional_commands, no_config, in_full_screen, no_console, " +
-                         "quit_on_exit, image_path, created_at, updated_at " +
+                         "quit_on_exit, image_path, created_at, updated_at, platform, released_in, publisher, " +
+                         "themes, perspectives, dosbox_version, vote, description " +
                          "FROM Games G ";
 
                 String where = ComposeSearchWhereClausule(Title, Year, Developer, CategoryID);
@@ -665,95 +598,7 @@ namespace Helpers.Data
 
                     while (reader.Read())
                     {
-                        int itemID = -1;
-                        if (reader["id"] != DBNull.Value)
-                            itemID = reader.GetInt32(0);
-
-                        int itemCategoryID = -1;
-                        if (reader["category_id"] != DBNull.Value)
-                            itemCategoryID = reader.GetInt32(1);
-
-                        string itemTitle = string.Empty;
-                        if (reader["title"] != DBNull.Value)
-                            itemTitle = reader.GetString(2);
-
-                        int itemYear = -1;
-                        if (reader["year"] != DBNull.Value)
-                            itemYear = reader.GetInt32(3);
-
-                        string itemDeveloper = string.Empty;
-                        if (reader["developer"] != DBNull.Value)
-                            itemDeveloper = reader.GetString(4);
-
-                        string itemSetupExePath = string.Empty;
-                        if (reader["setup_exe_path"] != DBNull.Value)
-                            itemSetupExePath = reader.GetString(5);
-
-                        string itemDirectory = string.Empty;
-                        if (reader["directory"] != DBNull.Value)
-                            itemDirectory = reader.GetString(6);
-
-                        string itemDBConfigPath = string.Empty;
-                        if (reader["db_config_path"] != DBNull.Value)
-                            itemDBConfigPath = reader.GetString(7);
-
-                        string itemDosExePath = string.Empty;
-                        if (reader["dos_exe_path"] != DBNull.Value)
-                            itemDosExePath = reader.GetString(8);
-
-                        string itemCDPath = string.Empty;
-                        if (reader["cd_path"] != DBNull.Value)
-                            itemCDPath = reader.GetString(9);
-
-                        bool itemCDImage = false;
-                        if (reader["cd_image"] != DBNull.Value)
-                            itemCDImage = reader.GetBoolean(10);
-
-                        bool itemUseIOCTL = false;
-                        if (reader["use_IOCTL"] != DBNull.Value)
-                            itemUseIOCTL = reader.GetBoolean(11);
-
-                        bool itemMountAsFloppy = false;
-                        if (reader["mount_as_floppy"] != DBNull.Value)
-                            itemMountAsFloppy = reader.GetBoolean(12);
-
-                        string itemAdditionalCommands = string.Empty;
-                        if (reader["additional_commands"] != DBNull.Value)
-                            itemAdditionalCommands = reader.GetString(13);
-
-                        bool itemNoConfig = false;
-                        if (reader["no_config"] != DBNull.Value)
-                            itemNoConfig = reader.GetBoolean(14);
-
-                        bool itemInFullScreen = false;
-                        if (reader["in_full_screen"] != DBNull.Value)
-                            itemInFullScreen = reader.GetBoolean(15);
-
-                        bool itemNoConsole = false;
-                        if (reader["no_console"] != DBNull.Value)
-                            itemNoConsole = reader.GetBoolean(16);
-
-                        bool itemQuitOnExit = false;
-                        if (reader["quit_on_exit"] != DBNull.Value)
-                            itemQuitOnExit = reader.GetBoolean(17);
-
-                        string itemImagePath = string.Empty;
-                        if (reader["image_path"] != DBNull.Value)
-                            itemImagePath = reader.GetString(18);
-
-                        DateTime itemCreatedAt = DateTime.MinValue;
-                        if (reader["created_at"] != DBNull.Value)
-                            itemCreatedAt = reader.GetDateTime(19);
-
-                        DateTime itemUpdatedAt = DateTime.MinValue;
-                        if (reader["updated_at"] != DBNull.Value)
-                            itemUpdatedAt = reader.GetDateTime(20);
-
-                        result.Add(new Game(itemID, itemCategoryID, itemTitle, itemYear, itemDeveloper,
-                                           itemSetupExePath, itemDirectory, itemDBConfigPath, itemDosExePath,
-                                           itemCDPath, itemCDImage, itemUseIOCTL, itemMountAsFloppy,
-                                           itemAdditionalCommands, itemNoConfig, itemInFullScreen,
-                                           itemNoConsole, itemQuitOnExit, itemImagePath, itemCreatedAt, itemUpdatedAt));
+                        result.Add(GetGameFromData( reader));
                     }
                 }
 
@@ -764,6 +609,133 @@ namespace Helpers.Data
                 return null;
             }
 
+        }
+
+        private Game GetGameFromData(SQLiteDataReader reader)
+        {
+            int itemID = -1;
+            if (reader["id"] != DBNull.Value)
+                itemID = reader.GetInt32(0);
+
+            int itemCategoryID = -1;
+            if (reader["category_id"] != DBNull.Value)
+                itemCategoryID = reader.GetInt32(1);
+
+            string itemTitle = string.Empty;
+            if (reader["title"] != DBNull.Value)
+                itemTitle = reader.GetString(2);
+
+            int itemYear = -1;
+            if (reader["year"] != DBNull.Value)
+                itemYear = reader.GetInt32(3);
+
+            string itemDeveloper = string.Empty;
+            if (reader["developer"] != DBNull.Value)
+                itemDeveloper = reader.GetString(4);
+
+            string itemSetupExePath = string.Empty;
+            if (reader["setup_exe_path"] != DBNull.Value)
+                itemSetupExePath = reader.GetString(5);
+
+            string itemDirectory = string.Empty;
+            if (reader["directory"] != DBNull.Value)
+                itemDirectory = reader.GetString(6);
+
+            string itemDBConfigPath = string.Empty;
+            if (reader["db_config_path"] != DBNull.Value)
+                itemDBConfigPath = reader.GetString(7);
+
+            string itemDosExePath = string.Empty;
+            if (reader["dos_exe_path"] != DBNull.Value)
+                itemDosExePath = reader.GetString(8);
+
+            string itemCDPath = string.Empty;
+            if (reader["cd_path"] != DBNull.Value)
+                itemCDPath = reader.GetString(9);
+
+            bool itemCDImage = false;
+            if (reader["cd_image"] != DBNull.Value)
+                itemCDImage = reader.GetBoolean(10);
+
+            bool itemUseIOCTL = false;
+            if (reader["use_IOCTL"] != DBNull.Value)
+                itemUseIOCTL = reader.GetBoolean(11);
+
+            bool itemMountAsFloppy = false;
+            if (reader["mount_as_floppy"] != DBNull.Value)
+                itemMountAsFloppy = reader.GetBoolean(12);
+
+            string itemAdditionalCommands = string.Empty;
+            if (reader["additional_commands"] != DBNull.Value)
+                itemAdditionalCommands = reader.GetString(13);
+
+            bool itemNoConfig = false;
+            if (reader["no_config"] != DBNull.Value)
+                itemNoConfig = reader.GetBoolean(14);
+
+            bool itemInFullScreen = false;
+            if (reader["in_full_screen"] != DBNull.Value)
+                itemInFullScreen = reader.GetBoolean(15);
+
+            bool itemNoConsole = false;
+            if (reader["no_console"] != DBNull.Value)
+                itemNoConsole = reader.GetBoolean(16);
+
+            bool itemQuitOnExit = false;
+            if (reader["quit_on_exit"] != DBNull.Value)
+                itemQuitOnExit = reader.GetBoolean(17);
+
+            string itemImagePath = string.Empty;
+            if (reader["image_path"] != DBNull.Value)
+                itemImagePath = reader.GetString(18);
+
+            DateTime itemCreatedAt = DateTime.MinValue;
+            if (reader["created_at"] != DBNull.Value)
+                itemCreatedAt = reader.GetDateTime(19);
+
+            DateTime itemUpdatedAt = DateTime.MinValue;
+            if (reader["updated_at"] != DBNull.Value)
+                itemUpdatedAt = reader.GetDateTime(20);
+
+            string itemPlatform = string.Empty;
+            if (reader["platform"] != DBNull.Value)
+                itemPlatform = reader.GetString(21);
+
+            string itemReleasedIn = string.Empty;
+            if (reader["released_in"] != DBNull.Value)
+                itemReleasedIn = reader.GetString(22);
+
+            string itemPublisher = string.Empty;
+            if (reader["publisher"] != DBNull.Value)
+                itemPublisher = reader.GetString(23);
+
+            string itemThemes = string.Empty;
+            if (reader["themes"] != DBNull.Value)
+                itemThemes = reader.GetString(24);
+
+            string itemPerspectives = string.Empty;
+            if (reader["perspectives"] != DBNull.Value)
+                itemPerspectives = reader.GetString(25);
+
+            string itemDosBoxVersion = string.Empty;
+            if (reader["dosbox_version"] != DBNull.Value)
+                itemDosBoxVersion = reader.GetString(26);
+
+            string itemVote = string.Empty;
+            if (reader["vote"] != DBNull.Value)
+                itemVote = reader.GetString(27);
+
+            string itemDescription = string.Empty;
+            if (reader["description"] != DBNull.Value)
+                itemDescription = reader.GetString(28);
+
+            return new Game(itemID, itemCategoryID, itemTitle, itemYear, itemDeveloper,
+                               itemSetupExePath, itemDirectory, itemDBConfigPath, itemDosExePath,
+                               itemCDPath, itemCDImage, itemUseIOCTL, itemMountAsFloppy,
+                               itemAdditionalCommands, itemNoConfig, itemInFullScreen,
+                               itemNoConsole, itemQuitOnExit, itemImagePath, itemCreatedAt, itemUpdatedAt,
+                               itemPlatform, itemReleasedIn, itemPublisher, itemThemes,
+                               itemPerspectives, itemDosBoxVersion, itemVote, itemDescription);
         }
 
         private string ComposeSearchWhereClausule(string Title, string Year, string Developer, int CategoryID)
@@ -796,7 +768,7 @@ namespace Helpers.Data
         
         }
 
-        public Game GetGamesFromID(int GameID)
+        public Game GetGameFromID(int GameID)
         {
             if (_Connection.State != System.Data.ConnectionState.Open)
                 //I raise an error as there is no connection to the database
@@ -807,7 +779,8 @@ namespace Helpers.Data
             String sql = string.Format("SELECT id, category_id, title, year, developer, setup_exe_path, " +
                          "directory, db_config_path, dos_exe_path, cd_path, cd_image, use_IOCTL, " +
                          "mount_as_floppy, additional_commands, no_config, in_full_screen, no_console, " +
-                         "quit_on_exit, image_path, created_at, updated_at " +
+                         "quit_on_exit, image_path, created_at, updated_at, platform, released_in, publisher, " +
+                         "themes, perspectives, dosbox_version, vote, description " +
                          "FROM Games G " +
                          "WHERE G.id = {0};", GameID);
 
@@ -819,96 +792,8 @@ namespace Helpers.Data
             {
                 //Loading the data
                 reader.Read();
-                
-                int itemID = -1;
-                if (reader["id"] != DBNull.Value)
-                    itemID = reader.GetInt32(0);
 
-                int itemCategoryID = -1;
-                if (reader["category_id"] != DBNull.Value)
-                    itemCategoryID = reader.GetInt32(1);
-
-                string itemTitle = string.Empty;
-                if (reader["title"] != DBNull.Value)
-                    itemTitle = reader.GetString(2);
-
-                int itemYear = -1;
-                if (reader["year"] != DBNull.Value)
-                    itemYear = reader.GetInt32(3);
-
-                string itemDeveloper = string.Empty;
-                if (reader["developer"] != DBNull.Value)
-                    itemDeveloper = reader.GetString(4);
-
-                string itemSetupExePath = string.Empty;
-                if (reader["setup_exe_path"] != DBNull.Value)
-                    itemSetupExePath = reader.GetString(5);
-
-                string itemDirectory = string.Empty;
-                if (reader["directory"] != DBNull.Value)
-                    itemDirectory = reader.GetString(6);
-
-                string itemDBConfigPath = string.Empty;
-                if (reader["db_config_path"] != DBNull.Value)
-                    itemDBConfigPath = reader.GetString(7);
-
-                string itemDosExePath = string.Empty;
-                if (reader["dos_exe_path"] != DBNull.Value)
-                    itemDosExePath = reader.GetString(8);
-
-                string itemCDPath = string.Empty;
-                if (reader["cd_path"] != DBNull.Value)
-                    itemCDPath = reader.GetString(9);
-
-                bool itemCDImage = false;
-                if (reader["cd_image"] != DBNull.Value)
-                    itemCDImage = reader.GetBoolean(10);
-
-                bool itemUseIOCTL = false;
-                if (reader["use_IOCTL"] != DBNull.Value)
-                    itemUseIOCTL = reader.GetBoolean(11);
-
-                bool itemMountAsFloppy = false;
-                if (reader["mount_as_floppy"] != DBNull.Value)
-                    itemMountAsFloppy = reader.GetBoolean(12);
-
-                string itemAdditionalCommands = string.Empty;
-                if (reader["additional_commands"] != DBNull.Value)
-                    itemAdditionalCommands = reader.GetString(13);
-
-                bool itemNoConfig = false;
-                if (reader["no_config"] != DBNull.Value)
-                    itemNoConfig = reader.GetBoolean(14);
-
-                bool itemInFullScreen = false;
-                if (reader["in_full_screen"] != DBNull.Value)
-                    itemInFullScreen = reader.GetBoolean(15);
-
-                bool itemNoConsole = false;
-                if (reader["no_console"] != DBNull.Value)
-                    itemNoConsole = reader.GetBoolean(16);
-
-                bool itemQuitOnExit = false;
-                if (reader["quit_on_exit"] != DBNull.Value)
-                    itemQuitOnExit = reader.GetBoolean(17);
-
-                string itemImagePath = string.Empty;
-                if (reader["image_path"] != DBNull.Value)
-                    itemImagePath = reader.GetString(18);
-
-                DateTime itemCreatedAt = DateTime.MinValue;
-                if (reader["created_at"] != DBNull.Value)
-                    itemCreatedAt = reader.GetDateTime(19);
-
-                DateTime itemUpdatedAt = DateTime.MinValue;
-                if (reader["updated_at"] != DBNull.Value)
-                    itemUpdatedAt = reader.GetDateTime(20);
-
-                game = new Game(itemID, itemCategoryID, itemTitle, itemYear, itemDeveloper,
-                                    itemSetupExePath, itemDirectory, itemDBConfigPath, itemDosExePath,
-                                    itemCDPath, itemCDImage, itemUseIOCTL, itemMountAsFloppy,
-                                    itemAdditionalCommands, itemNoConfig, itemInFullScreen,
-                                    itemNoConsole, itemQuitOnExit, itemImagePath, itemCreatedAt, itemUpdatedAt);
+                game = GetGameFromData(reader);
                 
             }
 

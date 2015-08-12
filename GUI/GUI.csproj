@@ -114,6 +114,12 @@
     <Compile Include="Tabs\CategoriesTabs.Designer.cs">
       <DependentUpon>CategoriesTabs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\GameTabs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tabs\GameTabs.Designer.cs">
+      <DependentUpon>GameTabs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\SettingsTabs.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -154,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\CategoriesTabs.resx">
       <DependentUpon>CategoriesTabs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\GameTabs.resx">
+      <DependentUpon>GameTabs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SettingsTabs.resx">
       <DependentUpon>SettingsTabs.cs</DependentUpon>
@@ -224,6 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\information.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

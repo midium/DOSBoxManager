@@ -18,14 +18,10 @@ using System.Threading.Tasks;
 
 namespace Helpers.Data.Objects
 {
-    public class Game
+    public class Game : ICloneable
     {
         #region "Declarations"
         private int _ID;
-        private int _CategoryID;
-        private string _Title; //100
-        private int _Year;
-        private string _Developer; //256
         private string _SetupExePath;
         private string _Directory;
         private string _DBConfigPath;
@@ -42,6 +38,21 @@ namespace Helpers.Data.Objects
         private string _ImagePath;
         private DateTime _CreatedAt;
         private DateTime _UpdatedAt;
+
+        //Game Details
+        private int _CategoryID;
+        private string _Title;
+        private int _Year;
+        private string _Developer;
+        private string _Platform;
+        private string _ReleasedIn;
+        private string _Publisher;
+        private string _Themes;
+        private string _Perspectives;
+        private string _Dosbox_version;
+        private string _Vote;
+        private string _Description;
+
         #endregion
 
         #region "Constructors"
@@ -68,13 +79,23 @@ namespace Helpers.Data.Objects
             _ImagePath = string.Empty;
             _CreatedAt = DateTime.MinValue;
             _UpdatedAt = DateTime.MinValue;
+
+            _Platform = string.Empty;
+            _ReleasedIn = string.Empty;
+            _Publisher = string.Empty;
+            _Themes = string.Empty;
+            _Perspectives = string.Empty;
+            _Dosbox_version = string.Empty;
+            _Vote = string.Empty;
+            _Description = string.Empty;
         }
 
         public Game(int ID, int CategoryID, string Title, int Year, string Developer, string SetupExePath,
                          string Directory, string DBConfigPath, string DOSExePath, string CDPath,
                          bool IsCDImage, bool UseIOCTL, bool MountAsFloppy, string AdditionalCommands,
                          bool NoConfig, bool InFullScreen, bool NoConsole, bool QuitOnExit, string ImagePath,
-                         DateTime CreatedAt, DateTime UpdatedAt)
+                         DateTime CreatedAt, DateTime UpdatedAt, string Platform, string ReleasedIn, string Publisher,
+                         string Themes, string Perspectives, string DosBoxVersion, string Vote, string Description)
         {
             _ID = ID;
             _CategoryID = CategoryID;
@@ -97,10 +118,60 @@ namespace Helpers.Data.Objects
             _ImagePath = ImagePath;
             _CreatedAt = CreatedAt;
             _UpdatedAt = UpdatedAt;
+
+            _Platform = Platform;
+            _ReleasedIn = ReleasedIn;
+            _Publisher = Publisher;
+            _Themes = Themes;
+            _Perspectives = Perspectives;
+            _Dosbox_version = DosBoxVersion;
+            _Vote = Vote;
+            _Description = Description;
         }
         #endregion
 
         #region "Properties"
+        public string Platform
+        {
+            get { return _Platform; }
+            set { _Platform = value; }
+        }
+        public string ReleasedIn
+        {
+            get { return _ReleasedIn; }
+            set { _ReleasedIn = value; }
+        }
+        public string Publisher
+        {
+            get { return _Publisher; }
+            set { _Publisher = value; }
+        }
+        public string Themes
+        {
+            get { return _Themes; }
+            set { _Themes = value; }
+        }
+        public string Perspectives
+        {
+            get { return _Perspectives; }
+            set { _Perspectives = value; }
+        }
+        public string DosboxVersion
+        {
+            get { return _Dosbox_version; }
+            set { _Dosbox_version = value; }
+        }
+        public string Vote
+        {
+            get { return _Vote; }
+            set { _Vote = value; }
+        }
+        public string Description
+        {
+            get { return _Description; }
+            set { _Description = value; }
+        }
+
         public int ID
         {
             get { return _ID; }
@@ -225,6 +296,13 @@ namespace Helpers.Data.Objects
         {
             get { return _UpdatedAt; }
             set { _UpdatedAt = value; }
+        }
+        #endregion
+
+        #region "IClonable implementation"
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
         #endregion
     }

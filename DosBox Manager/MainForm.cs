@@ -306,7 +306,7 @@ namespace DosBox_Manager
         {
             if (GameID == -1)
                 return;
-            Game gamesFromId = _manager.DB.GetGamesFromID(GameID);
+            Game gamesFromId = _manager.DB.GetGameFromID(GameID);
             string str = _manager.DosBoxHelper.BuildArgs(false, gamesFromId, _manager.AppSettings);
             if (str == null)
             {
@@ -362,7 +362,7 @@ namespace DosBox_Manager
         {
             try
             {
-                Game gamesFromId = _manager.DB.GetGamesFromID(GameID);
+                Game gamesFromId = _manager.DB.GetGameFromID(GameID);
                 if (gamesFromId == null)
                 {
                     CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 25, "It is not possible to retrieve the information of the selected event!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
@@ -374,7 +374,9 @@ namespace DosBox_Manager
             }
             catch (Exception ex)
             {
-                throw;
+                CustomMessageBox customMessageBox = new CustomMessageBox(ex.Message, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                customMessageBox.ShowDialog();
+                customMessageBox.Dispose();               
             }
         }
 
@@ -382,7 +384,7 @@ namespace DosBox_Manager
         {
             if (_SelectedGame == -1)
                 return;
-            Game gamesFromId = _manager.DB.GetGamesFromID(_SelectedGame);
+            Game gamesFromId = _manager.DB.GetGameFromID(_SelectedGame);
             if (_manager.DosBoxHelper.MakeGamesConfiguration(_manager.Translator, _manager.AppSettings, gamesFromId))
                 _manager.DB.SaveGame(gamesFromId);
         }
@@ -395,7 +397,7 @@ namespace DosBox_Manager
             {
                 if (File.Exists(_manager.AppSettings.ConfigEditorPath))
                 {
-                    Process.Start(_manager.AppSettings.ConfigEditorPath, _manager.DB.GetGamesFromID(_SelectedGame).DBConfigPath + " " + _manager.AppSettings.ConfigEditorAdditionalParameters);
+                    Process.Start(_manager.AppSettings.ConfigEditorPath, _manager.DB.GetGameFromID(_SelectedGame).DBConfigPath + " " + _manager.AppSettings.ConfigEditorAdditionalParameters);
                 }
                 else
                 {
@@ -1075,6 +1077,11 @@ namespace DosBox_Manager
             _manager.AppSettings.StatusBarVisible = statusStrip.Visible;
         }
         #endregion
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

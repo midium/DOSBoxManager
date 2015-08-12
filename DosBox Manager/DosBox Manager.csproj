@@ -92,11 +92,23 @@
     <Compile Include="UI\Dialogs\CategoryDialog.Designer.cs">
       <DependentUpon>CategoryDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dialogs\GameDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="UI\Dialogs\GamePanels\Base\GamePanelBase.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Dialogs\GameDialog.Designer.cs">
-      <DependentUpon>GameDialog.cs</DependentUpon>
+    <Compile Include="UI\Dialogs\GamePanels\Base\GamePanelBase.Designer.cs">
+      <DependentUpon>GamePanelBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\GamePanels\GameInfoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\GamePanels\GameInfoPanel.Designer.cs">
+      <DependentUpon>GameInfoPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\GamePanels\GameSetupPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\GamePanels\GameSetupPanel.Designer.cs">
+      <DependentUpon>GameSetupPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareSearchDialog.cs">
       <SubType>Form</SubType>
@@ -109,6 +121,12 @@
     </Compile>
     <Compile Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareGameDialog.Designer.cs">
       <DependentUpon>MyAbandonwareGameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Dialogs\GameDialog.Designer.cs">
+      <DependentUpon>GameDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Dialogs\SettingsDialog.cs">
       <SubType>Form</SubType>
@@ -200,14 +218,23 @@
     <EmbeddedResource Include="UI\Dialogs\CategoryDialog.resx">
       <DependentUpon>CategoryDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dialogs\GameDialog.resx">
-      <DependentUpon>GameDialog.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Dialogs\GamePanels\Base\GamePanelBase.resx">
+      <DependentUpon>GamePanelBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\GamePanels\GameInfoPanel.resx">
+      <DependentUpon>GameInfoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\GamePanels\GameSetupPanel.resx">
+      <DependentUpon>GameSetupPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareGameDialog.resx">
       <DependentUpon>MyAbandonwareGameDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\MyAbandonwareDialogs\MyAbandonwareSearchDialog.resx">
       <DependentUpon>MyAbandonwareSearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dialogs\GameDialog.resx">
+      <DependentUpon>GameDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Dialogs\SettingsDialog.resx">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
@@ -246,6 +273,7 @@
     <Content Include="Resources\application_form.png" />
     <Content Include="Resources\application_osx_terminal.png" />
     <Content Include="Resources\bin_closed.png" />
+    <None Include="Resources\bomb.png" />
     <Content Include="Resources\box_closed.png" />
     <Content Include="Resources\brick.png" />
     <Content Include="Resources\brick_add.png" />
@@ -270,25 +298,32 @@
     <Content Include="Resources\disconnect.png" />
     <Content Include="Resources\disk.png" />
     <Content Include="Resources\door_out.png" />
+    <None Include="Resources\dosbox.png" />
     <Content Include="Resources\DosBoxManager.jpg" />
     <None Include="Resources\download.png" />
     <Content Include="Resources\drive_magnify.png" />
     <None Include="Resources\favicon.png" />
+    <None Include="Resources\eye.png" />
     <Content Include="Resources\folder_image.png" />
     <Content Include="Resources\folder_search.png" />
     <Content Include="Resources\game_monitor.png" />
+    <None Include="Resources\image.png" />
     <Content Include="Resources\image_delete.png" />
     <Content Include="Resources\information.png" />
     <Content Include="Resources\installer_box.png" />
+    <None Include="Resources\it.png" />
     <Content Include="Resources\joystick.png" />
     <Content Include="Resources\joystick_add.png" />
     <Content Include="Resources\joystick_delete.png" />
     <Content Include="Resources\joystick_edit.png" />
+    <None Include="Resources\lorry.png" />
     <Content Include="Resources\magnifier.png" />
     <None Include="Resources\myabandonware.png" />
     <None Include="Resources\myabandonware_big.png" />
+    <None Include="Resources\page_white_edit.png" />
     <Content Include="Resources\script_edit.png" />
     <Content Include="Resources\script_gear.png" />
+    <None Include="Resources\star.png" />
     <Content Include="Resources\tick.png" />
     <Content Include="Resources\wrench.png" />
   </ItemGroup>
