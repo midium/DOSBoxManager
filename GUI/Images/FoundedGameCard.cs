@@ -163,12 +163,14 @@ namespace GUI.Images
 
         private void items_doubleclick(object sender, EventArgs e)
         {
-            FoundedGameCardDoubleClick(this);
+            if (FoundedGameCardDoubleClick!=null)
+                FoundedGameCardDoubleClick(this);
         }
 
         private void items_click(object sender, EventArgs e)
         {
-            FoundedGameCardClick(this);
+            if (FoundedGameCardClick != null)
+                FoundedGameCardClick(this);
         }
 
         private void items_mouseleave(object sender, EventArgs e)

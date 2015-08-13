@@ -97,13 +97,17 @@ namespace GUI.Images
                     screenshot.LoadScreenshot(uri);
                     screenshot.IsSelected = (_countItems == 0);
                     screenshot.Tag = _countItems;
-                    _currentlySelected = 0;
 
                     this.Controls.Add(screenshot);
                     _screenshots.Add(screenshot);
 
                     _countItems++;
                 }
+
+                //As defaulting to select the first element I also raise selection event after first init
+                _currentlySelected = 0;
+                if (ScreenshotSelected != null)
+                    ScreenshotSelected(this, _screenshots[0].ScreenshotImage);
 
                 //Now checking if it is necessary to add the scrollbar
                 if ((_screenshots.Count * 150) > this.Height)

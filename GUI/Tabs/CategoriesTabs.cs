@@ -168,7 +168,8 @@ namespace GUI.Tabs
         private void Search_CheckedChanged(object sender, EventArgs e)
         {
             _currentID = -100;
-            SearchSelected(this);
+            if (SearchSelected != null)
+                SearchSelected(this);
         }
 
         private void UpdateUI()

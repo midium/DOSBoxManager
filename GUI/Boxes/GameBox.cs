@@ -107,7 +107,8 @@ namespace GUI.Boxes
 
             _isSelected = true;
 
-            BoxSelected(this, _GameID);
+            if (BoxSelected!=null)
+                BoxSelected(this, _GameID);
 
         }
 
@@ -116,7 +117,9 @@ namespace GUI.Boxes
             base.OnDoubleClick(e);
 
             _isSelected = true;
-            BoxDoubleClick(this, _GameID);
+
+            if (BoxDoubleClick != null)
+                BoxDoubleClick(this, _GameID);
         }
 
         #region "Rendering Routines"
