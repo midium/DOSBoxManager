@@ -55,6 +55,8 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
 
             if (!_game.MountAsFloppy && !_game.UseIOCTL)
                 rdbNone.Checked = true;
+
+            txtCDImage_TextChanged(this, null);
         }
 
         private string SearchInitialDirectory()
@@ -89,7 +91,69 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
 
         private void txtGameExe_TextChanged(object sender, EventArgs e)
         {
+            bool flag = false;
+            if (txtGameExe.Text == string.Empty)
+                flag = true;
+            else if (File.Exists(txtGameExe.Text))
+                txtMountDirectory.Text = Directory.GetParent(txtGameExe.Text).FullName;
+            txtMountDirectory.Enabled = flag;
+            btnChooseMountDirectory.Enabled = flag;
+            lblMountDirectory.Enabled = flag;
+
             _game.DOSExePath = txtGameExe.Text.Trim();
+        }
+
+        private void txtMountDirectory_TextChanged(object sender, EventArgs e)
+        {
+            bool flag = false;
+            if (txtMountDirectory.Text != string.Empty)
+            {
+                if (txtGameExe.Text != string.Empty)
+                {
+                    if (Directory.GetParent(txtGameExe.Text).FullName != txtMountDirectory.Text)
+                        txtGameExe.Text = string.Empty;
+                    else
+                        flag = true;
+                }
+                else
+                    txtGameExe.Text = string.Empty;
+            }
+            else
+                flag = true;
+            txtGameExe.Enabled = flag;
+            btnOpenGameEXE.Enabled = flag;
+            lblGameExe.Enabled = flag;
+
+            _game.Directory = txtMountDirectory.Text.Trim();
+        }
+
+        private void txtCDImage_TextChanged(object sender, EventArgs e)
+        {
+            if (txtCDImage.Text == string.Empty)
+            {
+                pnlMountingOptions.Enabled = false;
+            }
+            else
+            {
+                pnlMountingOptions.Enabled = true;
+                if (!File.Exists(txtCDImage.Text))
+                {
+                    rdbUseIOCTL.Enabled = true;
+                    rdbMountFloppy.Enabled = false;
+                }
+                else
+                {
+                    rdbUseIOCTL.Enabled = false;
+                    rdbMountFloppy.Enabled = true;
+                }
+            }
+
+            _game.CDPath = txtCDImage.Text.Trim();
+            if (File.Exists(_game.CDPath))
+                _game.IsCDImage = true;
+            else
+                _game.IsCDImage = false;
+
         }
         
         private void btnChooseMountDirectory_Click(object sender, EventArgs e)
@@ -99,11 +163,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             _game.Directory = txtMountDirectory.Text.Trim();
         }
 
-        private void txtMountDirectory_TextChanged(object sender, EventArgs e)
-        {
-            _game.Directory = txtMountDirectory.Text.Trim();
-        }
-        
         private void btnGameSetupEXE_Click(object sender, EventArgs e)
         {
             string translatedMessage1 = _translator.GetTranslatedMessage(_settings.Language, 46, "Choose Game Setup Executable");
@@ -158,15 +217,6 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             else
                 _game.IsCDImage = false;
 
-        }
-
-        private void txtCDImage_TextChanged(object sender, EventArgs e)
-        {
-            _game.CDPath = txtCDImage.Text.Trim();
-            if (File.Exists(_game.CDPath))
-                _game.IsCDImage = true;
-            else
-                _game.IsCDImage = false;
         }
 
         private void txtAdditionalCommands_TextChanged(object sender, EventArgs e)

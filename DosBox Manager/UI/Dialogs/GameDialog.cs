@@ -22,6 +22,7 @@ namespace DosBox_Manager.UI.Dialogs
         private AppManager _manager = null;
         private Game _game = null;
         private DialogsHelpers _dialogsHelpers = null;
+        private Dictionary<String, Category> _cats = null;
         #endregion
 
         #region "Constructors"
@@ -32,6 +33,7 @@ namespace DosBox_Manager.UI.Dialogs
             _game = (Game)GameData.Clone();
             _dialogsHelpers = new DialogsHelpers();
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
+            _cats = _manager.DB.GetAllCategories();
             LoadPanel(1);
         }
 
@@ -54,6 +56,11 @@ namespace DosBox_Manager.UI.Dialogs
             get { return _game; }
             set { _game = value; }
         }
+
+        public Dictionary<String, Category> Cats
+        {
+            get { return _cats; }
+        }
         #endregion
 
         #region "Private Method"
@@ -66,7 +73,7 @@ namespace DosBox_Manager.UI.Dialogs
                     _gamePanel = new GameSetupPanel(_manager, _dialogsHelpers, _game);
                     break;
                 default:
-                    _gamePanel = new GameInfoPanel(_manager, _dialogsHelpers, _game);
+                    _gamePanel = new GameInfoPanel(_manager, _dialogsHelpers, _game, _cats);
                     break;
             }
 

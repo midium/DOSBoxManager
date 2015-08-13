@@ -210,13 +210,13 @@ namespace Helpers.Data
             return result;
         }
 
-        public List<Category> GetAllCategories()
+        public Dictionary<String, Category> GetAllCategories()
         {
             if (_Connection.State != System.Data.ConnectionState.Open)
                 //I raise an error as there is no connection to the database
                 throw new Exception("There is no connection to the database");
 
-            List<Category> categories = null;
+            Dictionary<String, Category> categories = null;
 
             String sql = "SELECT id, name, icon, expanded "+
                          "FROM Categories C " +
@@ -227,7 +227,7 @@ namespace Helpers.Data
 
             if (reader.HasRows)
             {
-                categories = new List<Category>();
+                categories = new Dictionary<String, Category>();
 
                 while (reader.Read())
                 {
@@ -249,7 +249,7 @@ namespace Helpers.Data
 
                     bool isSelected = (itemExpanded) ? true : false;
 
-                    categories.Add(new Category(itemID, itemName, itemIcon, itemExpanded, isSelected));
+                    categories.Add(itemName.Trim().ToLower(), new Category(itemID, itemName, itemIcon, itemExpanded, isSelected));
                 }
 
             }
@@ -258,7 +258,7 @@ namespace Helpers.Data
 
         }
 
-        public bool AddCategory(String Name, String Icon)
+        public int AddCategory(String Name, String Icon)
         {
             try
             {
@@ -272,11 +272,23 @@ namespace Helpers.Data
                 SQLiteCommand command = new SQLiteCommand(sql, _Connection);
                 command.ExecuteNonQuery();
 
-                return true;
+                sql = "select last_insert_rowid();";
+                command = new SQLiteCommand(sql, _Connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                int newId = int.MinValue;
+
+                if (reader != null && reader.HasRows)
+                {
+                    reader.Read();
+                    newId = reader.GetInt32(0);
+                }
+
+                return newId;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                return int.MinValue;
             }
         }
 

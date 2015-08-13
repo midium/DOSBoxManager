@@ -63,7 +63,7 @@ namespace DosBox_Manager.UI.Panels
         #endregion
 
         #region "Properties"
-        public override List<Category> Categories
+        public override Dictionary<String, Category> Categories
         {
             set
             {
@@ -84,7 +84,7 @@ namespace DosBox_Manager.UI.Panels
             scroller = null;
         }
 
-        public CategoryGames(AppManager manager, List<Game> games, List<Category> cats)
+        public CategoryGames(AppManager manager, List<Game> games, Dictionary<String, Category> cats)
             : base(manager, games, cats)
         {
             InitializeComponent();
@@ -282,18 +282,18 @@ namespace DosBox_Manager.UI.Panels
             move_to_cat.ForeColor = Color.White;
             move_to_cat.Tag = GameID.ToString();
             move_to_cat.Image = DosBox_Manager.Properties.Resources.brick_go;
-            ToolStripMenuItem[] toolStripMenuItemArray = new ToolStripMenuItem[_cats.Count];
-            for (int index = 0; index < _cats.Count; ++index)
+            ToolStripMenuItem[] toolStripMenuItemArray = new ToolStripMenuItem[_cats.Values.Count];
+            for (int index = 0; index < _cats.Values.Count; ++index)
             {
                 toolStripMenuItemArray[index] = new ToolStripMenuItem();
-                toolStripMenuItemArray[index].Name = "move_to_" + _cats[index].Name;
-                toolStripMenuItemArray[index].Text = _cats[index].Name;
-                toolStripMenuItemArray[index].Tag = GameID.ToString() + "|" + _cats[index].ID.ToString();
+                toolStripMenuItemArray[index].Name = "move_to_" + _cats.Values.ToArray()[index].Name;
+                toolStripMenuItemArray[index].Text = _cats.Values.ToArray()[index].Name;
+                toolStripMenuItemArray[index].Tag = GameID.ToString() + "|" + _cats.Values.ToArray()[index].ID.ToString();
                 toolStripMenuItemArray[index].BackColor = Color.FromArgb(50, 50, 50);
                 toolStripMenuItemArray[index].ForeColor = Color.White;
 
-                if (File.Exists(_cats[index].Icon))
-                    toolStripMenuItemArray[index].Image = _cats[index].Icon != string.Empty ? Image.FromFile(_cats[index].Icon) : null;
+                if (File.Exists(_cats.Values.ToArray()[index].Icon))
+                    toolStripMenuItemArray[index].Image = _cats.Values.ToArray()[index].Icon != string.Empty ? Image.FromFile(_cats.Values.ToArray()[index].Icon) : null;
                 else
                     toolStripMenuItemArray[index].Image = null;
 

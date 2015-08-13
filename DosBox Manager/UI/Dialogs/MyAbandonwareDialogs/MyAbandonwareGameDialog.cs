@@ -34,6 +34,9 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             _game = game;
             _helper = helper;
 
+            //I allow the creation of a new game if the connection is up
+            //btnCommit.Visible = (_manager.DB.ConnectionStatus == ConnectionState.Open);
+
             gameDownloader.Visible = ShowDownload;
             if (!ShowDownload)
                 screenshotsList.Height = 502;

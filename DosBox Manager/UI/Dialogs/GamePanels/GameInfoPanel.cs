@@ -22,6 +22,7 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
     public partial class GameInfoPanel : GamePanelBase
     {
         #region "Declarations"
+        private Dictionary<String, Category> _cats = null;
         #endregion
 
         #region "Constructors"
@@ -30,9 +31,11 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             InitializeComponent();
         }
 
-        public GameInfoPanel(AppManager Manager, DialogsHelpers DialogsHelpers, Game GameData):base(Manager,DialogsHelpers,GameData)
+        public GameInfoPanel(AppManager Manager, DialogsHelpers DialogsHelpers, Game GameData, Dictionary<String, Category> Cats):base(Manager,DialogsHelpers,GameData)
         {
             InitializeComponent();
+
+            _cats = Cats;
 
             InitializePanel();
         }
@@ -47,20 +50,44 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             txtYear.Text = (_game.Year.ToString() == "0") ? string.Empty : _game.Year.ToString();
             ShowCoverImage();
 
-            List<Category> cats = _manager.DB.GetAllCategories();
+            CompileCategoriesCombo(_game.CategoryID);
+
+            txtPlatform.Text = _game.Platform;
+            txtThemes.Text = _game.Themes;
+            txtReleasedIn.Text = _game.ReleasedIn;
+            txtPublisher.Text = _game.Publisher;
+            txtPerspectives.Text = _game.Perspectives;
+            txtDosBox.Text = _game.DosboxVersion;
+            txtVote.Text = _game.Vote;
+            txtDescription.Text = _game.Description;
+        }
+
+        private void CompileCategoriesCombo(int SelectCategoryID)
+        {
             cboCategory.Items.Clear();
-            int counter = 0;
-            int selectedIndex = 0;
-            foreach (Category cat in cats)
+            if (_cats != null)
             {
-                cboCategory.Items.Add(cat);
+                int counter = 0;
+                int selectedIndex = 0;
+                foreach (Category cat in _cats.Values)
+                {
+                    cboCategory.Items.Add(cat);
 
-                if (cat.ID == _game.CategoryID)
-                    selectedIndex = counter;
+                    if (cat.ID == SelectCategoryID)
+                        selectedIndex = counter;
 
-                counter++;
+                    counter++;
+                }
+                cboCategory.SelectedIndex = selectedIndex;
             }
-            cboCategory.SelectedIndex = selectedIndex;
+        }
+
+        private void UpdatePanel()
+        {
+            txtTitle.Text = _game.Title;
+            txtDeveloper.Text = _game.Developer;
+            txtYear.Text = (_game.Year.ToString() == "0") ? string.Empty : _game.Year.ToString();
+            ShowCoverImage();
 
             txtPlatform.Text = _game.Platform;
             txtThemes.Text = _game.Themes;
@@ -182,6 +209,25 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
 
                 if (gameData != null)
                 {
+
+                    if (_cats.ContainsKey(gameData.Genre.Trim().ToLower()))
+                    {
+                        //Category available
+                        _game.CategoryID = _cats[gameData.Genre.Trim().ToLower()].ID;
+                        //cboCategory.SelectedValue = _cats[gameData.Genre.Trim().ToLower()];
+                        CompileCategoriesCombo(_game.CategoryID);
+                    }
+                    else if(gameData.Genre.Trim() != string.Empty)
+                    {
+                        //Category not existing, adding it
+                        //_manager.DB.AddCategory(gameData.Genre.Trim(), string.Empty);
+                        //_cats = _manager.DB.GetAllCategories();
+                        _cats.Add(gameData.Genre.Trim().ToLower(), new Category(-1, gameData.Genre.Trim(), string.Empty, false, false));
+                        CompileCategoriesCombo(-1);
+                        //cboCategory.SelectedValue = _cats[gameData.Genre.Trim().ToLower()];
+
+                    }
+
                     _game.Title = gameData.Title;
                     _game.Description = gameData.Description;
                     _game.Developer = gameData.Developer;
@@ -193,7 +239,7 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
                     _game.Vote = gameData.Vote.ToString();
                     _game.Year = Convert.ToInt32(gameData.Year);
 
-                    InitializePanel();
+                    UpdatePanel();
                 }
                 
             }

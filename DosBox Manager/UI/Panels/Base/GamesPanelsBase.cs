@@ -29,13 +29,13 @@ namespace DosBox_Manager.UI.Panels.Base
     {
         #region "Declarations"
         protected List<Game> _games;
-        protected List<Category> _cats;
+        protected Dictionary<String, Category> _cats;
         protected TranslationsHelpers _translator;
         protected Settings _settings;
         #endregion
 
         #region "Properties"
-        public virtual List<Category> Categories
+        public virtual Dictionary<String, Category> Categories
         {
             set { _cats = value; }
         }
@@ -58,7 +58,7 @@ namespace DosBox_Manager.UI.Panels.Base
             _translator = manager.Translator;
         }
 
-        public GamesPanelsBase(AppManager manager, List<Game> games, List<Category> cats)
+        public GamesPanelsBase(AppManager manager, List<Game> games, Dictionary<String, Category> cats)
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;

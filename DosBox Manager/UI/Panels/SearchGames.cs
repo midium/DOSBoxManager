@@ -46,7 +46,7 @@ namespace DosBox_Manager.UI.Panels
             pnlSearch.KeyDown += panel_KeyDown;
         }
 
-        public SearchGames(AppManager manager, List<Category> cats)
+        public SearchGames(AppManager manager, Dictionary<String, Category> cats)
             : base(manager, null, cats)
         {
             InitializeComponent();

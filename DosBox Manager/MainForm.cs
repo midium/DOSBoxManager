@@ -210,7 +210,7 @@ namespace DosBox_Manager
         private void NewCategory()
         {
             CategoryDialog categoryDialog = new CategoryDialog(_manager);
-            if (categoryDialog.ShowDialog() != DialogResult.OK || !_manager.DB.AddCategory(categoryDialog.CategoryName, categoryDialog.CategoryIcon))
+            if (categoryDialog.ShowDialog() != DialogResult.OK || _manager.DB.AddCategory(categoryDialog.CategoryName, categoryDialog.CategoryIcon)<1)
                 return;
             RefreshCategories();
             UpdateStatusBar();
@@ -260,7 +260,7 @@ namespace DosBox_Manager
             }, false);
         }
 
-        private void AddMovetoCategoryMenu(List<Category> categories)
+        private void AddMovetoCategoryMenu(Dictionary<String, Category> categories)
         {
             if (categories == null || categories.Count <= 0)
                 return;
@@ -271,7 +271,7 @@ namespace DosBox_Manager
             }
             else
                 _flgMoveToAdded = true;
-            foreach (Category category in categories)
+            foreach (Category category in categories.Values)
             {
                 ToolStripItemCollection dropDownItems1 = moveToCategoryToolStripMenuItem.DropDownItems;
                 int id = category.ID;
@@ -345,9 +345,28 @@ namespace DosBox_Manager
             if (gameDialog.ShowDialog() != DialogResult.OK)
                 return;
             game = gameDialog.GameData;
+
+            if (game == null)
+                return;
+
+            //First I check if there are new categories to be added
+            Dictionary<String, Category> cats = gameDialog.Cats;
+            foreach (Category cat in cats.Values)
+            {
+                if (cat.ID == -1)
+                {
+                    int catID = _manager.DB.AddCategory(cat.Name, string.Empty);
+                    if (catID > 0)
+                    {
+                        game.CategoryID = catID;
+                    }
+                }
+            }
+
+            //Now I save the game
             if (_manager.DB.SaveGame(game))
             {
-                LoadCategoryGames(_SelectedCategory);
+                RefreshCategories();
                 UpdateStatusBar();
             }
             else
@@ -455,7 +474,7 @@ namespace DosBox_Manager
         {
             RemoveGamesPanelHandlers();
             List<Game> games = _manager.DB.SearchGames(args.Title, args.Year, args.Developer, args.CategoryID);
-            List<Category> allCategories = _manager.DB.GetAllCategories();
+            Dictionary<String, Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Dispose();
             if (games != null)
@@ -490,7 +509,7 @@ namespace DosBox_Manager
                 return;
             RemoveGamesPanelHandlers();
             List<Game> gamesForCategory = _manager.DB.GetAllGamesForCategory(CategoryID);
-            List<Category> allCategories = _manager.DB.GetAllCategories();
+            Dictionary<String, Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Dispose();
             catGames = new CategoryGames(_manager, gamesForCategory, allCategories);
@@ -528,7 +547,7 @@ namespace DosBox_Manager
 
         private void RefreshCategories()
         {
-            List<Category> allCategories = _manager.DB.GetAllCategories();
+            Dictionary<String, Category> allCategories = _manager.DB.GetAllCategories();
             if (catGames != null)
                 catGames.Categories = allCategories;
             categoriesTabs.ClearTabs();
@@ -536,7 +555,7 @@ namespace DosBox_Manager
             if (allCategories == null)
                 return;
             int num = -1;
-            foreach (Category category in allCategories)
+            foreach (Category category in allCategories.Values)
             {
                 Image TabIcon = null;
                 if (File.Exists(category.Icon))
@@ -547,7 +566,7 @@ namespace DosBox_Manager
                     num = category.ID;
             }
             categoriesTabs.AddTab(-100, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 74, "Search Games"), DosBox_Manager.Properties.Resources.magnifier, true);
-            categoriesTabs.SelectTab(num == -1 ? allCategories[0].ID : num);
+            categoriesTabs.SelectTab(num == -1 ? allCategories.Values.First().ID : num);
             AddMovetoCategoryMenu(allCategories);
         }
         #endregion
