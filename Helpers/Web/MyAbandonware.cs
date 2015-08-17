@@ -193,13 +193,20 @@ namespace Helpers.Web
                                 result.Vote = voteNode.InnerText;
 
                             //Game Descritpion
-                            HtmlNode descriptionNode = bodyNode.SelectSingleNode("//div[@class='box']/h3[@class='cBoth']");
+                            //First I check if exists the proper node
+                            HtmlNode descriptionNode = bodyNode.SelectSingleNode("//div[@class='gameDescription dscr']");
                             if (descriptionNode != null)
                             {
+                                result.Description = WebUtility.HtmlDecode(descriptionNode.InnerText);
+                            }
+                            else
+                            {
+                                //As it seems missing I try the other one
+                                descriptionNode = bodyNode.SelectSingleNode("//div[@class='box']/h3[@class='cBoth']");
                                 if (descriptionNode != null)
                                 {
                                     HtmlNode descNone = descriptionNode.ParentNode.SelectSingleNode("p");
-                                    if(descNone!=null)
+                                    if (descNone != null)
                                         result.Description = WebUtility.HtmlDecode(descNone.InnerText);
                                 }
                             }

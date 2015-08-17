@@ -680,6 +680,7 @@ namespace DosBox_Manager
             this.categoriesTabs.Count = 0;
             this.categoriesTabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.categoriesTabs.Location = new System.Drawing.Point(0, 20);
+            this.categoriesTabs.Manager = null;
             this.categoriesTabs.Margin = new System.Windows.Forms.Padding(0);
             this.categoriesTabs.Name = "categoriesTabs";
             this.tableLayoutPanel.SetRowSpan(this.categoriesTabs, 2);
@@ -693,6 +694,9 @@ namespace DosBox_Manager
             this.categoriesTabs.TabIndex = 10;
             this.categoriesTabs.TabTextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.categoriesTabs.SearchSelected += new GUI.Tabs.CategoriesTabs.SearchSelectedDelegate(this.categoriesTabs_SearchSelected);
+            this.categoriesTabs.CategoryEditClick += new GUI.Tabs.CategoriesTabs.CategoryEditClickDelegate(this.categoriesTabs_CategoryEditClick);
+            this.categoriesTabs.CategoryDeleteClick += new GUI.Tabs.CategoriesTabs.CategoryDeleteClickDelegate(this.categoriesTabs_CategoryDeleteClick);
+            this.categoriesTabs.CategoryCreateClick += new GUI.Tabs.CategoriesTabs.CategoryCreateClickDelegate(this.categoriesTabs_CategoryCreateClick);
             // 
             // lblCategories
             // 

@@ -72,6 +72,8 @@ namespace DosBox_Manager
             InitializeStyle();
             InitializeGUIEventsHandlers();
 
+            categoriesTabs.Manager = _manager;
+
             SetupUI();
             _SelectedCategory = -1;
             _SelectedGame = -1;
@@ -216,17 +218,17 @@ namespace DosBox_Manager
             UpdateStatusBar();
         }
 
-        private void EditCategory()
+        private void EditCategory(int CategoryID)
         {
-            Category category = _manager.DB.GetCategory(_SelectedCategory);
+            Category category = _manager.DB.GetCategory(CategoryID);
             CategoryDialog categoryDialog = new CategoryDialog(_manager.AppSettings, _manager.Translator, category);
             if (categoryDialog.ShowDialog() == DialogResult.OK && _manager.DB.EditCategory(category.ID, categoryDialog.CategoryName, categoryDialog.CategoryIcon))
                 RefreshCategories();
         }
 
-        private void DeleteCategory()
+        private void DeleteCategory(int CategoryID)
         {
-            Category category = _manager.DB.GetCategory(_SelectedCategory);
+            Category category = _manager.DB.GetCategory(CategoryID);
             string Body = string.Format(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 19, "You are about to remove the {0} category."), (object)category.Name) + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 20, "This will also remove all the games of the category.") + "\n" + _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 21, "Are you sure you want to continue?");
             string translatedMessage = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 8, "Attention");
             if (_manager.AppSettings.CategoryDeletePrompt)
@@ -883,12 +885,12 @@ namespace DosBox_Manager
 
         private void editCategoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EditCategory();
+            EditCategory(_SelectedCategory);
         }
 
         private void deleteCategoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteCategory();
+            DeleteCategory(_SelectedCategory);
         }
 
         private void addGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -950,12 +952,12 @@ namespace DosBox_Manager
 
         private void tsbEditCategory_Click(object sender, EventArgs e)
         {
-            EditCategory();
+            EditCategory(_SelectedCategory);
         }
 
         private void tsbDeleteCategory_Click(object sender, EventArgs e)
         {
-            DeleteCategory();
+            DeleteCategory(_SelectedCategory);
         }
 
         private void tsbRunGame_Click(object sender, EventArgs e)
@@ -1088,6 +1090,21 @@ namespace DosBox_Manager
             pnlSearch.Controls.Add(searchGamesPanel);
         }
 
+        private void categoriesTabs_CategoryCreateClick(object sender)
+        {
+            NewCategory();
+        }
+
+        private void categoriesTabs_CategoryDeleteClick(object sender, int CategoryID)
+        {
+            DeleteCategory(CategoryID);
+        }
+
+        private void categoriesTabs_CategoryEditClick(object sender, int CategoryID)
+        {
+            EditCategory(CategoryID);
+        }
+
         private void search_SearchCommitted(object sender, SearchEventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -1149,11 +1166,6 @@ namespace DosBox_Manager
             _manager.AppSettings.StatusBarVisible = statusStrip.Visible;
         }
         #endregion
-
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

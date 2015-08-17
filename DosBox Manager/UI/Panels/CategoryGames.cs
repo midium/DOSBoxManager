@@ -172,7 +172,7 @@ namespace DosBox_Manager.UI.Panels
                 scroller.BorderColor = Color.FromArgb(64, 64, 64);
                 scroller.Dock = DockStyle.Right;
                 scroller.Visible = true;
-                scroller.Maximum = maxRenderableRows * 160;
+                scroller.Maximum = (rowsCount + 1) * 160;
                 scroller.Scroll += scroller_Scroll;
                 this.MouseWheel += CategoryGames_MouseWheel;
                 this.Controls.Add(scroller);

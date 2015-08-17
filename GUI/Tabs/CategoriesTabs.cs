@@ -19,6 +19,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GUI.Menus.MenuStripRenderer;
+using Helpers.Business;
 
 namespace GUI.Tabs
 {
@@ -34,6 +36,8 @@ namespace GUI.Tabs
         private Dictionary<int, RadioButton> _tabs = null;
         protected int _currentID;
 
+        private AppManager _manager = null;
+
         //Control Setup
         private int _TabHeight = 30;
         private ContentAlignment _TabImageAlign = ContentAlignment.MiddleLeft;
@@ -42,6 +46,77 @@ namespace GUI.Tabs
         private Color _TabForeColor = Color.White;
         private Color _TabBackgroundColor = Color.FromArgb(50, 50, 50);
         private Color _TabHoverColor = Color.FromArgb(64, 64, 64);
+
+        //Context menu
+        private ContextMenuStrip cms;
+        private ToolStripMenuItem new_cat_cms;
+        private ToolStripMenuItem edit_cat_cms;
+        private ToolStripMenuItem delete_cat_cms;
+
+        #region "Event Declaration"
+        public delegate void CategoryEditClickDelegate(object sender, int CategoryID);
+        public event CategoryEditClickDelegate CategoryEditClick;
+
+        public delegate void CategoryDeleteClickDelegate(object sender, int CategoryID);
+        public event CategoryDeleteClickDelegate CategoryDeleteClick;
+
+        public delegate void CategoryCreateClickDelegate(object sender);
+        public event CategoryCreateClickDelegate CategoryCreateClick;
+        #endregion
+        #endregion
+
+        #region "Context Menu Creation"
+        private ContextMenuStrip CreateGameContextMenu(int CategoryID)
+        {
+            cms = new ContextMenuStrip();
+            cms.BackColor = Color.FromArgb(50, 50, 50);
+            cms.RenderMode = ToolStripRenderMode.Professional;
+            cms.Renderer = (ToolStripRenderer)new ToolStripProfessionalRenderer(new MyMenuRenderer());
+            if (_manager != null)
+            {
+                edit_cat_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 36, "Edit Category"), GUI.Properties.Resources.brick_edit);
+                delete_cat_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 79, "Delete Category"), Properties.Resources.brick_delete);
+                new_cat_cms = new ToolStripMenuItem(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 35, " Add New Category"), Properties.Resources.brick_add);
+            }
+            else
+            {
+                edit_cat_cms = new ToolStripMenuItem("Edit Category", GUI.Properties.Resources.brick_edit );
+                delete_cat_cms = new ToolStripMenuItem("Delete Category", GUI.Properties.Resources.brick_delete);
+                new_cat_cms = new ToolStripMenuItem("Add New Category", GUI.Properties.Resources.brick_add);
+            }
+            edit_cat_cms.Click += new EventHandler(edit_cat_cms_Click);
+            edit_cat_cms.Tag = CategoryID.ToString();
+            edit_cat_cms.ForeColor = Color.White;
+            delete_cat_cms.Click += new EventHandler(delete_cat_cms_Click);
+            delete_cat_cms.Tag = CategoryID.ToString();
+            delete_cat_cms.ForeColor = Color.White;
+            new_cat_cms.Click += new EventHandler(new_cat_cms_Click);
+            new_cat_cms.Tag = CategoryID.ToString();
+            new_cat_cms.ForeColor = Color.White;
+            cms.Items.Add((ToolStripItem)new_cat_cms);
+            cms.Items.Add((ToolStripItem)edit_cat_cms);
+            cms.Items.Add((ToolStripItem)delete_cat_cms);
+
+            return cms;
+        }
+
+        private void new_cat_cms_Click(object sender, EventArgs e)
+        {
+            if (CategoryCreateClick != null)
+                CategoryCreateClick(this);
+        }
+
+        private void delete_cat_cms_Click(object sender, EventArgs e)
+        {
+            if (CategoryDeleteClick != null)
+                CategoryDeleteClick(this, Convert.ToInt32(((ToolStripItem)sender).Tag));
+        }
+
+        private void edit_cat_cms_Click(object sender, EventArgs e)
+        {
+            if (CategoryEditClick != null)
+                CategoryEditClick(this, Convert.ToInt32(((ToolStripItem)sender).Tag));
+        }
         #endregion
 
         #region "Constructor"
@@ -202,6 +277,9 @@ namespace GUI.Tabs
             btn.Name = TabID.ToString();
             btn.Tag = (isSearch) ? "1" : "0";
 
+            if (!isSearch)
+                btn.ContextMenuStrip = CreateGameContextMenu(TabID);
+
             return btn;
         }
 
@@ -236,6 +314,12 @@ namespace GUI.Tabs
         #endregion
 
         #region "Properties"
+        public AppManager Manager
+        {
+            get { return _manager; }
+            set { _manager = value; }
+        }
+
         public int Count
         {
             get
