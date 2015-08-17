@@ -12,6 +12,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,48 @@ namespace Helpers.IO
             result = String.Join("\\", pieces);
 
             return result;
+        }
+
+        public String ExtractFileExtension(String FileName)
+        {
+            String result = String.Empty;
+
+            if (FileName.Length == 0)
+                return result;
+
+            String[] pieces = FileName.Split('.');
+            if (pieces.Count() > 0)
+            {
+                result = pieces[pieces.Count() - 1];
+            }
+
+            return result;
+        }
+
+        public bool IsFileLocked(String FileName)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = File.Open(FileName, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
         }
     }
 }

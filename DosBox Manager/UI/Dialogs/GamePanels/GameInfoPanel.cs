@@ -120,6 +120,15 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
             }
         }
 
+        private void RenderTemporaryCover(Image image)
+        {
+            Bitmap bitmap = new Bitmap(pctCover.Width, pctCover.Height);
+            Graphics graphics = Graphics.FromImage(bitmap);
+            graphics.DrawImage(image, new Rectangle(0, 0, pctCover.Width, pctCover.Height));
+            pctCover.Image = bitmap;
+            graphics.Dispose();
+        }
+
         #endregion
 
         #region "Controls Events Handling"
@@ -212,22 +221,18 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
 
                     if (_cats.ContainsKey(gameData.Genre.Trim().ToLower()))
                     {
-                        //Category available
+                        //Category existing 
                         _game.CategoryID = _cats[gameData.Genre.Trim().ToLower()].ID;
-                        //cboCategory.SelectedValue = _cats[gameData.Genre.Trim().ToLower()];
                         CompileCategoriesCombo(_game.CategoryID);
                     }
                     else if(gameData.Genre.Trim() != string.Empty)
                     {
-                        //Category not existing, adding it
-                        //_manager.DB.AddCategory(gameData.Genre.Trim(), string.Empty);
-                        //_cats = _manager.DB.GetAllCategories();
+                        //Category not existing
                         _cats.Add(gameData.Genre.Trim().ToLower(), new Category(-1, gameData.Genre.Trim(), string.Empty, false, false));
                         CompileCategoriesCombo(-1);
-                        //cboCategory.SelectedValue = _cats[gameData.Genre.Trim().ToLower()];
 
                     }
-
+                    
                     _game.Title = gameData.Title;
                     _game.Description = gameData.Description;
                     _game.Developer = gameData.Developer;
@@ -240,6 +245,12 @@ namespace DosBox_Manager.UI.Dialogs.GamePanels
                     _game.Year = Convert.ToInt32(gameData.Year);
 
                     UpdatePanel();
+
+                    _game.ImagePath = msd.GameScreenshot;
+                    ShowCoverImage();
+                    //RenderTemporaryCover(msd.GameScreenshot);
+                    
+
                 }
                 
             }

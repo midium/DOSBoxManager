@@ -210,7 +210,7 @@ namespace GUI.Boxes
             gr.DrawPath(Pens.LightGray, stringPath);
 
             stringPath.Dispose();
-
+            
         }
 
         private void RenderFlat(Graphics gr, string _GameName)
@@ -255,7 +255,7 @@ namespace GUI.Boxes
                 DrawRoundedRectangle(gr, boxRect, 25, strokePen, Color.FromArgb(50, 50, 50), _GameImage);
             else
                 DrawRoundedRectangle(gr, boxRect, 25, strokePen, Color.FromArgb(50, 50, 50), GUI.Properties.Resources.LogoAtari);
-            
+
         }
 
         private void DrawRoundedRectangle(Graphics gfx, Rectangle Bounds, int CornerRadius, Pen DrawPen, Color FillColor, Image Cover)

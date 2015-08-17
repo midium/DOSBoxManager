@@ -342,7 +342,10 @@ namespace Helpers.Web
 
         public void DownloadMedia(string MediaUri, string DownloadPath)
         {
-            _fileDownload = new FileDownloader(string.Format(baseUri, MediaUri.Substring(1,MediaUri.Length -1)), DownloadPath); 
+            if (MediaUri.Substring(0, 4).ToLower() == "http")
+                _fileDownload = new FileDownloader(MediaUri, DownloadPath);
+            else
+                _fileDownload = new FileDownloader(string.Format(baseUri, MediaUri.Substring(1,MediaUri.Length -1)), DownloadPath); 
 
             AddDownloadHandlers(_fileDownload);
 

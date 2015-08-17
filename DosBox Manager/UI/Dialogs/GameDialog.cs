@@ -87,5 +87,6 @@ namespace DosBox_Manager.UI.Dialogs
         }
         #endregion
 
+
     }
 }

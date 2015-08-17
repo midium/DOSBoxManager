@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,17 +30,23 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
     public partial class MyAbandonwareSearchDialog : Form
     {
         #region "Declarations"
-        private MyAbandonware scraper = null;
-        private MyAbandonGameFound selectedGame = null;
+        private MyAbandonware _scraper = null;
+        private MyAbandonGameFound _selectedGame = null;
         private AppManager _manager;
         private MyAbandonGameInfo _game = null;
         private bool _allowGameDownload = false;
+        private string _gameScreenshot = null;
         #endregion
 
         #region "Properties"
         public MyAbandonGameInfo GameData
         {
             get { return _game; }
+        }
+
+        public string GameScreenshot
+        {
+            get { return _gameScreenshot; }
         }
         #endregion
 
@@ -52,7 +59,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             _manager = Manager;
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
 
-            scraper = new MyAbandonware(Manager);
+            _scraper = new MyAbandonware(Manager);
         }
 
         public MyAbandonwareSearchDialog(AppManager Manager, string SearchFor)
@@ -66,7 +73,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             _manager = Manager;
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
 
-            scraper = new MyAbandonware(Manager);
+            _scraper = new MyAbandonware(Manager);
 
             txtGameName.Text = SearchFor;
         }
@@ -79,7 +86,7 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                List<MyAbandonGameFound> result = scraper.SearchGames(txtGameName.Text.Trim().Replace("&",""));
+                List<MyAbandonGameFound> result = _scraper.SearchGames(txtGameName.Text.Trim().Replace("&",""));
 
                 foundedGamesList.Clear();
                 if (result != null)
@@ -93,12 +100,21 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
 
         private void LoadGameData(bool noDownload)
         {
-            _game = scraper.RetrieveGameData(selectedGame.Uri);
+            _game = _scraper.RetrieveGameData(_selectedGame.Uri);
 
             if (_game != null)
             {
-                MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, _game, scraper, noDownload);
+                MyAbandonwareGameDialog gameData = new MyAbandonwareGameDialog(_manager, _game, _scraper, noDownload);
                 gameData.ShowDialog();
+                if (gameData.Screenshot != null)
+                {
+                    _gameScreenshot = Application.StartupPath + "\\tmp.img";
+                    Bitmap bmp = new Bitmap(gameData.Screenshot);
+                    bmp.Save(_gameScreenshot);
+                    bmp.Dispose();
+                }
+                else
+                    _gameScreenshot = string.Empty;
                 gameData.Dispose();
             }
         }
@@ -130,12 +146,12 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
 
         private void foundedGamesList_GameSelected(object sender, MyAbandonGameFound game)
         {
-            selectedGame = game;
+            _selectedGame = game;
         }
 
         private void foundedGamesList_GameDoubleClick(object sender, MyAbandonGameFound game)
         {
-            selectedGame = game;
+            _selectedGame = game;
             LoadGameData(_allowGameDownload);
         }
 
@@ -147,21 +163,56 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
 
         private void btnGetGameData_Click(object sender, EventArgs e)
         {
-            if(selectedGame != null){
-                if (_game == null || _game.GameURI != selectedGame.Uri)
+            if(_selectedGame != null){
+                if (_game == null || _game.GameURI != _selectedGame.Uri)
                 {
-                    _game = scraper.RetrieveGameData(selectedGame.Uri);
+                    _game = _scraper.RetrieveGameData(_selectedGame.Uri);
 
                     if (_game == null)
                         return;
+
+                    //Retrieving first available screenshot
+                    if (_game.Screenshots != null && _game.Screenshots.Count > 0)
+                    {
+                        _scraper.DownloadFileCompleted += _scraper_DownloadFileCompleted;
+                        _scraper.DownloadMedia(_game.Screenshots[0], Application.StartupPath + "\\tmp.img");
+                    }
+
+                }
+                else if( _game != null )
+                {
+                    CustomMessageBox cmb = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!"),
+                                                                _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 59, "Information"),
+                                                                MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
+                    cmb.ShowDialog();
+                    cmb.Dispose();
+
                 }
 
-                CustomMessageBox cmb = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!"),
-                                                            _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 59, "Information"),
-                                                            MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
-                cmb.ShowDialog();
-                cmb.Dispose();
+            }
+        }
 
+        void _scraper_DownloadFileCompleted(object sender, string DestinationFile)
+        {
+            try
+            {
+                if (File.Exists(Application.StartupPath + "\\tmp.img"))
+                {
+                    _gameScreenshot = Application.StartupPath + "\\tmp.img";
+
+                    CustomMessageBox cmb = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 77, "Download Completed!!!"),
+                                                                _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 59, "Information"),
+                                                                MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Information, false, false);
+                    cmb.ShowDialog();
+                    cmb.Dispose();
+
+                }
+                else
+                    _gameScreenshot = string.Empty ;
+            }
+            catch (Exception)
+            {
+                _gameScreenshot = string.Empty;
             }
         }
         #endregion

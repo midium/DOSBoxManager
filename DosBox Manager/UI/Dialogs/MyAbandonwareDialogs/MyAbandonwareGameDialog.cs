@@ -25,6 +25,13 @@ namespace DosBox_Manager.UI.Dialogs.MyAbandonwareDialogs
         private AppManager _manager = null;
         #endregion
 
+        #region "Properties"
+        public Image Screenshot
+        {
+            get { return _gameScreenshot; }
+        }
+        #endregion
+
         #region "Constructor"
         public MyAbandonwareGameDialog(AppManager Manager, MyAbandonGameInfo game, MyAbandonware helper, bool ShowDownload)
         {

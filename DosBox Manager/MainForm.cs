@@ -363,11 +363,39 @@ namespace DosBox_Manager
                 }
             }
 
+            //I check the game cover path. If it is the temporary path used when loading screenshots from MyAbandonware
+            // then I copy it inside the game path and I remove the temporary one.
+            if (game.ImagePath == Application.StartupPath + "\\tmp.img")
+            {
+                string newCoverPath = string.Empty;
+
+                if (game.Directory != string.Empty) 
+                {
+                    newCoverPath = game.Directory + string.Format("\\{0}.jpg",GetHDFineFileName(game.Title));
+                    
+                }
+                else if (game.DOSExePath != string.Empty)
+                {
+                    newCoverPath = _manager.FileHelper.ExtractFilePath(game.DOSExePath) + string.Format("\\{0}.jpg", GetHDFineFileName(game.Title));
+                }
+
+                if (newCoverPath != string.Empty)
+                {
+                    newCoverPath = GetOverwriteSafeFileName(newCoverPath, 0);
+                    File.Copy(game.ImagePath, newCoverPath, true);
+                    
+                }
+                
+                game.ImagePath = newCoverPath;
+
+            }
+
             //Now I save the game
             if (_manager.DB.SaveGame(game))
             {
                 RefreshCategories();
                 UpdateStatusBar();
+                LoadCategoryGames(_SelectedCategory);
             }
             else
             {
@@ -375,6 +403,31 @@ namespace DosBox_Manager
                 customMessageBox.ShowDialog();
                 customMessageBox.Dispose();
             }
+        }
+
+        private string GetOverwriteSafeFileName(string newCoverPath, int counter)
+        {
+
+            if (File.Exists(newCoverPath) && _manager.FileHelper.IsFileLocked(newCoverPath))
+            {
+                string path = _manager.FileHelper.ExtractFilePath(newCoverPath);
+                string ext = _manager.FileHelper.ExtractFileExtension(newCoverPath);
+                string name = _manager.FileHelper.ExtractFileName(newCoverPath).Replace("."+ext,"");
+
+                string newName = path + "\\" + name + counter + "." + ext;
+
+                return GetOverwriteSafeFileName(newName, counter++);
+            
+            }
+            else
+            {
+                return newCoverPath;
+            }
+        }
+
+        private string GetHDFineFileName(string gameTitle)
+        {
+            return gameTitle.Replace(" ","").Replace("\\","").Replace("/","").Replace(":","").Replace("*","").Replace("?","").Replace("\"","").Replace("<","").Replace(">","").Replace("|","");
         }
 
         private void EditGame(int GameID)
