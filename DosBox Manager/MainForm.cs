@@ -129,85 +129,6 @@ namespace DosBox_Manager
             about.Dispose();
         }
 
-        private void OpenDatabase()
-        {
-            if (!CheckConnection())
-                return;
-            openFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 14, "Open an existing DOSBox Manager database");
-            openFileDialog.FileName = "";
-            openFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-            if (!_manager.DB.Connect(openFileDialog.FileName))
-            {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 6, "It has not been possible to open the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
-                customMessageBox.ShowDialog();
-                customMessageBox.Dispose();
-            }
-            else
-            {
-                if (_manager.SettingsDB.AddToRecentDatabases(openFileDialog.FileName))
-                {
-                    _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
-                    ReloadRecentDBsMenuItems();
-                }
-                UpdateStatusBar();
-                EnableMenus(true);
-                RefreshCategories();
-            }
-        }
-
-        private void CreateDatabase()
-        {
-            if (_manager.DB == null)
-            {
-                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 16, "There are problems with the database connector, this feature can't be used at the moment."),
-                                                                         _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                customMessageBox.ShowDialog();
-                customMessageBox.Dispose();
-            }
-            else
-            {
-                if (!CheckConnection())
-                    return;
-                saveFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 17, "Create a new DOSBox Manager database");
-                saveFileDialog.FileName = "";
-                saveFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    if (!_manager.DB.CreateDB(saveFileDialog.FileName))
-                    {
-                        CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 18, "It has not been possible to create the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
-                        customMessageBox.ShowDialog();
-                        customMessageBox.Dispose();
-                    }
-                    else
-                    {
-                        if (_manager.SettingsDB.AddToRecentDatabases(saveFileDialog.FileName))
-                        {
-                            _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
-                            ReloadRecentDBsMenuItems();
-                        }
-                        UpdateStatusBar();
-                        RefreshCategories();
-                        EnableMenus(true);
-                    }
-                }
-            }
-        }
-
-        private void DisconnectDatabase()
-        {
-            if (_manager.DB == null || _manager.DB.ConnectionStatus == ConnectionState.Closed)
-                return;
-            _manager.DB.Disconnect();
-            EnableMenus(false);
-            categoriesTabs.ClearTabs();
-            RemoveGamesPanelHandlers();
-            pnlGames.Controls.Clear();
-            UpdateStatusBar();
-        }
-
         private void NewCategory()
         {
             CategoryDialog categoryDialog = new CategoryDialog(_manager);
@@ -261,7 +182,7 @@ namespace DosBox_Manager
             }, false);
         }
 
-        private void AddMovetoCategoryMenu(Dictionary<String, Category> categories)
+        private void AddMoveToCategoryMenu(Dictionary<String, Category> categories)
         {
             if (categories == null || categories.Count <= 0)
                 return;
@@ -559,6 +480,8 @@ namespace DosBox_Manager
 
         private void LoadCategoryGames(int CategoryID)
         {
+            pnlGames.Controls.Clear();
+
             if (CategoryID == -1)
                 return;
             RemoveGamesPanelHandlers();
@@ -574,7 +497,6 @@ namespace DosBox_Manager
             catGames.BoxRunClick += new CategoryGames.BoxRunClickDelegate(CategoryGame_BoxRunClick);
             catGames.BoxMoveToCategory += new CategoryGames.BoxMoveToCategoryDelegate(CategoryGame_BoxMoveToCategory);
             _SelectedGame = -1;
-            pnlGames.Controls.Clear();
             pnlGames.Controls.Add((Control)catGames);
             if (gamesForCategory == null)
                 EnableGamesCommands(true, false);
@@ -607,8 +529,12 @@ namespace DosBox_Manager
             categoriesTabs.ClearTabs();
             EnableGamesCommands(false, false);
             if (allCategories == null)
+            {
+                //As there are no category I need to clear the game panel too
+                pnlGames.Controls.Clear();
                 return;
-            int num = -1;
+            }
+            int catID = -1;
             foreach (Category category in allCategories.Values)
             {
                 Image TabIcon = null;
@@ -617,11 +543,12 @@ namespace DosBox_Manager
 
                 categoriesTabs.AddTab(category.ID, category.Name, TabIcon, false);
                 if (category.IsSelected)
-                    num = category.ID;
+                    catID = category.ID;
             }
             categoriesTabs.AddTab(-100, _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 74, "Search Games"), DosBox_Manager.Properties.Resources.magnifier, true);
-            categoriesTabs.SelectTab(num == -1 ? allCategories.Values.First().ID : num);
-            AddMovetoCategoryMenu(allCategories);
+            categoriesTabs.SelectTab(catID == -1 ? allCategories.Values.First().ID : catID);
+            AddMoveToCategoryMenu(allCategories);
+            _SelectedCategory = catID;
         }
         #endregion
 
@@ -773,6 +700,92 @@ namespace DosBox_Manager
         }
         #endregion
 
+        #region "DB Related"
+        private void OpenDatabase()
+        {
+            if (!CheckConnection())
+                return;
+            openFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 14, "Open an existing DOSBox Manager database");
+            openFileDialog.FileName = "";
+            openFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+            if (!_manager.DB.Connect(openFileDialog.FileName))
+            {
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 6, "It has not been possible to open the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
+                customMessageBox.ShowDialog();
+                customMessageBox.Dispose();
+            }
+            else
+            {
+                AddDBToRecentAndSetupUI(openFileDialog.FileName, true);
+            }
+        }
+
+        private void AddDBToRecentAndSetupUI(string DBPath, bool MustRefreshRecentDBs)
+        {
+            if (_manager.SettingsDB.AddToRecentDatabases(DBPath))
+            {
+                if (MustRefreshRecentDBs)
+                {
+                    _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
+                    ReloadRecentDBsMenuItems();
+                }
+            }
+            _SelectedCategory = -1; //As I'm opening a new DB I can't keep the previous one selected category
+            _SelectedGame = -1; //As I'm opening a new DB I can't keep the previous one selected game
+
+            UpdateStatusBar();
+            EnableMenus(true);
+            RefreshCategories();
+            LoadCategoryGames(_SelectedCategory);
+        }
+
+        private void CreateDatabase()
+        {
+            if (_manager.DB == null)
+            {
+                CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 16, "There are problems with the database connector, this feature can't be used at the moment."),
+                                                                         _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                customMessageBox.ShowDialog();
+                customMessageBox.Dispose();
+            }
+            else
+            {
+                if (!CheckConnection())
+                    return;
+                saveFileDialog.Title = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 17, "Create a new DOSBox Manager database");
+                saveFileDialog.FileName = "";
+                saveFileDialog.Filter = _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 15, "DOSBox Manager Database (*.dbm)|*.dbm");
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (!_manager.DB.CreateDB(saveFileDialog.FileName))
+                    {
+                        CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 18, "It has not been possible to create the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 28, "Error"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Error, false, false);
+                        customMessageBox.ShowDialog();
+                        customMessageBox.Dispose();
+                    }
+                    else
+                    {
+                        AddDBToRecentAndSetupUI(saveFileDialog.FileName, true);
+                    }
+                }
+            }
+        }
+
+        private void DisconnectDatabase()
+        {
+            if (_manager.DB == null || _manager.DB.ConnectionStatus == ConnectionState.Closed)
+                return;
+            _manager.DB.Disconnect();
+            EnableMenus(false);
+            categoriesTabs.ClearTabs();
+            RemoveGamesPanelHandlers();
+            pnlGames.Controls.Clear();
+            UpdateStatusBar();
+        }
+        #endregion
+
         #region "Recent Database Handling"
         private void RecentDatabaseItemClickHandler(object sender, EventArgs e)
         {
@@ -797,7 +810,6 @@ namespace DosBox_Manager
                 customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes)
                 {
-                    //MessageBox.Show("TO BE IMPLEMENTED");
 
                     if (_manager.SettingsDB.RemoveRecentDatabase(dbPath))
                     {
@@ -813,6 +825,7 @@ namespace DosBox_Manager
             {
                 if (closePreviousConnection)
                     _manager.DB.Disconnect();
+
                 if (!_manager.DB.Connect(dbPath))
                 {
                     CustomMessageBox customMessageBox = new CustomMessageBox(_manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 6, "It has not been possible to open the database!"), _manager.Translator.GetTranslatedMessage(_manager.AppSettings.Language, 30, "Warning"), MessageBoxDialogButtons.Ok, MessageBoxDialogIcon.Warning, false, false);
@@ -821,10 +834,7 @@ namespace DosBox_Manager
                 }
                 else
                 {
-                    _manager.SettingsDB.AddToRecentDatabases(dbPath);
-                    UpdateStatusBar();
-                    EnableMenus(true);
-                    RefreshCategories();
+                    AddDBToRecentAndSetupUI(dbPath, false);
                 }
             }
         }
