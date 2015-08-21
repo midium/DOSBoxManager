@@ -141,13 +141,15 @@ namespace DosBox_Manager
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.categoriesTabs = new GUI.Tabs.CategoriesTabs();
             this.lblCategories = new System.Windows.Forms.Label();
             this.pnlGames = new System.Windows.Forms.Panel();
             this.pnlSearch = new System.Windows.Forms.Panel();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.categoriesTabs = new GUI.Tabs.CategoriesTabs();
+            this.recentDBsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
@@ -173,6 +175,8 @@ namespace DosBox_Manager
             this.createDatabaseToolStripMenuItem,
             this.openDatabaseToolStripMenuItem,
             this.closeDatabaseToolStripMenuItem,
+            this.toolStripSeparator13,
+            this.recentDBsToolStripMenuItem,
             this.toolStripSeparator1,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator6,
@@ -673,31 +677,6 @@ namespace DosBox_Manager
             this.tableLayoutPanel.Size = new System.Drawing.Size(921, 491);
             this.tableLayoutPanel.TabIndex = 5;
             // 
-            // categoriesTabs
-            // 
-            this.categoriesTabs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.categoriesTabs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.categoriesTabs.Count = 0;
-            this.categoriesTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.categoriesTabs.Location = new System.Drawing.Point(0, 20);
-            this.categoriesTabs.Manager = null;
-            this.categoriesTabs.Margin = new System.Windows.Forms.Padding(0);
-            this.categoriesTabs.Name = "categoriesTabs";
-            this.tableLayoutPanel.SetRowSpan(this.categoriesTabs, 2);
-            this.categoriesTabs.SelectedTab = null;
-            this.categoriesTabs.Size = new System.Drawing.Size(184, 471);
-            this.categoriesTabs.TabBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.categoriesTabs.TabForeColor = System.Drawing.Color.White;
-            this.categoriesTabs.TabHeight = 30;
-            this.categoriesTabs.TabHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.categoriesTabs.TabImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.categoriesTabs.TabIndex = 10;
-            this.categoriesTabs.TabTextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.categoriesTabs.SearchSelected += new GUI.Tabs.CategoriesTabs.SearchSelectedDelegate(this.categoriesTabs_SearchSelected);
-            this.categoriesTabs.CategoryEditClick += new GUI.Tabs.CategoriesTabs.CategoryEditClickDelegate(this.categoriesTabs_CategoryEditClick);
-            this.categoriesTabs.CategoryDeleteClick += new GUI.Tabs.CategoriesTabs.CategoryDeleteClickDelegate(this.categoriesTabs_CategoryDeleteClick);
-            this.categoriesTabs.CategoryCreateClick += new GUI.Tabs.CategoriesTabs.CategoryCreateClickDelegate(this.categoriesTabs_CategoryCreateClick);
-            // 
             // lblCategories
             // 
             this.lblCategories.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -739,6 +718,44 @@ namespace DosBox_Manager
             this.notifyIcon.Text = "notifyIcon1";
             this.notifyIcon.Visible = true;
             // 
+            // categoriesTabs
+            // 
+            this.categoriesTabs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.categoriesTabs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.categoriesTabs.Count = 0;
+            this.categoriesTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.categoriesTabs.Location = new System.Drawing.Point(0, 20);
+            this.categoriesTabs.Manager = null;
+            this.categoriesTabs.Margin = new System.Windows.Forms.Padding(0);
+            this.categoriesTabs.Name = "categoriesTabs";
+            this.tableLayoutPanel.SetRowSpan(this.categoriesTabs, 2);
+            this.categoriesTabs.SelectedTab = null;
+            this.categoriesTabs.Size = new System.Drawing.Size(184, 471);
+            this.categoriesTabs.TabBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.categoriesTabs.TabForeColor = System.Drawing.Color.White;
+            this.categoriesTabs.TabHeight = 30;
+            this.categoriesTabs.TabHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.categoriesTabs.TabImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.categoriesTabs.TabIndex = 10;
+            this.categoriesTabs.TabTextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.categoriesTabs.SearchSelected += new GUI.Tabs.CategoriesTabs.SearchSelectedDelegate(this.categoriesTabs_SearchSelected);
+            this.categoriesTabs.CategoryEditClick += new GUI.Tabs.CategoriesTabs.CategoryEditClickDelegate(this.categoriesTabs_CategoryEditClick);
+            this.categoriesTabs.CategoryDeleteClick += new GUI.Tabs.CategoriesTabs.CategoryDeleteClickDelegate(this.categoriesTabs_CategoryDeleteClick);
+            this.categoriesTabs.CategoryCreateClick += new GUI.Tabs.CategoriesTabs.CategoryCreateClickDelegate(this.categoriesTabs_CategoryCreateClick);
+            // 
+            // recentDBsToolStripMenuItem
+            // 
+            this.recentDBsToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.recentDBsToolStripMenuItem.Image = global::DosBox_Manager.Properties.Resources.database_refresh;
+            this.recentDBsToolStripMenuItem.Name = "recentDBsToolStripMenuItem";
+            this.recentDBsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.recentDBsToolStripMenuItem.Text = "Recent DBs";
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(165, 6);
+            // 
             // MainForm
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
@@ -772,5 +789,7 @@ namespace DosBox_Manager
         private ToolStripButton tsbMyAbandonware;
         private ToolStripMenuItem getGameFromMyAbandonwareToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator12;
+        private ToolStripSeparator toolStripSeparator13;
+        private ToolStripMenuItem recentDBsToolStripMenuItem;
     }
 }

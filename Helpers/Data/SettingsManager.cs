@@ -599,6 +599,24 @@ namespace Helpers.Data
             }
         }
 
+        public bool RemoveRecentDatabase(string dbPath)
+        {
+            try
+            {
+                string sql = string.Format("DELETE FROM RecentDatabases WHERE path = '{0}';", dbPath);
+
+                SQLiteCommand command = new SQLiteCommand(sql, _Connection);
+                command.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         private void RemoveOldestRecentDatabase()
         {
             try
@@ -615,5 +633,6 @@ namespace Helpers.Data
         }
 
         #endregion
+
     }
 }

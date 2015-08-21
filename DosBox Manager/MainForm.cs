@@ -44,7 +44,6 @@ namespace DosBox_Manager
         private AppManager _manager;
 
         private CategoryGames catGames = null;
-        private bool _flgRecentAdded = false;
         private bool _flgMoveToAdded = false;
         private int _SelectedCategory;
         private bool _flgLoading;
@@ -150,7 +149,7 @@ namespace DosBox_Manager
                 if (_manager.SettingsDB.AddToRecentDatabases(openFileDialog.FileName))
                 {
                     _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
-                    AddRecentDBs();
+                    ReloadRecentDBsMenuItems();
                 }
                 UpdateStatusBar();
                 EnableMenus(true);
@@ -187,7 +186,7 @@ namespace DosBox_Manager
                         if (_manager.SettingsDB.AddToRecentDatabases(saveFileDialog.FileName))
                         {
                             _manager.RecentDBs = _manager.SettingsDB.LoadRecentDatabases();
-                            AddRecentDBs();
+                            ReloadRecentDBsMenuItems();
                         }
                         UpdateStatusBar();
                         RefreshCategories();
@@ -675,7 +674,7 @@ namespace DosBox_Manager
             menuStrip.Visible = _manager.AppSettings.MenuBarVisible;
             toolStrip.Visible = _manager.AppSettings.ToolbarVisible;
             statusStrip.Visible = _manager.AppSettings.StatusBarVisible;
-            AddRecentDBs();
+            ReloadRecentDBsMenuItems();
             InitializeStripsContextMenu();
             _manager.Translator.TranslateUI(_manager.AppSettings.Language, this.Name, this.Controls);
         }
@@ -798,7 +797,15 @@ namespace DosBox_Manager
                 customMessageBox.ShowDialog();
                 if (customMessageBox.Result == MessageBoxDialogResult.Yes)
                 {
-                    MessageBox.Show("TO BE IMPLEMENTED");
+                    //MessageBox.Show("TO BE IMPLEMENTED");
+
+                    if (_manager.SettingsDB.RemoveRecentDatabase(dbPath))
+                    {
+                        _manager.RecentDBs.Remove(dbPath);
+                        ReloadRecentDBsMenuItems();
+
+                    }
+
                 }
                 customMessageBox.Dispose();
             }
@@ -822,22 +829,15 @@ namespace DosBox_Manager
             }
         }
 
-        private void AddRecentDBs()
+        private void ReloadRecentDBsMenuItems()
         {
+            recentDBsToolStripMenuItem.DropDownItems.Clear();
+            
             if (_manager.RecentDBs == null || _manager.RecentDBs.Count <= 0)
                 return;
-            int index1 = 4;
-            if (_flgRecentAdded)
-            {
-                fileToolStripMenuItem.DropDownItems.RemoveAt(index1);
-                for (int index2 = 0; index2 < _manager.RecentDBs.Count; ++index2)
-                    fileToolStripMenuItem.DropDownItems.RemoveAt(index1);
-            }
-            else
-                _flgRecentAdded = true;
-            fileToolStripMenuItem.DropDownItems.Insert(index1, (ToolStripItem)new ToolStripSeparator());
+
             foreach (RecentDatabase recentDatabase in _manager.RecentDBs.Values)
-                fileToolStripMenuItem.DropDownItems.Insert(index1, (ToolStripItem)CreateToolStripMenuItem("recentDB" + recentDatabase.ID.ToString(), recentDatabase.DBPath, DosBox_Manager.Properties.Resources.database_refresh, new EventHandler(RecentDatabaseItemClickHandler)));
+                recentDBsToolStripMenuItem.DropDownItems.Add(CreateToolStripMenuItem("recentDB" + recentDatabase.ID.ToString(), recentDatabase.DBPath, DosBox_Manager.Properties.Resources.database_refresh, new EventHandler(RecentDatabaseItemClickHandler)));
         }
         #endregion
 

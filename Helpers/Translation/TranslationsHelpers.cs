@@ -48,6 +48,7 @@ namespace Helpers.Translation
                 foreach (object cmp in controls)
                 {
                     Control itm = (Control)cmp;
+
                     if (_componentsTranslations.ContainsKey(FormName + itm.Name))
                     {
                         itm.Text = _componentsTranslations[FormName + itm.Name].GetTranslation(Language);
@@ -127,6 +128,7 @@ namespace Helpers.Translation
                     if (mnu.GetType() != typeof(ToolStripSeparator))
                     {
                         ToolStripMenuItem itm = (ToolStripMenuItem)mnu;
+
                         if (_componentsTranslations.ContainsKey(FormName + itm.Name))
                         {
                             itm.Text = _componentsTranslations[FormName + itm.Name].GetTranslation(Language);

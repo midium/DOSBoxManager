@@ -282,24 +282,27 @@ namespace DosBox_Manager.UI.Panels
             move_to_cat.ForeColor = Color.White;
             move_to_cat.Tag = GameID.ToString();
             move_to_cat.Image = DosBox_Manager.Properties.Resources.brick_go;
-            ToolStripMenuItem[] toolStripMenuItemArray = new ToolStripMenuItem[_cats.Values.Count];
-            for (int index = 0; index < _cats.Values.Count; ++index)
+            if (_cats != null)
             {
-                toolStripMenuItemArray[index] = new ToolStripMenuItem();
-                toolStripMenuItemArray[index].Name = "move_to_" + _cats.Values.ToArray()[index].Name;
-                toolStripMenuItemArray[index].Text = _cats.Values.ToArray()[index].Name;
-                toolStripMenuItemArray[index].Tag = GameID.ToString() + "|" + _cats.Values.ToArray()[index].ID.ToString();
-                toolStripMenuItemArray[index].BackColor = Color.FromArgb(50, 50, 50);
-                toolStripMenuItemArray[index].ForeColor = Color.White;
+                ToolStripMenuItem[] toolStripMenuItemArray = new ToolStripMenuItem[_cats.Values.Count];
+                for (int index = 0; index < _cats.Values.Count; ++index)
+                {
+                    toolStripMenuItemArray[index] = new ToolStripMenuItem();
+                    toolStripMenuItemArray[index].Name = "move_to_" + _cats.Values.ToArray()[index].Name;
+                    toolStripMenuItemArray[index].Text = _cats.Values.ToArray()[index].Name;
+                    toolStripMenuItemArray[index].Tag = GameID.ToString() + "|" + _cats.Values.ToArray()[index].ID.ToString();
+                    toolStripMenuItemArray[index].BackColor = Color.FromArgb(50, 50, 50);
+                    toolStripMenuItemArray[index].ForeColor = Color.White;
 
-                if (File.Exists(_cats.Values.ToArray()[index].Icon))
-                    toolStripMenuItemArray[index].Image = _cats.Values.ToArray()[index].Icon != string.Empty ? Image.FromFile(_cats.Values.ToArray()[index].Icon) : null;
-                else
-                    toolStripMenuItemArray[index].Image = null;
+                    if (File.Exists(_cats.Values.ToArray()[index].Icon))
+                        toolStripMenuItemArray[index].Image = _cats.Values.ToArray()[index].Icon != string.Empty ? Image.FromFile(_cats.Values.ToArray()[index].Icon) : null;
+                    else
+                        toolStripMenuItemArray[index].Image = null;
 
-                toolStripMenuItemArray[index].Click += new EventHandler(move_to_cat_Click);
+                    toolStripMenuItemArray[index].Click += new EventHandler(move_to_cat_Click);
+                }
+                move_to_cat.DropDownItems.AddRange((ToolStripItem[])toolStripMenuItemArray);
             }
-            move_to_cat.DropDownItems.AddRange((ToolStripItem[])toolStripMenuItemArray);
             cms.Items.Add((ToolStripItem)move_to_cat);
             return cms;
         }
